@@ -10,6 +10,7 @@ import BookNowButton from "../components/ui/BookNowButton";
 import MapView from "react-native-maps";
 import Review from "../components/Review";
 import IconText from "../components/ui/IconText";
+import { useNavigation } from "@react-navigation/native";
 
 const FutsalDetailScreen = () => {
   return (
@@ -111,6 +112,7 @@ const ProfileInfo = () => {
 };
 
 const GroundComponent = () => {
+  const navigator = useNavigation();
   return (
     <View className="flex-row gap-3">
       <Image
@@ -131,7 +133,12 @@ const GroundComponent = () => {
             Rs 450 - Rs 550 per hour
           </Text>
         </View>
-        <BookNowButton label="Book this ground" onPress={() => {}} />
+        <BookNowButton
+          label="Book this ground"
+          onPress={() => {
+            navigator.navigate("Booking" as never);
+          }}
+        />
       </View>
     </View>
   );

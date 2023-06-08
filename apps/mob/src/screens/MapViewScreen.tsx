@@ -24,8 +24,8 @@ const MapViewScreen = () => {
       setInitialRegion({
         latitude: location.coords.latitude || 28.185073,
         longitude: location.coords.latitude || 83.9722326,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitudeDelta: 0.001,
+        longitudeDelta: 0.001,
       });
     })();
   }, []);
@@ -42,8 +42,6 @@ const MapViewScreen = () => {
               coordinate={{
                 latitude: currentLocation.latitude,
                 longitude: currentLocation.longitude,
-                // latitudeDelta: 0.0922,
-                // longitudeDelta: 0.0421,
               }}
             />
           )}

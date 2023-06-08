@@ -8,6 +8,7 @@ import HomeBottomTabs from "./tabs/HomeBottomTabs";
 import FutsalDetailScreen from "./screens/FutsalDetailScreen";
 import NotificationScreen from "./screens/NotificationScreen";
 import FilterScreen from "./screens/FilterScreen";
+import BookScreen from "./screens/BookScreen";
 
 const AfterAuthNavigationContainers = () => {
   const Stack = createNativeStackNavigator();
@@ -29,6 +30,13 @@ const AfterAuthNavigationContainers = () => {
         <Stack.Screen
           name="Filter"
           component={FilterScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Booking"
+          component={BookScreen}
           options={{
             headerShown: false,
           }}

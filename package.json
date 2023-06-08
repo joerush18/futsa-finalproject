@@ -19,5 +19,9 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "firebase": "^9.22.1",
+    "react": "^18.2.0"
+  }
 }
