@@ -1,7 +1,12 @@
+enum ROLES {
+  "FUTSAL",
+  "PLAYER",
+}
+
 interface IUser {
-  name: string;
-  age: number;
-  dob: number;
+  email: string;
+  password: string;
+  role: ROLES;
 }
 
 export { IUser };
