@@ -1,16 +1,16 @@
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import React from "react";
 
-interface IconButtonProps {
+interface IconButtonProps extends TouchableOpacityProps {
   children: React.ReactNode;
-  onPress: () => void;
+  
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ children, onPress }) => {
+const IconButton: React.FC<IconButtonProps> = ({ children, ...props}) => {
   return (
     <TouchableOpacity
-      onPress={onPress}
-      className="bg-white shadow-md p-2 rounded-xl"
+      className="bg-white border-gray-400 border-[0.5px] p-3 rounded-xl"
+      {...props}
     >
       {children}
     </TouchableOpacity>

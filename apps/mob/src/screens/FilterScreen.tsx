@@ -31,7 +31,7 @@ const FilterScreen = () => {
         <Radios />
         <Divider />
         <View className="my-4">
-          <BookNowButton label="Apply Filters" onPress={() => {}} />
+          <BookNowButton label="Apply Filters" onPress={() => {}} className="py-4" />
         </View>
       </View>
     </SafeAreaView>

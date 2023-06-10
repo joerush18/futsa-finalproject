@@ -4,13 +4,14 @@ import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from '@expo/vector-icons';
 import HomeScreen from "../screens/HomeScreen";
-import BookScreen from "../screens/BookScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabLabel from "../components/ui/TabLabel";
 import color from "../assets/colors";
 import MapViewScreen from "../screens/MapViewScreen";
+import EventScreen from "../screens/EventScreen";
 
 const HomeBottomTabs = () => {
   const Tab = createBottomTabNavigator();
@@ -42,35 +43,25 @@ const HomeBottomTabs = () => {
           ),
           headerShown: false,
           tabBarIcon: ({ focused }) =>
-            focused ? (
-              <MaterialCommunityIcons
-                name="soccer-field"
-                size={24}
-                color={color.primary}
-              />
-            ) : (
-              <MaterialCommunityIcons
-                name="soccer-field"
-                size={24}
-                color={color.grayLight}
-              />
-            ),
+          <MaterialCommunityIcons
+            name="soccer-field"
+            size={24}
+            color={focused ? color.primary : color.grayLight}
+          />
+           
         }}
       />
       <Tab.Screen
-        name="History"
-        component={BookScreen}
+        name="Event"
+        component={EventScreen}
         options={{
           tabBarLabel: ({ focused }) => (
-            <TabLabel label="History" focused={focused} />
+            <TabLabel label="Events" focused={focused} />
           ),
           headerShown: false,
           tabBarIcon: ({ focused }) =>
-            focused ? (
-              <FontAwesome name="history" size={24} color={color.primary} />
-            ) : (
-              <FontAwesome name="history" size={24} color={color.grayLight} />
-            ),
+          <MaterialIcons name="event" size={24} color={focused ? color.primary : color.grayLight} />
+ 
         }}
       />
       <Tab.Screen
@@ -82,15 +73,8 @@ const HomeBottomTabs = () => {
           ),
           headerShown: false,
           tabBarIcon: ({ focused }) =>
-            focused ? (
-              <Ionicons name="person" size={24} color={color.primary} />
-            ) : (
-              <Ionicons
-                name="person-outline"
-                size={24}
-                color={color.grayLight}
-              />
-            ),
+          <Ionicons name={focused ? "person-outline" :  "person"} size={24} color={focused ? color.primary : color.grayLight} />
+            
         }}
       />
     </Tab.Navigator>
