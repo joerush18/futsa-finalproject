@@ -7,7 +7,6 @@ import Sectionlayout from "../components/layout/Sectionlayout";
 
 import FutsalImageCard from "../components/FutsalImageCard";
 import FutsalCard from "../components/FutsalCard";
-import NotificationCard from "../components/NotificationCard";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SearchBox from "../components/ui/SearchBox";
 

@@ -1,18 +1,20 @@
 import { Pressable, Text, PressableProps } from "react-native";
 
-interface BookNowButtonProps extends PressableProps {
+interface ButtonProps extends PressableProps {
   label?: string;
+  children?: React.ReactNode;
 }
 
-const BookNowButton: React.FC<BookNowButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   label = "Book now",
+  children,
   ...props
 }) => {
   return (
     <Pressable className="bg-primary py-2 w-full rounded-md" {...props}>
-      <Text className="text-center text-white font-bold">{label}</Text>
+      {children}
     </Pressable>
   );
 };
 
-export default BookNowButton;
+export default Button;

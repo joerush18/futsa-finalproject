@@ -44,7 +44,6 @@ const BookScreen = () => {
     24,
     60
   );
-  console.log(timeSlots.timeSlots);
   function increaseMonthIndex() {
     setMonthIndex((prev) => {
       if (prev === 11) {

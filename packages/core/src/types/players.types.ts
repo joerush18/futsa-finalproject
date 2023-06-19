@@ -1,8 +1,14 @@
 interface IPlayers {
+  id: string;
   userId: string;
   fullname: string;
-  address: string;
-  phone: number;
+  address: {
+    city: string;
+    street: string;
+  };
+  contactNumber: number;
   profilePicture: string;
   points: number;
 }
+
+export { IPlayers };

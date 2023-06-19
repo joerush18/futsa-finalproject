@@ -4,7 +4,7 @@ import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -42,13 +42,13 @@ const HomeBottomTabs = () => {
             <TabLabel label="Maps" focused={focused} />
           ),
           headerShown: false,
-          tabBarIcon: ({ focused }) =>
-          <MaterialCommunityIcons
-            name="soccer-field"
-            size={24}
-            color={focused ? color.primary : color.grayLight}
-          />
-           
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons
+              name="soccer-field"
+              size={24}
+              color={focused ? color.primary : color.grayLight}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -59,9 +59,13 @@ const HomeBottomTabs = () => {
             <TabLabel label="Events" focused={focused} />
           ),
           headerShown: false,
-          tabBarIcon: ({ focused }) =>
-          <MaterialIcons name="event" size={24} color={focused ? color.primary : color.grayLight} />
- 
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="event"
+              size={24}
+              color={focused ? color.primary : color.grayLight}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -72,9 +76,13 @@ const HomeBottomTabs = () => {
             <TabLabel label="Profile" focused={focused} />
           ),
           headerShown: false,
-          tabBarIcon: ({ focused }) =>
-          <Ionicons name={focused ? "person-outline" :  "person"} size={24} color={focused ? color.primary : color.grayLight} />
-            
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name={focused ? "person-outline" : "person"}
+              size={24}
+              color={focused ? color.primary : color.grayLight}
+            />
+          ),
         }}
       />
     </Tab.Navigator>

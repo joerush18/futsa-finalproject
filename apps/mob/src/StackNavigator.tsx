@@ -2,13 +2,14 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import SearchScreen from "./screens/SearchScreen";
-import OnboardingScreen from "./screens/OnboardingScreen";
-import LoginScreen from "./screens/LoginScreen";
+import OnboardingScreen from "./screens/auth/OnboardingScreen";
+import LoginScreen from "./screens/auth/LoginScreen";
 import HomeBottomTabs from "./tabs/HomeBottomTabs";
 import FutsalDetailScreen from "./screens/FutsalDetailScreen";
 import NotificationScreen from "./screens/NotificationScreen";
 import FilterScreen from "./screens/FilterScreen";
 import BookScreen from "./screens/BookScreen";
+import SignupScreen from "./screens/auth/SignupScreen";
 
 const AfterAuthNavigationContainers = () => {
   const Stack = createNativeStackNavigator();
@@ -51,9 +52,27 @@ const BeforeAuthNavigationContainers = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Main" component={OnboardingScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={OnboardingScreen} />
+        <Stack.Screen
+          name="Main"
+          component={OnboardingScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -61,7 +80,7 @@ const BeforeAuthNavigationContainers = () => {
 
 const StackNavigator = () => {
   // const { user } = useCurrentUser();
-  const user = true;
+  const user = false;
   if (user) {
     return <AfterAuthNavigationContainers />;
   }

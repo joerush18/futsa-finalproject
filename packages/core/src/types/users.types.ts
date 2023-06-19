@@ -4,9 +4,12 @@ enum ROLES {
 }
 
 interface IUser {
+  id: string;
   email: string;
   password: string;
+  phonenumber: string;
   role: ROLES;
+  isa?: boolean;
 }
 
-export { IUser };
+export { IUser, ROLES };
