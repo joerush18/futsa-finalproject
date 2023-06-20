@@ -10,6 +10,8 @@ import NotificationScreen from "./screens/NotificationScreen";
 import FilterScreen from "./screens/FilterScreen";
 import BookScreen from "./screens/BookScreen";
 import SignupScreen from "./screens/auth/SignupScreen";
+import OtpScreen from "./screens/auth/OtpScreen";
+import SetPasswordScreen from "./screens/auth/SetPasswordScreen";
 
 const AfterAuthNavigationContainers = () => {
   const Stack = createNativeStackNavigator();
@@ -69,6 +71,20 @@ const BeforeAuthNavigationContainers = () => {
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="OTP"
+          component={OtpScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="password"
+          component={SetPasswordScreen}
           options={{
             headerShown: false,
           }}

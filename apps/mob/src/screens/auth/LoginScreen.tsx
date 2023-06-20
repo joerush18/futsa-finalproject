@@ -9,9 +9,19 @@ import Button from "../../components/ui/Button";
 import Divider from "../../components/ui/Divider";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginSchema } from "../../utils/validations/validations";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(LoginSchema),
+  });
 
   const handleNavigateSignup = () => {
     navigation.navigate("Signup" as never);
@@ -25,14 +35,26 @@ const LoginScreen = () => {
       <Text className="text-primary font-bold text-md mb-2">FUTSA</Text>
       <Card>
         <Text className="text-2xl font-bold opacity-60">Login</Text>
-        <InputComponent label="Phone number" />
-        <InputComponent label="Password" secure={true} />
+        <InputComponent
+          label="Phone number"
+          control={control}
+          name="phoneNumber"
+          keyboardType="numeric"
+          error={errors.phoneNumber?.message}
+        />
+        <InputComponent
+          label="Password"
+          secure={true}
+          name="password"
+          control={control}
+          error={errors.password?.message}
+        />
         <Pressable className="my-2">
           <Text className="text-sm text-gray-400 ml-1 font-bold">
             Forgot Password?
           </Text>
         </Pressable>
-        <Button className="mt-1 mb-4">
+        <Button className="mt-1 mb-4" onPress={handleSubmit(handleLogin)}>
           <Text className="text-center text-white font-bold py-2">Login</Text>
         </Button>
       </Card>
