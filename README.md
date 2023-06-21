@@ -26,7 +26,7 @@ This Turborepo has some additional tools already setup for you:
 To develop all apps and packages, run the following command:
 
 ```
-cd futsa-finalProject
+cd futsa-finalproject
 yarn dev
 yarn start:mob
 ```
