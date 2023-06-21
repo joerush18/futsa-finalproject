@@ -12,6 +12,7 @@ import BookScreen from "./screens/BookScreen";
 import SignupScreen from "./screens/auth/SignupScreen";
 import OtpScreen from "./screens/auth/OtpScreen";
 import SetPasswordScreen from "./screens/auth/SetPasswordScreen";
+import useCurrentUser from "./hooks/useCurrentUser";
 
 const AfterAuthNavigationContainers = () => {
   const Stack = createNativeStackNavigator();
@@ -95,9 +96,8 @@ const BeforeAuthNavigationContainers = () => {
 };
 
 const StackNavigator = () => {
-  // const { user } = useCurrentUser();
-  const user = false;
-  if (user) {
+  const { isAuth } = useCurrentUser();
+  if (isAuth) {
     return <AfterAuthNavigationContainers />;
   }
   return <BeforeAuthNavigationContainers />;

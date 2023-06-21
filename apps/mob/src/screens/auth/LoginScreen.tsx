@@ -12,14 +12,19 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "../../utils/validations/validations";
+import { useLoginEmail } from "core/src/db/hooks/useAuth";
+import { ISignUpCredentials } from "core/src/types/users.types";
 
 const LoginScreen = () => {
+  type ILoginCredentials = Pick<ISignUpCredentials, "email" | "password">;
+  const { mutate: loginWithEmail, isLoading, isSuccess } = useLoginEmail();
+
   const navigation = useNavigation();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<ILoginCredentials>({
     resolver: zodResolver(LoginSchema),
   });
 
@@ -27,7 +32,12 @@ const LoginScreen = () => {
     navigation.navigate("Signup" as never);
   };
 
-  const handleLogin = () => {};
+  const handleLogin = (data: ILoginCredentials) => {
+    loginWithEmail(data);
+    if (isSuccess) {
+      navigation.navigate("Main" as never);
+    }
+  };
 
   return (
     <SafeAreaView className="p-5">
@@ -36,11 +46,10 @@ const LoginScreen = () => {
       <Card>
         <Text className="text-2xl font-bold opacity-60">Login</Text>
         <InputComponent
-          label="Phone number"
+          label="Email"
           control={control}
-          name="phoneNumber"
-          keyboardType="numeric"
-          error={errors.phoneNumber?.message}
+          name="email"
+          error={errors.email?.message}
         />
         <InputComponent
           label="Password"
@@ -55,7 +64,9 @@ const LoginScreen = () => {
           </Text>
         </Pressable>
         <Button className="mt-1 mb-4" onPress={handleSubmit(handleLogin)}>
-          <Text className="text-center text-white font-bold py-2">Login</Text>
+          <Text className="text-center text-white font-bold py-2">
+            {isLoading ? "Loading" : "Login"}
+          </Text>
         </Button>
       </Card>
 

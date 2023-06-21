@@ -7,9 +7,13 @@ import OptionsCard from "../components/OptionCard";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Avatar from "../components/ui/Avatar";
+import { useLogout } from "core/src/db/hooks/useAuth";
+import useCurrentUser from "../hooks/useCurrentUser";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const { mutate: logout } = useLogout();
+  const { user } = useCurrentUser();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -29,6 +33,9 @@ const ProfileScreen = () => {
             size={18}
             color="white"
             style={{ marginRight: 20 }}
+            onPress={() => {
+              logout();
+            }}
           />
         );
       },
@@ -38,9 +45,9 @@ const ProfileScreen = () => {
     <ScrollView>
       <View className="w-full bg-primary flex-col items-center justify-center py-3">
         <Avatar />
-        <Text className="text-white font-bold text-xl">Saroj Aryal</Text>
-        <Text className="text-white  text-sm">9846168323</Text>
-        <Text className="text-white text-sm">joras.aryal23@gmail.com</Text>
+        <Text className="text-white font-bold text-xl">{user?.fullName}</Text>
+        <Text className="text-white  text-sm">{user?.phonenumber}</Text>
+        <Text className="text-white text-sm">{user?.email}</Text>
       </View>
       <View className="p-4">
         <OptionsCard label="Saved">

@@ -1,4 +1,4 @@
-import { Image, View } from "react-native";
+import { Image } from "react-native";
 import React from "react";
 import color from "../../assets/colors";
 

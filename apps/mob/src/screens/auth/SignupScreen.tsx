@@ -10,23 +10,30 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchema } from "../../utils/validations/validations";
+import { ISignUpCredentials } from "core/src/types/users.types";
+
+import { useSignupEmail } from "core/src/db/hooks/useAuth";
 
 const SignupScreen = () => {
+  const { mutate: signUpWithEmail, isLoading, isSuccess } = useSignupEmail();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<ISignUpCredentials>({
     resolver: zodResolver(SignUpSchema),
   });
   const navigation = useNavigation();
   const handleNavigate = () => {
     navigation.navigate("Login" as never);
   };
-  const handleSignUp = (data: any) => {
-    console.log(data);
-    navigation.navigate("OTP" as never);
+  const handleSignUp = async (data: ISignUpCredentials) => {
+    signUpWithEmail(data);
+    if (isSuccess) {
+      navigation.navigate("Main" as never);
+    }
   };
+
   return (
     <SafeAreaView className="p-5">
       <MaterialCommunityIcons name="soccer" size={36} color={color.primary} />
@@ -46,8 +53,30 @@ const SignupScreen = () => {
           error={errors.phoneNumber?.message}
           keyboardType="numeric"
         />
+        <InputComponent
+          label="Email"
+          control={control}
+          name="email"
+          error={errors.email?.message}
+        />
+        <InputComponent
+          label="Password"
+          secure={true}
+          name="password"
+          control={control}
+          error={errors.password?.message}
+        />
+        <InputComponent
+          label="Confirm your password"
+          secure
+          name="confirmPassword"
+          control={control}
+          error={errors.confirmPassword?.message}
+        />
         <Button className="mt-2 mb-4" onPress={handleSubmit(handleSignUp)}>
-          <Text className="text-center text-white font-bold py-2">Signup</Text>
+          <Text className="text-center text-white font-bold py-2">
+            {isLoading ? "Loading" : "Sign up"}
+          </Text>
         </Button>
       </Card>
       <Text className="text-sm opacity-60 text-center mt-8">

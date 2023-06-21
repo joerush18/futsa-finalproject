@@ -1,43 +1,42 @@
 import { z } from "zod";
+import {
+  confirmSchema,
+  emailSchema,
+  fullNameSchema,
+  passwordSchema,
+  phoneNumberSchema,
+} from "./schema";
 
-const SignUpSchema = z.object({
-  fullName: z
-    .string()
-    .min(3, { message: "Full name must be at least 3 characters long" }),
-  phoneNumber: z
-    .string()
-    .min(10, { message: "Phone number must be at least 10 characters long" }),
-});
+const SignUpSchema = z
+  .object({
+    fullName: fullNameSchema,
+    phoneNumber: phoneNumberSchema,
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: confirmSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirm"],
+  });
 
 const OTPSchema = z.object({
   OTP: z.number().min(6, { message: "OTP must be at least 6 characters long" }),
 });
 
 const LoginSchema = z.object({
-  phoneNumber: z
-    .string()
-    .min(10, { message: "Phone number must be at least 10 characters long" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long" }),
+  email: emailSchema,
+  password: passwordSchema,
 });
 
 const PasswordSetSchema = z
   .object({
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters long" }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters long" }),
+    password: passwordSchema,
+    confirmPassword: confirmSchema,
   })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: "The passwords did not match",
-      });
-    }
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
   });
+
 export { SignUpSchema, OTPSchema, LoginSchema, PasswordSetSchema };

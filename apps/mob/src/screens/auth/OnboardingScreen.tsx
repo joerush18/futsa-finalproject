@@ -3,9 +3,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import color from "../../assets/colors";
-import Image1 from "../../assets/images/firstpage.png";
 import Button from "../../components/ui/Button";
 import { useNavigation } from "@react-navigation/native";
+
+const Image1 = require("../../assets/images/firstpage.png");
 
 const OnboardingScreen = () => {
   const navigation = useNavigation();
@@ -36,7 +37,7 @@ const OnboardingScreen = () => {
             onPress={() => navigation.navigate("Signup" as never)}
           >
             <Text className="text-center text-primary font-bold">
-              Signup using mobile number
+              Signup using email
             </Text>
           </Button>
         </View>
