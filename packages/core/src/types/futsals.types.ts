@@ -1,24 +1,26 @@
 import { IEntryMeta } from "./meta.types";
+import { ROLES } from "./users.types";
 
 export interface IFutsal extends IEntryMeta {
   id: string;
-  userId: string;
-  name: string;
+  email: string;
+  futsalName: string;
   description: string;
-  ratings: number;
   address: {
     city: string;
     street: string;
   };
   geoLocation?: {
-    lat: number;
-    lng: number;
+    lat: string;
+    lng: string;
   };
-  contactNumber: number;
+  phonenumber: number;
   profilePicture: string;
   price: number;
   openTime: number;
   closeTime: number;
   groundSize: number;
   Amenities: string[];
+  ratings: number;
+  role: ROLES.FUTSAL;
 }

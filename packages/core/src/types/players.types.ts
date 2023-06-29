@@ -1,14 +1,22 @@
-interface IPlayers {
+import { IEntryMeta } from "./meta.types";
+import { ROLES } from "./users.types";
+
+interface IPlayers extends IEntryMeta {
   id: string;
-  userId: string;
+  email: string;
   fullname: string;
   address: {
     city: string;
     street: string;
   };
-  contactNumber: number;
-  profilePicture: string;
-  points: number;
+  avatar?: string;
+  gender?: string;
+  geolocation?: {
+    lat: string;
+    lng: string;
+  };
+  phonenumber: number;
+  role: ROLES.PLAYER;
 }
 
 export { IPlayers };

@@ -1,17 +1,20 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { IUser } from "../../types/users.types";
-import { createUserCollection, getCurrentUser } from "../methods/users/users";
+import { useMutation } from "@tanstack/react-query";
+import { IPlayers } from "../../types/players.types";
+import {
+  createPlayerCollection,
+  getCurrentUser,
+} from "../methods/users/player";
 
 const useCreateUser = (id: string) => {
   return useMutation(
     ["create-user"],
-    (data: IUser) => createUserCollection(id, data),
+    (data: IPlayers) => createPlayerCollection(id, data),
     {
       onSuccess: (data) => {
         console.log("User created successfully");
       },
       onError: (data) => {
-        console.log("USer creation failed");
+        console.log("User creation failed");
       },
     }
   );

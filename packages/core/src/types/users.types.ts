@@ -3,21 +3,6 @@ enum ROLES {
   "PLAYER" = "player",
 }
 
-interface IUser {
-  id: string;
-  email: string;
-  phonenumber: string;
-  role: ROLES;
-  isa?: boolean;
-  fullName: string;
-  avatar?: string;
-  gender?: string;
-  location?: {
-    lat: string;
-    lng: string;
-  };
-}
-
 interface ISignUpCredentials {
   id: string;
   fullName: string;
@@ -25,5 +10,6 @@ interface ISignUpCredentials {
   email: string;
   password: string;
   confirmPassword: string;
+  role: ROLES;
 }
-export { IUser, ROLES, ISignUpCredentials };
+export { ROLES, ISignUpCredentials };

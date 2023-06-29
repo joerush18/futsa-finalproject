@@ -1,23 +1,25 @@
-import { IUser } from "../../../types/users.types";
+import { IPlayers } from "../../../types/players.types";
 import { db } from "../../index";
 import { getDoc } from "firebase/firestore";
 
-const createUserCollection = async (userUid: string, data: IUser) => {
+const createPlayerCollection = async (userUid: string, data: IPlayers) => {
   try {
-    const userRef = db.collection("users").doc(userUid);
-    await userRef.set({
+    const playerRef = db.collection("player").doc(userUid);
+    await playerRef.set({
       data,
     });
     return true;
   } catch (error) {
-    console.error("Error creating user collection:", error);
+    console.error("Error creating player collection:", error);
     throw error;
   }
 };
 
+
+
 const getCurrentUser = async (userId: string) => {
   try {
-    const userRef = db.collection("users").doc(userId);
+    const userRef = db.collection("player").doc(userId);
     const userDoc = await getDoc(userRef);
 
     if (userDoc.exists()) {
@@ -30,4 +32,4 @@ const getCurrentUser = async (userId: string) => {
     throw error;
   }
 };
-export { createUserCollection, getCurrentUser };
+export { createPlayerCollection, getCurrentUser };

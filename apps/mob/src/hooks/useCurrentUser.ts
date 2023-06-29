@@ -15,9 +15,9 @@ const useCurrentUser = () => {
       auth,
       (currentUser) => {
         if (currentUser) {
-          setIsAuth(true);
           getUser(currentUser.uid);
           if (isSuccess) {
+            setIsAuth(true);
             setUser(data);
           }
         } else {
