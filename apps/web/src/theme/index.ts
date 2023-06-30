@@ -1,16 +1,22 @@
-
-import {createTheme, responsiveFontSizes} from "@mui/material";
+import { createTheme, responsiveFontSizes } from "@mui/material";
 
 import componentStyles from "./components";
-import {appPalette} from "./palette";
-import {textStyles} from "./typography";
+import { appPalette } from "./palette";
+import { typography } from "./typography";
+import globals from "./globals";
 
 let theme = createTheme({
   palette: appPalette,
-  typography: textStyles,
-  components: componentStyles,
+  typography,
+  components: {
+    ...componentStyles,
+    MuiCssBaseline: {
+      styleOverrides: {
+        ...globals,
+      },
+    },
+  },
 });
 
 theme = responsiveFontSizes(theme);
-
-export {theme};
+export { theme };

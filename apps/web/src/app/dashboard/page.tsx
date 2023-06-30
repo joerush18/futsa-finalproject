@@ -1,7 +1,8 @@
 import React from "react";
+import DHeader from "@/components/dashboard/DHeader";
 
 const page = () => {
-  return <div>Dashboard Page</div>;
+  return <DHeader />;
 };
 
 export default page;

@@ -1,23 +1,23 @@
-import {PaletteOptions} from "@mui/material/styles/createPalette";
+import { PaletteOptions } from "@mui/material/styles/createPalette";
 import Color from "@/utils/color";
 
 export const appPalette: PaletteOptions = {
   primary: {
-    main: Color.Primary,
+    ...Color.primary,
   },
   secondary: {
-    main: Color.Cream,
+    ...Color.secondary,
   },
   info: {
-    main: "#000",
+    ...Color.info,
   },
   error: {
-    main: Color.Red,
+    ...Color.error,
   },
   success: {
-    main: Color.Green,
+    ...Color.success,
   },
   background: {
-    default: Color.Background,
+    ...Color.background,
   },
 };

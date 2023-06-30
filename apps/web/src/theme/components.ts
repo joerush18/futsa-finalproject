@@ -1,5 +1,6 @@
-import {Components, Theme} from "@mui/material";
+import { Components, Theme } from "@mui/material";
 import Color from "../utils/color";
+import { pxToRem, rgba } from "@/utils/functions";
 
 const componentStyles: Components<Omit<Theme, "components">> = {
   MuiContainer: {
@@ -32,8 +33,8 @@ const componentStyles: Components<Omit<Theme, "components">> = {
         height: "32px",
         textTransform: "uppercase",
         fontSize: "16px",
-        color: Color.White,
-        backgroundColor: Color.Cream,
+        color: Color.white.main,
+        backgroundColor: Color.coloredShadows.primary,
         fontWeight: "bold",
       },
     },
@@ -41,9 +42,9 @@ const componentStyles: Components<Omit<Theme, "components">> = {
   MuiAppBar: {
     styleOverrides: {
       root: {
-        backgroundColor: Color.White,
+        backgroundColor: Color.transparent.main,
         boxShadow: "none",
-        color : Color.Primary
+        color: Color.primary.main,
       },
     },
   },
@@ -55,13 +56,26 @@ const componentStyles: Components<Omit<Theme, "components">> = {
     },
   },
 
-  MuiDivider : {
-    styleOverrides : {
-      root : {
-        color : Color.LighterGray
-      }
-    }
-  }
+  MuiDrawer: {
+    styleOverrides: {
+      paper: {
+        borderRight: "none",
+      },
+    },
+  },
+
+  MuiCard: {
+    styleOverrides: {
+      root: {
+        padding: "4px",
+        backgroundColor: Color.white.focus,
+        borderRadius: "12px",
+        boxShadow:
+          "0  1px 5px rgba(154,160,185,0.05), 0 1px 5px rgba(166,173,201,0.2)",
+        transition: "all 0.3s cubic-bezier(.25,.8,.25,1)",
+      },
+    },
+  },
 };
 
 export default componentStyles;

@@ -1,8 +1,8 @@
-import {Typography} from "@mui/material/styles/createTypography";
+import { Typography } from "@mui/material/styles/createTypography";
 
 import Color from "@/utils/color";
 
-export const textStyles: Partial<Typography> = {
+export const typography: Partial<Typography> = {
   h1: {
     fontSize: "48px",
     fontWeight: "bold",
@@ -33,15 +33,15 @@ export const textStyles: Partial<Typography> = {
   },
   subtitle1: {
     fontSize: "14px",
-    color: Color.Gray,
+    color: Color.grey[500],
     marginBottom: "2rem",
   },
   body1: {
     fontSize: "14px",
-    fontWeight: 400,
+    fontWeight: 300,
   },
   body2: {
-    fontSize: "12px",
-    fontWeight: 400,
+    fontSize: "14px",
+    fontWeight: 600,
   },
 };

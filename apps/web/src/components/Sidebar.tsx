@@ -3,7 +3,6 @@
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import {
   styled,
   List,
@@ -11,6 +10,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Divider,
 } from "@mui/material";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import PaymentIcon from "@mui/icons-material/Payment";
@@ -19,23 +19,30 @@ import EventIcon from "@mui/icons-material/Event";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Color from "@/utils/color";
+import Box from "@mui/material/Box/Box";
 
-const drawerWidth = 230;
+const drawerWidth = 270;
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.light,
   width: drawerWidth,
   flexShrink: 0,
   "& .MuiDrawer-paper": {
     width: drawerWidth,
     boxSizing: "border-box",
+    padding: theme.spacing(2),
+    backgroundColor: Color.background.default,
   },
 }));
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+const StyledBox = styled(Box)(({ theme }) => ({
+  borderRadius: 10,
+  backgroundColor: Color.gradients.dark.main,
+  height: "100vh",
   color: "white",
+  padding: theme.spacing(2),
 }));
+
 const sideMenus = [
   {
     path: "",
@@ -69,28 +76,50 @@ const Sidebar = () => {
   const location = currentPage.split("/")[2] ?? "";
   return (
     <StyledDrawer elevation={2} variant="permanent" anchor="left">
-      <StyledToolbar>
+      <StyledBox>
         <Link href="/">
-          <Typography variant="h3" textAlign="center">
-            FUTSA
+          <Typography variant="h5" textAlign="center" mb={3}>
+            FUTSA DASHBOARD
           </Typography>
         </Link>
-      </StyledToolbar>
-      <Divider />
-      <List>
-        {sideMenus.map((item, index) => (
-          <Link key={index} href={`/dashboard/${item.path}`}>
-            <ListItem disablePadding>
-              <ListItemButton selected={location === `${item.path}`}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        ))}
-      </List>
+        <List>
+          {sideMenus.map((item, index) => (
+            <Link key={index} href={`/dashboard/${item.path}`}>
+              <ListItem disablePadding>
+                <StyledListItemButton selected={location === `${item.path}`}>
+                  <ListItemIcon color={Color.white.main}>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </StyledListItemButton>
+              </ListItem>
+            </Link>
+          ))}
+        </List>
+      </StyledBox>
     </StyledDrawer>
   );
 };
 
 export default Sidebar;
+
+const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  borderRadius: 10,
+  marginBottom: 5,
+  alignItems: "center",
+  "&.Mui-selected": {
+    backgroundColor: Color.primary.main,
+    color: Color.white.main,
+    "&:hover": {
+      backgroundColor: Color.primary.main,
+      color: Color.white.main,
+    },
+  },
+  "&:hover": {
+    backgroundColor: Color.grey[600],
+    color: Color.white.main,
+  },
+  "& .MuiListItemIcon-root": {
+    color: Color.white.main,
+  },
+}));
