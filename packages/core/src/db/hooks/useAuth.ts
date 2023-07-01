@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { emailSignUp, emailLogin, logout } from "../methods/auth/auth";
 import { ISignUpCredentials } from "../../types/users.types";
+import { saveToken } from "../../utils";
 
 const useSignupEmail = () => {
   return useMutation(
@@ -8,7 +9,7 @@ const useSignupEmail = () => {
     (data: ISignUpCredentials) => emailSignUp(data),
     {
       onSuccess: (data) => {
-        console.log(data);
+        saveToken(data.uid);
       },
       onError: (data) => {
         console.log(data);
@@ -23,7 +24,7 @@ const useLoginEmail = () => {
     (data: Pick<ISignUpCredentials, "email" | "password">) => emailLogin(data),
     {
       onSuccess: (data) => {
-        console.log(data);
+        saveToken(data.uid);
       },
       onError: (data) => {
         console.log(data);

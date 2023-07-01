@@ -2,8 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { IPlayers } from "../../types/players.types";
 import {
   createPlayerCollection,
-  getCurrentUser,
+  getCurrentPlayer,
 } from "../methods/users/player";
+import { ROLES } from "../../types/users.types";
+import { getCurrentFutsal } from "../methods/users/futsal";
 
 const useCreateUser = (id: string) => {
   return useMutation(
@@ -21,10 +23,27 @@ const useCreateUser = (id: string) => {
 };
 
 const useGetUser = () => {
-  return useMutation(["get-user"], (id: string) => getCurrentUser(id), {
-    onSuccess: (data) => {},
-    onError: (data) => {},
-  });
+  return useMutation(
+    ["get-user"],
+    async (data: { id: string; role: ROLES }) => {
+      const { id, role } = data;
+      let response;
+      if (role === ROLES.FUTSAL) {
+        response = await getCurrentFutsal(id, role);
+      } else {
+        response = await getCurrentPlayer(id, role);
+      }
+      return response; // Assuming `getCurrentUser` returns a promise that resolves to the user data
+    },
+    {
+      onSuccess: (data) => {
+        // Do something with the data if needed
+      },
+      onError: (error) => {
+        console.log("User retrieval failed");
+        // Handle the error if needed
+      },
+    }
+  );
 };
-
 export { useCreateUser, useGetUser };

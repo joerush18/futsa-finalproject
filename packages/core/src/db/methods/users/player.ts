@@ -1,6 +1,8 @@
+import { IFutsal } from "../../../types/futsals.types";
 import { IPlayers } from "../../../types/players.types";
+import { ROLES } from "../../../types/users.types";
 import { db } from "../../index";
-import { getDoc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
 const createPlayerCollection = async (userUid: string, data: IPlayers) => {
   try {
@@ -15,21 +17,11 @@ const createPlayerCollection = async (userUid: string, data: IPlayers) => {
   }
 };
 
-
-
-const getCurrentUser = async (userId: string) => {
-  try {
-    const userRef = db.collection("player").doc(userId);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      return userData.data;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    throw error;
-  }
+const getCurrentPlayer = async (
+  userId: string,
+  role: ROLES
+): Promise<IPlayers | undefined> => {
+  const snapshot = await getDoc(doc(db, role, userId));
+  return snapshot.data() as IPlayers;
 };
-export { createPlayerCollection, getCurrentUser };
+export { createPlayerCollection, getCurrentPlayer };

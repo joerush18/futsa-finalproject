@@ -2,7 +2,7 @@ import { Typography } from "@mui/material/styles/createTypography";
 
 import Color from "@/utils/color";
 
-export const typography: Partial<Typography> = {
+export const typography: Partial<Typography> | any = {
   h1: {
     fontSize: "48px",
     fontWeight: "bold",

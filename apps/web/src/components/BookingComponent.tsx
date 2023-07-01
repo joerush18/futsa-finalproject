@@ -2,7 +2,6 @@
 
 import Color from "@/utils/color";
 import { Stack, Typography, Divider, Avatar, styled } from "@mui/material";
-import React from "react";
 import Image from "next/image";
 import ContentWrapper from "./ContentWrapper";
 

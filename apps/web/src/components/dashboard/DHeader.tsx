@@ -49,7 +49,7 @@ const DHeader = () => {
     <Grid container spacing={4}>
       {DHeaderItems.map((item, index) => {
         return (
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={3} key={`fscard_${index}`}>
             <FsCard
               boxColor={item.boxColor}
               icon={item.icon}

@@ -1,6 +1,13 @@
 import { IEntryMeta } from "./meta.types";
 import { ROLES } from "./users.types";
 
+export enum STATUS {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  PENDING = "PENDING",
+  SUSPENDED = "SUSPENDED",
+}
+
 export interface IFutsal extends IEntryMeta {
   id: string;
   email: string;
@@ -23,4 +30,5 @@ export interface IFutsal extends IEntryMeta {
   Amenities: string[];
   ratings: number;
   role: ROLES.FUTSAL;
+  status: STATUS;
 }

@@ -1,10 +1,9 @@
 enum ROLES {
-  "FUTSAL" = "futsal",
-  "PLAYER" = "player",
+  FUTSAL = "futsal",
+  PLAYER = "player",
 }
 
 interface ISignUpCredentials {
-  id: string;
   fullName: string;
   phoneNumber: string;
   email: string;

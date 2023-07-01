@@ -1,7 +1,4 @@
-"use client";
-
 import Drawer from "@mui/material/Drawer";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import {
   styled,
@@ -10,17 +7,17 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider,
 } from "@mui/material";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import PaymentIcon from "@mui/icons-material/Payment";
 import InboxIcon from "@mui/icons-material/Inbox";
 import EventIcon from "@mui/icons-material/Event";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import PersonIcon from "@mui/icons-material/Person";
 import Color from "@/utils/color";
 import Box from "@mui/material/Box/Box";
+import { NavLink, useLocation } from "react-router-dom";
+import path from "path";
 
 const drawerWidth = 270;
 
@@ -46,7 +43,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const sideMenus = [
   {
     path: "",
-    title: "Dashboard",
+    title: "Home",
     icon: <InboxIcon />,
   },
   {
@@ -69,22 +66,27 @@ const sideMenus = [
     title: "Events",
     icon: <EventIcon />,
   },
+  {
+    path: "profile",
+    title: "Profile",
+    icon: <PersonIcon />,
+  },
 ];
 
 const Sidebar = () => {
-  const currentPage = usePathname();
-  const location = currentPage.split("/")[2] ?? "";
+  const { pathname } = useLocation();
+  const location = pathname.split("/")[1];
   return (
     <StyledDrawer elevation={2} variant="permanent" anchor="left">
       <StyledBox>
-        <Link href="/">
+        <NavLink to="/">
           <Typography variant="h5" textAlign="center" mb={3}>
             FUTSA DASHBOARD
           </Typography>
-        </Link>
+        </NavLink>
         <List>
           {sideMenus.map((item, index) => (
-            <Link key={index} href={`/dashboard/${item.path}`}>
+            <NavLink key={index} to={`/${item.path}`}>
               <ListItem disablePadding>
                 <StyledListItemButton selected={location === `${item.path}`}>
                   <ListItemIcon color={Color.white.main}>
@@ -93,7 +95,7 @@ const Sidebar = () => {
                   <ListItemText primary={item.title} />
                 </StyledListItemButton>
               </ListItem>
-            </Link>
+            </NavLink>
           ))}
         </List>
       </StyledBox>
@@ -103,7 +105,7 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+const StyledListItemButton = styled(ListItemButton)(() => ({
   borderRadius: 10,
   marginBottom: 5,
   alignItems: "center",

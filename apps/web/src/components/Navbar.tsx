@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AppBar,
   Toolbar,
@@ -16,13 +14,14 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import Breadcrumbs from "@mui/material/Breadcrumbs/Breadcrumbs";
 import { useState } from "react";
 import TextField from "@mui/material/TextField/TextField";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import HomeIcon from "@mui/icons-material/Home";
+import { NavLink, useLocation } from "react-router-dom";
+import { useLogout } from "core/src/db/hooks/useAuth";
 
 const Navbar = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [notificationPop, setNotificationPop] = useState<boolean>(false);
+  const { mutate: logout, isLoading: logOutLoading } = useLogout();
 
   const StyledToolbar = styled(Toolbar)({
     display: "flex",
@@ -38,7 +37,7 @@ const Navbar = () => {
     color: "gray",
   });
 
-  const pathname = usePathname();
+  const { pathname } = useLocation();
 
   return (
     <AppBar position="sticky" elevation={1}>
@@ -47,17 +46,17 @@ const Navbar = () => {
           {pathname.split("/").map((path, index) => {
             if (index === 0) {
               return (
-                <Link href="/dashboard">
+                <NavLink to="/dashboard">
                   <HomeIcon fontSize="medium" />
-                </Link>
+                </NavLink>
               );
             } else {
               return (
-                <Link href={`/${path}`}>
+                <NavLink to={`/${path}`}>
                   <Typography textTransform="capitalize" variant="body2">
                     {path}
                   </Typography>
-                </Link>
+                </NavLink>
               );
             }
           })}
@@ -95,7 +94,9 @@ const Navbar = () => {
       >
         <MenuItem>Profile</MenuItem>
         <MenuItem>My account</MenuItem>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={() => logout()}>
+          {logOutLoading ? "Logging out" : "Log out"}
+        </MenuItem>
       </Menu>
     </AppBar>
   );

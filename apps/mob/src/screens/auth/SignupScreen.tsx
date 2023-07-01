@@ -9,7 +9,7 @@ import Button from "../../components/ui/Button";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpSchema } from "../../utils/validations/validations";
+import { SignUpSchema } from "core/src/validations/validations";
 import { ISignUpCredentials } from "core/src/types/users.types";
 
 import { useSignupEmail } from "core/src/db/hooks/useAuth";

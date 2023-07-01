@@ -12,6 +12,7 @@ const emailSignUp = async (data: ISignUpCredentials) => {
     const res = await auth.createUserWithEmailAndPassword(email, password);
     if (role === ROLES.PLAYER && res) {
       const _playerData: IPlayers = {
+        role: ROLES.PLAYER,
         id: res.user.uid,
         email: res.user.email,
         phonenumber: +phoneNumber,
@@ -34,6 +35,7 @@ const emailSignUp = async (data: ISignUpCredentials) => {
 
     if (role === ROLES.FUTSAL && res) {
       const _futsal: IFutsal = {
+        role: ROLES.FUTSAL,
         id: res.user.uid,
         email: res.user.email,
         futsalName: fullName,
