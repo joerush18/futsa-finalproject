@@ -79,7 +79,7 @@ const Navbar = () => {
         </Icons>
       </StyledToolbar>
       <Menu
-        sx={{ marginTop: "3.2rem" }}
+        sx={{ marginTop: "3.5rem" }}
         id="demo-positioned-menu"
         open={open}
         anchorOrigin={{

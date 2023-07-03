@@ -2,19 +2,19 @@ import AuthRoutes from "@/navigation/AuthRoutes";
 import "./global.css";
 import DashboardRoutes from "./navigation/DashboardRoutes";
 import useCurrentUser from "./hooks/useCurrentUser";
+import Loading from "@/components/Loading";
 
 function App() {
   const { isAuth, futsal, isLoading } = useCurrentUser();
 
-  console.log({ futsal });
-
-  if (isLoading && !futsal) {
-    return <div>Loading...</div>;
+  if (isLoading && futsal === undefined && !isAuth) {
+    return <Loading />;
   }
-  if (!isAuth) {
-    return <AuthRoutes />;
+  if (isAuth) {
+    return <DashboardRoutes />;
   }
-  return <DashboardRoutes />;
+  if (!isAuth && futsal === null) return <AuthRoutes />;
+  return <Loading />;
 }
 
 export default App;

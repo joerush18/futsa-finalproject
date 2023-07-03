@@ -42,7 +42,7 @@ const useCurrentUser = () => {
 
   return {
     isAuth,
-    futsal: isSuccess ? futsalData : futsal,
+    futsal: isSuccess ? (futsalData as IFutsal) : (futsal as IFutsal),
     isLoading,
   };
 };

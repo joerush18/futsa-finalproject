@@ -15,6 +15,7 @@ export const FormInputText = ({
   control,
   label,
   type,
+  ...props
 }: FormInputProps) => {
   return (
     <Controller
@@ -39,6 +40,8 @@ export const FormInputText = ({
           sx={{
             mb: 2,
           }}
+          required
+          {...props}
         />
       )}
     />

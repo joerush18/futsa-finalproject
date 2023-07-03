@@ -76,6 +76,15 @@ const componentStyles: Components<Omit<Theme, "components">> = {
       },
     },
   },
+
+  MuiMenuItem: {
+    styleOverrides: {
+      root: {
+        margin: "0 10px",
+        borderRadius: "8px",
+      },
+    },
+  },
 };
 
 export default componentStyles;
