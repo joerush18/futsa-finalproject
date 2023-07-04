@@ -1,6 +1,6 @@
 import { auth } from "../../index";
 import { ISignUpCredentials, ROLES } from "core/src/types/users.types";
-import { IFutsal } from "../../../types/futsals.types";
+import { IFutsal, STATUS } from "../../../types/futsals.types";
 import { IPlayers } from "../../../types/players.types";
 import { createFutsalCollection } from "../users/futsal";
 import { createPlayerCollection } from "../users/player";
@@ -57,6 +57,7 @@ const emailSignUp = async (data: ISignUpCredentials) => {
           lat: "",
           lng: "",
         },
+        status: STATUS.PENDING,
       };
       await createFutsalCollection(res.user.uid, _futsal);
       return res.user;

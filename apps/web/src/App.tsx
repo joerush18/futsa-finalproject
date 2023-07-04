@@ -10,11 +10,12 @@ function App() {
   if (isLoading && futsal === undefined && !isAuth) {
     return <Loading />;
   }
-  if (isAuth) {
+
+  if (!isAuth) {
+    return <AuthRoutes />;
+  } else {
     return <DashboardRoutes />;
   }
-  if (!isAuth && futsal === null) return <AuthRoutes />;
-  return <Loading />;
 }
 
 export default App;

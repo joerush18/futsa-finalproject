@@ -33,7 +33,7 @@ const useGetUser = () => {
       } else {
         response = await getCurrentPlayer(id, role);
       }
-      return response; // Assuming `getCurrentUser` returns a promise that resolves to the user data
+      return response.data; // Assuming `getCurrentUser` returns a promise that resolves to the user data
     },
     {
       onSuccess: (data) => {
