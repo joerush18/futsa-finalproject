@@ -1,34 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 import { auth } from "core/src/db";
-import { useGetUser } from "core/src/db/hooks/useUser";
 import { ROLES } from "core/src/types/users.types";
 import useUserStore from "@/store/useUserStore";
-import { IFutsal } from "core/src/types/futsals.types";
+import { getCurrentFutsal } from "core/src/db/methods/users/futsal";
 
 const useCurrentUser = () => {
   const [isAuth, setIsAuth] = useState(false);
-  const { setFutsal, futsal } = useUserStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const { futsal, setFutsal } = useUserStore();
 
   const unsubscribe = useRef<() => void>();
-  const {
-    data: futsalData,
-    mutate: fetchUser,
-    isLoading,
-    isSuccess,
-  } = useGetUser();
 
   useEffect(() => {
     if (typeof unsubscribe.current === "function") {
       unsubscribe.current();
     }
     const fetchCurrentUser = async () => {
-      unsubscribe.current = auth.onAuthStateChanged((user) => {
+      console.log("render");
+      setIsLoading(true);
+      unsubscribe.current = auth.onAuthStateChanged(async (user) => {
         setIsAuth(!!user);
-        if (user) {
-          fetchUser({ id: user?.uid, role: ROLES.FUTSAL });
-          if (isSuccess) {
-            setFutsal(futsalData as IFutsal);
+        try {
+          if (user) {
+            const res = await getCurrentFutsal(user?.uid, ROLES.FUTSAL);
+            if (res) {
+              // @ts-ignore
+              setFutsal(res);
+            }
           }
+        } catch (e) {
+          console.log(e);
+        } finally {
+          setIsLoading(false);
         }
       });
     };
@@ -38,11 +41,11 @@ const useCurrentUser = () => {
         unsubscribe.current();
       }
     };
-  }, []);
+  }, [isAuth]);
 
   return {
     isAuth,
-    futsal: isSuccess ? (futsalData as IFutsal) : (futsal as IFutsal),
+    futsal,
     isLoading,
   };
 };

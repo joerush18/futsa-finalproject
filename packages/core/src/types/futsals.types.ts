@@ -17,15 +17,17 @@ export interface IFutsal extends IEntryMeta {
     city: string;
     street: string;
   };
-  geoLocation?: {
-    lat: string;
-    lng: string;
+  geoLocation: {
+    lat?: string;
+    lng?: string;
   };
   phonenumber: number;
-  profilePicture: string;
+  profilePicture?: string;
+  coverPicture?: string;
+  verificationPicture?: string;
   price: number;
-  openTime: number;
-  closeTime: number;
+  openTime: string;
+  closeTime: string;
   groundSize: number;
   Amenities: string[];
   ratings: number;

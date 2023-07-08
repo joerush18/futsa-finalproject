@@ -1,4 +1,3 @@
-import { IFutsal } from "../../../types/futsals.types";
 import { IPlayers } from "../../../types/players.types";
 import { ROLES } from "../../../types/users.types";
 import { db } from "../../index";
@@ -8,7 +7,7 @@ const createPlayerCollection = async (userUid: string, data: IPlayers) => {
   try {
     const playerRef = db.collection("player").doc(userUid);
     await playerRef.set({
-      data,
+      ...data,
     });
     return true;
   } catch (error) {

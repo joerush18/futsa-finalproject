@@ -9,9 +9,10 @@ import { SignUpSchema } from "core/src/validations/validations";
 import Color from "@/utils/color";
 import AuthClientWrapper from "../components/AuthClientWrapper";
 import { useSignupEmail } from "core/src/db/hooks/useAuth";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const SignupClient = () => {
+  const navigate = useNavigate();
   const { mutate: signUpWithEmail, isLoading } = useSignupEmail();
 
   type FormInputs = Partial<ISignUpCredentials>;
@@ -37,6 +38,7 @@ const SignupClient = () => {
       ...values,
     };
     signUpWithEmail(_futsal as ISignUpCredentials);
+    navigate("/");
   };
 
   return (

@@ -11,7 +11,7 @@ interface IUserStore {
 const useUserStore = create<IUserStore>((set) => ({
   role: ROLES.FUTSAL,
   futsal: {} as IFutsal,
-  setFutsal: (value: IFutsal) => set({ role: ROLES.FUTSAL, futsal: value }),
+  setFutsal: (value: IFutsal) => set({ futsal: value }),
 }));
 
 export default useUserStore;

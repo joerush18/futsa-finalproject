@@ -15,13 +15,14 @@ const DashboardRoutes = () => {
   if (!futsal || !isAuth) {
     return null;
   }
-  if (futsal.status === STATUS.PENDING) {
+  if (futsal.status !== STATUS.ACTIVE) {
     return (
       <Routes>
         <Route path="/" element={<OnBoardingClient />} />
       </Routes>
     );
   }
+
   if (futsal.status === STATUS.ACTIVE) {
     return (
       <Routes>

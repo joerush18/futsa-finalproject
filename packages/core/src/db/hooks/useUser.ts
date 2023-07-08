@@ -6,6 +6,7 @@ import {
 } from "../methods/users/player";
 import { ROLES } from "../../types/users.types";
 import { getCurrentFutsal } from "../methods/users/futsal";
+import { logout } from "../methods/auth/auth";
 
 const useCreateUser = (id: string) => {
   return useMutation(
@@ -33,17 +34,20 @@ const useGetUser = () => {
       } else {
         response = await getCurrentPlayer(id, role);
       }
-      return response.data; // Assuming `getCurrentUser` returns a promise that resolves to the user data
+      return response.data;
     },
     {
       onSuccess: (data) => {
+        return data;
         // Do something with the data if needed
       },
       onError: (error) => {
         console.log("User retrieval failed");
+        logout();
         // Handle the error if needed
       },
     }
   );
 };
+
 export { useCreateUser, useGetUser };
