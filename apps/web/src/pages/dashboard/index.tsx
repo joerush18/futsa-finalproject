@@ -13,9 +13,11 @@ const Dashboard: React.FC = () => {
       bgcolor={Color.background.default}
     >
       <Sidebar />
-      <Box width="100%" height="100vh" p={2}>
+      <Box width="100%" p={2}>
         <Navbar />
-        <Box p={2}>{<Outlet />}</Box>
+        <Box p={2} height="calc(100vh - 100px)">
+          {<Outlet />}
+        </Box>
       </Box>
     </Stack>
   );

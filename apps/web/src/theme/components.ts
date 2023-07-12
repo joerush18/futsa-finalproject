@@ -1,6 +1,5 @@
 import { Components, Theme } from "@mui/material";
 import Color from "../utils/color";
-import { pxToRem, rgba } from "@/utils/functions";
 
 const componentStyles: Components<Omit<Theme, "components">> = {
   MuiContainer: {
@@ -82,6 +81,16 @@ const componentStyles: Components<Omit<Theme, "components">> = {
       root: {
         margin: "0 10px",
         borderRadius: "8px",
+      },
+    },
+  },
+
+  MuiModal: {
+    styleOverrides: {
+      root: {
+        display: "grid",
+        placeItems: "center",
+        height: "100vh",
       },
     },
   },

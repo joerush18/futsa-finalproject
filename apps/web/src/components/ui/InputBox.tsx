@@ -1,6 +1,7 @@
 import { Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { HTMLInputTypeAttribute } from "react";
+import Color from "@/utils/color";
 
 interface FormInputProps {
   name: string;
@@ -35,6 +36,8 @@ export const FormInputText = ({
           autoComplete="off"
           sx={{
             mb: 2,
+            fontSize: "10px",
+            color: Color.text.main,
           }}
           required
           {...props}

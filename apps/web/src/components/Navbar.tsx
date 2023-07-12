@@ -17,6 +17,7 @@ import TextField from "@mui/material/TextField/TextField";
 import HomeIcon from "@mui/icons-material/Home";
 import { NavLink, useLocation } from "react-router-dom";
 import { useLogout } from "core/src/db/hooks/useAuth";
+import useUserStore from "@/store/useUserStore";
 
 const Navbar = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -38,6 +39,7 @@ const Navbar = () => {
   });
 
   const { pathname } = useLocation();
+  const { futsal } = useUserStore();
 
   return (
     <AppBar position="sticky" elevation={1}>
@@ -66,9 +68,8 @@ const Navbar = () => {
           <Avatar
             onClick={() => setOpen(true)}
             alt="Joe Rush"
-            src="https://scontent.fbwa1-1.fna.fbcdn.net/v/t39.30808-6/298116877_3190056711212201_9210910571884257411_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=174925&_nc_ohc=clc-5wEaWJgAX-wpDWF&_nc_oc=AQniRC7wBZQo9MLmhs2iKhIAOJvl8EoYzdD1OzArZQR5rw_SXSmIppZpESAkwwPRXW0&_nc_ht=scontent.fbwa1-1.fna&oh=00_AfAIuq9_OadiVAGJQrCesyafLEgU3YjyFO8ECbcC57Cmrg&oe=638C03BC"
+            src={futsal?.profilePicture ?? ""}
           />
-          <SettingsIcon />
           <Badge
             badgeContent={0}
             color="error"
