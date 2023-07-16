@@ -16,7 +16,6 @@ const useCurrentUser = () => {
       unsubscribe.current();
     }
     const fetchCurrentUser = async () => {
-      console.log("render");
       setIsLoading(true);
       unsubscribe.current = auth.onAuthStateChanged(async (user) => {
         setIsAuth(!!user);

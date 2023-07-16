@@ -5,12 +5,21 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { IFutsal } from "core/src/types/futsals.types";
 
-const FutsalImageCard = () => {
+interface FutsalImageCardProps {
+  futsal: IFutsal;
+}
+
+const FutsalImageCard = ({ futsal }: FutsalImageCardProps) => {
+  const { coverPicture, futsalName, price, address, ratings, id } = futsal;
   const [love, setLoved] = useState(false);
   const navigation = useNavigation();
   const handleNavigation = () => {
-    navigation.navigate("Futsal-Detail" as never);
+    // @ts-ignore
+    navigation.navigate("Futsal-Detail" as never, {
+      futsalId: id,
+    });
   };
 
   return (
@@ -25,7 +34,7 @@ const FutsalImageCard = () => {
       >
         <Image
           source={{
-            uri: "https://1.bp.blogspot.com/-bBgD--rBiOg/Xi7oiO63yOI/AAAAAAAAHi4/MF7YQ_2y3nEArkdIDwOR1GCMvBxpCCeUQCEwYBhgL/w1200-h630-p-k-no-nu/footsal-ground-inside-kathmandu-valley-min.jpg",
+            uri: coverPicture,
           }}
           style={{
             height: 150,
@@ -83,10 +92,10 @@ const FutsalImageCard = () => {
                 color: color.white,
                 fontWeight: "bold",
                 fontSize: 16,
-                letterSpacing: 1,
+                letterSpacing: 0.5,
               }}
             >
-              Hardik Futsal
+              {futsalName}
             </Text>
             <FontAwesome name="star" size={12} color="yellow" />
             <Text
@@ -97,7 +106,7 @@ const FutsalImageCard = () => {
                 letterSpacing: 1,
               }}
             >
-              3.5
+              {ratings}
             </Text>
           </View>
 
@@ -125,7 +134,7 @@ const FutsalImageCard = () => {
                 color: color.grayLight,
               }}
             >
-              | Sankhamul Chowk
+              |{" " + address.city + " " + address.street}
             </Text>
           </View>
 
@@ -141,7 +150,7 @@ const FutsalImageCard = () => {
                 fontWeight: "bold",
               }}
             >
-              Rs 450 - Rs 550 per hour
+              Rs {price} per hour
             </Text>
           </View>
         </View>

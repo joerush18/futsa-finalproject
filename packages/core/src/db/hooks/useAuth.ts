@@ -12,7 +12,7 @@ const useSignupEmail = () => {
         saveToken(data.uid);
       },
       onError: (data) => {
-        console.log(data);
+        console.log({ data });
       },
     }
   );
@@ -27,7 +27,7 @@ const useLoginEmail = () => {
         saveToken(data.uid);
       },
       onError: (data) => {
-        console.log(data);
+        console.log({ data });
       },
     }
   );

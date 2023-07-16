@@ -24,7 +24,16 @@ import {
 const ProfilePage = () => {
   const { futsal } = useUserStore();
   if (!futsal) {
-    return null;
+    return (
+      <Box
+        sx={{
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        <Typography>Something went wrong.</Typography>
+      </Box>
+    );
   }
   const {
     open: openProfileEditModal,
@@ -193,6 +202,9 @@ const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
                 control={control}
                 label={"Email"}
                 type="email"
+                props={{
+                  disabled: true,
+                }}
               />
             </Stack>
             <Stack direction="row" gap={4}>

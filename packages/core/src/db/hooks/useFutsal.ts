@@ -1,6 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { updateFutsal } from "../methods/users/futsal";
 import { IFutsal } from "../../types/futsals.types";
+import getAllFutsals from "../methods/futsals/getAllFutsals";
+import useFutsalsStore from "../../store/useFutsalsStore";
 
 const useUpdateFutsal = () => {
   return useMutation(
@@ -19,4 +21,19 @@ const useUpdateFutsal = () => {
   );
 };
 
-export { useUpdateFutsal };
+const useGetAllFutsal = () => {
+  const { setFutsals } = useFutsalsStore();
+  return useQuery(["get-all-futsal"], async () => getAllFutsals({}), {
+    onSuccess: (data) => {
+      setFutsals(data);
+      console.log("Futsal fetched successfully");
+      // Do something with the data if needed
+    },
+    onError: (error) => {
+      console.log("Futsal fetch failed");
+      // Handle the error if needed
+    },
+  });
+};
+
+export { useUpdateFutsal, useGetAllFutsal };

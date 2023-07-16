@@ -1,4 +1,10 @@
-import { TouchableOpacity, ScrollView, Text, View } from "react-native";
+import {
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  View,
+  RefreshControl,
+} from "react-native";
 import React from "react";
 import { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -9,8 +15,11 @@ import FutsalImageCard from "../components/FutsalImageCard";
 import FutsalCard from "../components/FutsalCard";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SearchBox from "../components/ui/SearchBox";
+import { useGetAllFutsal } from "core/src/db/hooks/useFutsal";
+import Loading from "../components/ui/Loading";
 
 const HomeScreen = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -47,6 +56,20 @@ const HomeScreen = () => {
       },
     });
   }, []);
+
+  const { data, isLoading, refetch } = useGetAllFutsal();
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      refetch();
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) return <Loading />;
+  if (!data) return <Text>No data</Text>;
+
   return (
     <ScrollView>
       <View
@@ -59,17 +82,31 @@ const HomeScreen = () => {
         <SearchBox />
       </View>
       <Sectionlayout title="Nearby futsals" buttonText="View all">
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {Array.from({ length: 5 }, () => (
-            <FutsalImageCard />
-          ))}
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {data.length ? (
+            data.map((futsal, index) => {
+              return <FutsalImageCard key={`futsa_${index}`} futsal={futsal} />;
+            })
+          ) : (
+            <Text>No futsal registered yet.</Text>
+          )}
         </ScrollView>
       </Sectionlayout>
       <Sectionlayout title="Popular Futsals" buttonText="View all">
         <ScrollView>
-          {Array.from({ length: 3 }, () => (
-            <FutsalCard />
-          ))}
+          {data.length ? (
+            data.map((futsal, index) => {
+              return <FutsalCard key={`futsa_${index}`} futsal={futsal} />;
+            })
+          ) : (
+            <Text>No futsal registered yet.</Text>
+          )}
         </ScrollView>
       </Sectionlayout>
     </ScrollView>

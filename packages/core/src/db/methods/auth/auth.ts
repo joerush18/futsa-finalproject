@@ -8,13 +8,14 @@ import { createPlayerCollection } from "../users/player";
 const emailSignUp = async (data: ISignUpCredentials) => {
   const { email, password, phoneNumber, fullName, role } = data;
   try {
-    await auth.setPersistence("local");
+    // await auth.setPersistence("local");
     const res = await auth.createUserWithEmailAndPassword(email, password);
+    console.log(res.user);
     if (role === ROLES.PLAYER && res) {
       const _playerData: IPlayers = {
         role: ROLES.PLAYER,
         id: res.user.uid,
-        email: res.user.email,
+        email: email,
         phonenumber: +phoneNumber,
         address: {
           city: "",
@@ -23,13 +24,15 @@ const emailSignUp = async (data: ISignUpCredentials) => {
         fullname: fullName,
         avatar: "",
         gender: "",
+
         geolocation: {
           lat: "",
           lng: "",
         },
+        createdAt: Date.now(),
       };
-      await createPlayerCollection(res.user.uid, _playerData);
       // create Player collection
+      await createPlayerCollection(res.user.uid, _playerData);
       return res.user;
     }
 
@@ -59,9 +62,9 @@ const emailSignUp = async (data: ISignUpCredentials) => {
         },
         status: STATUS.PENDING,
       };
+      // create Futsal collections
       await createFutsalCollection(res.user.uid, _futsal);
       return res.user;
-      // create Futsal collections
     }
   } catch (error) {
     throw error;

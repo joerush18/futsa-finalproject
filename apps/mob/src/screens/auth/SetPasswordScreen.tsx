@@ -9,10 +9,7 @@ import color from "../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  LoginSchema,
-  PasswordSetSchema,
-} from "../../utils/validations/validations";
+import { PasswordSetSchema } from "core/src/validations/validations";
 
 const SetPasswordScreen = () => {
   const navigation = useNavigation();

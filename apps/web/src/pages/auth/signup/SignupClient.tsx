@@ -1,5 +1,3 @@
-"use client";
-
 import { FormInputText } from "@/components/ui/InputBox";
 import { Button, Stack, Typography } from "@mui/material";
 import { ISignUpCredentials, ROLES } from "core/src/types/users.types";

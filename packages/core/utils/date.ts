@@ -7,8 +7,11 @@ import {
   startOfDay,
   addMinutes,
   isSameMonth,
-  set,
   isAfter,
+  endOfDay,
+  isBefore,
+  set,
+  getDay,
 } from "date-fns";
 
 // Generate months from now to 1 year
@@ -74,41 +77,93 @@ export interface TimeSlot {
 }
 
 function generateTimeSlots(
-  date: number,
+  date: Date,
   week: string,
   month: number,
   openingHour: number,
   closingHour: number,
   interval: number
 ): TimeSlot {
-  const currentYear = new Date().getFullYear();
-  const selectedDate = set(new Date(currentYear, month - 1, date), {
-    hours: openingHour,
-    minutes: 0,
-  });
-
-  const startTime = startOfDay(selectedDate);
-  const endTime = set(selectedDate, { hours: closingHour });
+  openingHour = Math.round(openingHour);
 
   const timeSlots = [];
-  let currentTimeSlot = startTime;
+  const now = new Date();
+  const today = startOfDay(now);
+  const end = new Date(today.getTime() + closingHour * 60 * 60 * 1000); // Convert closingHour to milliseconds
 
-  while (isAfter(currentTimeSlot, new Date()) && currentTimeSlot <= endTime) {
-    const formattedTimeSlot = format(currentTimeSlot, "h:mm");
-    const finalTimeSlot =
-      formattedTimeSlot +
-      "-" +
-      format(addMinutes(currentTimeSlot, interval), "h:mm a");
-    timeSlots.push(finalTimeSlot);
-    currentTimeSlot = addMinutes(currentTimeSlot, interval);
+  const start = new Date(today.getTime() + openingHour * 60 * 60 * 1000); // Convert openingHour to milliseconds
+  let currentTime = date.getTime() === today.getTime() ? now : start;
+
+  // Start timeslot rounding off to 0
+  const remainder = currentTime.getMinutes() % interval;
+  if (remainder !== 0) {
+    currentTime = addMinutes(currentTime, interval - remainder);
+  }
+
+  while (isBefore(currentTime, end)) {
+    // Exclude the timeslots for today
+    if (currentTime.getTime() !== now.getTime()) {
+      timeSlots.push(format(currentTime, "hh:mm a"));
+    }
+    currentTime = addMinutes(currentTime, interval);
   }
 
   return {
-    date: date.toString(),
+    date: date.toLocaleDateString("en-US"),
     week,
     month: month.toString(),
     timeSlots,
   };
 }
 
-export { generateDaysForMonth, generateMonths, generateTimeSlots };
+function getDateByDayAndMonth(dayOfWeek, month, year) {
+  const date = set(new Date(year, month - 1), { date: dayOfWeek });
+  return startOfDay(date);
+}
+
+function addTimeToDate(date, time) {
+  const timeRegex = /^(0?[1-9]|1[0-2]):([0-5]\d) (AM|PM)$/i;
+  if (!timeRegex.test(time)) {
+    throw new Error("Invalid time format. Use hh:mm AM/PM.");
+  }
+
+  const [hoursStr, minutesStr, period] = time.match(timeRegex).slice(1);
+  let hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
+
+  if (period.toLowerCase() === "pm" && hours !== 12) {
+    hours += 12;
+  } else if (period.toLowerCase() === "am" && hours === 12) {
+    hours = 0;
+  }
+
+  const newDate = new Date(date);
+  newDate.setHours(hours);
+  newDate.setMinutes(minutes);
+  return newDate;
+}
+
+function convertToAmPm(time) {
+  const [hours, minutes] = time.split(":").map(Number);
+
+  let period = "AM";
+  let formattedHours = hours;
+
+  if (hours >= 12) {
+    period = "PM";
+    if (hours > 12) {
+      formattedHours = hours - 12;
+    }
+  }
+
+  return `${formattedHours} ${period}`;
+}
+
+export {
+  generateDaysForMonth,
+  generateMonths,
+  generateTimeSlots,
+  getDateByDayAndMonth,
+  addTimeToDate,
+  convertToAmPm,
+};

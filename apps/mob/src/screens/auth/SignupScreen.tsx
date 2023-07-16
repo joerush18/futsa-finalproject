@@ -10,8 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchema } from "core/src/validations/validations";
-import { ISignUpCredentials } from "core/src/types/users.types";
-
+import { ISignUpCredentials, ROLES } from "core/src/types/users.types";
 import { useSignupEmail } from "core/src/db/hooks/useAuth";
 
 const SignupScreen = () => {
@@ -28,7 +27,12 @@ const SignupScreen = () => {
     navigation.navigate("Login" as never);
   };
   const handleSignUp = async (data: ISignUpCredentials) => {
-    signUpWithEmail(data);
+    if (!data) return;
+    const formData = {
+      ...data,
+      role: "player" as ROLES,
+    };
+    signUpWithEmail(formData);
     if (isSuccess) {
       navigation.navigate("Main" as never);
     }

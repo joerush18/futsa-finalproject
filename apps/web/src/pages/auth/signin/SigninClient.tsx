@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "core/src/validations/validations";
 import Color from "@/utils/color";
 import AuthClientWrapper from "../components/AuthClientWrapper";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginEmail } from "core/src/db/hooks/useAuth";
 
 type FormInputs = Pick<ISignUpCredentials, "email" | "password">;
@@ -23,9 +23,11 @@ const SigninClient = () => {
   });
 
   const { mutate: loginEmailPassword, isLoading } = useLoginEmail();
+  const navigate = useNavigate();
 
   const onSignInHandler = async (values: FormInputs) => {
     loginEmailPassword(values);
+    navigate("/");
   };
 
   return (

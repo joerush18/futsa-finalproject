@@ -8,14 +8,26 @@ import BookNowButton from "./ui/BookNowButton";
 import { Pressable, View, Image, Text } from "react-native";
 import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
+import { IFutsal } from "core/src/types/futsals.types";
 
-const FutsalCard = () => {
+interface FutsalCardProps {
+  futsal: IFutsal;
+}
+
+const FutsalCard = ({ futsal }: FutsalCardProps) => {
+  const { futsalName, ratings, address, price, id, coverPicture } = futsal;
+  console.log(id);
   const [love, setLoved] = useState(false);
   const navigation = useNavigation();
 
   const handleNavigation = () => {
-    navigation.navigate("Futsal-Detail" as never);
+    // @ts-ignore
+    navigation.navigate(`Futsal-Detail`, {
+      futsalId: id,
+    });
   };
+
+  if (!futsal) return null;
 
   return (
     <Card>
@@ -45,7 +57,7 @@ const FutsalCard = () => {
         </Pressable>
         <Image
           source={{
-            uri: "https://1.bp.blogspot.com/-bBgD--rBiOg/Xi7oiO63yOI/AAAAAAAAHi4/MF7YQ_2y3nEArkdIDwOR1GCMvBxpCCeUQCEwYBhgL/w1200-h630-p-k-no-nu/footsal-ground-inside-kathmandu-valley-min.jpg",
+            uri: coverPicture,
           }}
           style={{
             width: 100,
@@ -72,7 +84,7 @@ const FutsalCard = () => {
                 fontSize: 16,
               }}
             >
-              Hardik Futsal
+              {futsalName}
             </Text>
             <FontAwesome name="star" size={12} color={color.yellow} />
             <Text
@@ -81,7 +93,7 @@ const FutsalCard = () => {
                 fontSize: 16,
               }}
             >
-              3.5
+              {ratings}
             </Text>
           </View>
 
@@ -110,7 +122,7 @@ const FutsalCard = () => {
                 color: color.grayText,
               }}
             >
-              | Sankhamul Chowk
+              |{" " + address.city + " " + address.street}
             </Text>
           </View>
 
@@ -126,7 +138,7 @@ const FutsalCard = () => {
                 fontWeight: "bold",
               }}
             >
-              Rs 450 - Rs 550 per hour
+              Rs {price} per hour
             </Text>
           </View>
           <BookNowButton onPress={handleNavigation} />

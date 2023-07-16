@@ -14,8 +14,19 @@ import OtpScreen from "./screens/auth/OtpScreen";
 import SetPasswordScreen from "./screens/auth/SetPasswordScreen";
 import useCurrentUser from "./hooks/useCurrentUser";
 
+export type RootStackParamList = {
+  "Futsal-Detail": { futsalId: string };
+  Main: {};
+  Search: {};
+  Notification: {};
+  Filter: {};
+  Booking: {
+    futsalId: string;
+  };
+};
+
 const AfterAuthNavigationContainers = () => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <NavigationContainer>
       <Stack.Navigator>

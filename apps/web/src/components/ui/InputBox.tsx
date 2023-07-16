@@ -1,5 +1,5 @@
 import { Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { HTMLInputTypeAttribute } from "react";
 import Color from "@/utils/color";
 
@@ -9,6 +9,7 @@ interface FormInputProps {
   label: string;
   placeholder?: string;
   type?: HTMLInputTypeAttribute;
+  props?: TextFieldProps;
 }
 
 export const FormInputText = ({
@@ -16,7 +17,7 @@ export const FormInputText = ({
   control,
   label,
   type,
-  ...props
+  props,
 }: FormInputProps) => {
   return (
     <Controller

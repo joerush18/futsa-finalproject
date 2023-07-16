@@ -14,6 +14,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const { mutate: logout } = useLogout();
   const { user } = useCurrentUser();
+  console.log(user);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -45,7 +46,7 @@ const ProfileScreen = () => {
     <ScrollView>
       <View className="w-full bg-primary flex-col items-center justify-center py-3">
         <Avatar />
-        <Text className="text-white font-bold text-xl">{user?.fullName}</Text>
+        <Text className="text-white font-bold text-xl">{user?.fullname}</Text>
         <Text className="text-white  text-sm">{user?.phonenumber}</Text>
         <Text className="text-white text-sm">{user?.email}</Text>
       </View>

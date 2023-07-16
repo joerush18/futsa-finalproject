@@ -11,7 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "../../utils/validations/validations";
+import { LoginSchema } from "core/src/validations/validations";
 import { useLoginEmail } from "core/src/db/hooks/useAuth";
 import { ISignUpCredentials } from "core/src/types/users.types";
 

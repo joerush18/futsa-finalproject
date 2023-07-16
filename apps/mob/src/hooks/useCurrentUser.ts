@@ -1,41 +1,48 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { useGetUser } from "core/src/db/hooks/useUser";
-import { IUser } from "core/src/types/users.types";
+import { getCurrentPlayer } from "core/src/db/methods/users/player";
+import { ROLES } from "core/src/types/users.types";
+import { useEffect, useRef, useState } from "react";
+import { auth } from "core/src/db";
+import useUserStore from "core/src/store/useUserStore";
 
 const useCurrentUser = () => {
-  const auth = getAuth();
   const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState<IUser | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-  const { mutate: getUser, isLoading, isSuccess, data } = useGetUser();
+  const [isLoading, setIsLoading] = useState(false);
+  const { player, setPlayer } = useUserStore();
+
+  const unsubscribe = useRef<() => void>();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (currentUser) => {
-        if (currentUser) {
-          getUser(currentUser.uid);
-          if (isSuccess) {
-            setIsAuth(true);
-            setUser(data);
+    if (typeof unsubscribe.current === "function") {
+      unsubscribe.current();
+    }
+    const fetchCurrentUser = async () => {
+      setIsLoading(true);
+      unsubscribe.current = auth.onAuthStateChanged(async (user) => {
+        setIsAuth(!!user);
+        try {
+          if (user) {
+            const res = await getCurrentPlayer(user?.uid, ROLES.PLAYER);
+            if (res) {
+              // @ts-ignore
+              setPlayer(res);
+            }
           }
-        } else {
-          setIsAuth(false);
-          setUser(null);
+        } catch (e) {
+          console.log(e);
+        } finally {
+          setIsLoading(false);
         }
-      },
-      (error) => {
-        setError(error);
-      }
-    );
-
+      });
+    };
+    fetchCurrentUser();
     return () => {
-      unsubscribe();
+      if (typeof unsubscribe.current === "function") {
+        unsubscribe.current();
+      }
     };
   }, []);
 
-  return { user, isAuth, error, isLoading };
+  return { user: player, isAuth, isLoading };
 };
 
 export default useCurrentUser;

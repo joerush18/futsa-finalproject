@@ -15,7 +15,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs/Breadcrumbs";
 import { useState } from "react";
 import TextField from "@mui/material/TextField/TextField";
 import HomeIcon from "@mui/icons-material/Home";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from "core/src/db/hooks/useAuth";
 import useUserStore from "@/store/useUserStore";
 
@@ -40,6 +40,7 @@ const Navbar = () => {
 
   const { pathname } = useLocation();
   const { futsal } = useUserStore();
+  const navigate = useNavigate();
 
   return (
     <AppBar position="sticky" elevation={1}>
@@ -95,7 +96,12 @@ const Navbar = () => {
       >
         <MenuItem>Profile</MenuItem>
         <MenuItem>My account</MenuItem>
-        <MenuItem onClick={() => logout()}>
+        <MenuItem
+          onClick={() => {
+            navigate("/");
+            logout();
+          }}
+        >
           {logOutLoading ? "Logging out" : "Log out"}
         </MenuItem>
       </Menu>
