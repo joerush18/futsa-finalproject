@@ -16,7 +16,6 @@ interface FutsalCardProps {
 
 const FutsalCard = ({ futsal }: FutsalCardProps) => {
   const { futsalName, ratings, address, price, id, coverPicture } = futsal;
-  console.log(id);
   const [love, setLoved] = useState(false);
   const navigation = useNavigation();
 

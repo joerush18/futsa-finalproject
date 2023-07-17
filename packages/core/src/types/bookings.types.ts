@@ -8,11 +8,16 @@ enum BOOKING_STATUS {
 
 export interface IBookings extends IEntryMeta {
   id: string;
-  bookedBy: string;
-  bookedTo: string;
-  bookedTime: string;
-  bookedDate: string;
-  price: string;
+  bookedBy: {
+    id: string;
+    name: string;
+  };
+  bookedTo: {
+    id: string;
+    name: string;
+  };
+  bookedFor: string;
+  price: number;
   status: BOOKING_STATUS;
   hasPaid: boolean;
   hasExpired: boolean;

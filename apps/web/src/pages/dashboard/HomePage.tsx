@@ -1,4 +1,5 @@
 import DHeader from "@/components/dashboard/DHeader";
+import useUserStore from "@/store/useUserStore";
 import Color from "@/utils/color";
 import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import {
@@ -24,6 +25,7 @@ const HomePage = () => {
 export default HomePage;
 
 const CalenderView = () => {
+  const { futsal } = useUserStore();
   const MONTHS = generateMonths();
   const [monthIndex, setMonthIndex] = useState<number>(0);
   const DAYS = generateDaysForMonth(MONTHS[monthIndex].value);
@@ -39,8 +41,8 @@ const CalenderView = () => {
     currentDate,
     selectedDay.week,
     MONTHS[monthIndex].value + 1,
-    8,
-    20,
+    +futsal.openTime.split(":")[0],
+    +futsal.closeTime.split(":")[0],
     60
   );
 

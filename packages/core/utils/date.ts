@@ -7,14 +7,9 @@ import {
   startOfDay,
   addMinutes,
   isSameMonth,
-  isAfter,
-  endOfDay,
   isBefore,
   set,
-  getDay,
 } from "date-fns";
-
-// Generate months from now to 1 year
 
 export interface MonthInfo {
   name: string;
@@ -89,19 +84,17 @@ function generateTimeSlots(
   const timeSlots = [];
   const now = new Date();
   const today = startOfDay(now);
-  const end = new Date(today.getTime() + closingHour * 60 * 60 * 1000); // Convert closingHour to milliseconds
+  const end = new Date(today.getTime() + closingHour * 60 * 60 * 1000);
 
-  const start = new Date(today.getTime() + openingHour * 60 * 60 * 1000); // Convert openingHour to milliseconds
+  const start = new Date(today.getTime() + openingHour * 60 * 60 * 1000);
   let currentTime = date.getTime() === today.getTime() ? now : start;
 
-  // Start timeslot rounding off to 0
   const remainder = currentTime.getMinutes() % interval;
   if (remainder !== 0) {
     currentTime = addMinutes(currentTime, interval - remainder);
   }
 
   while (isBefore(currentTime, end)) {
-    // Exclude the timeslots for today
     if (currentTime.getTime() !== now.getTime()) {
       timeSlots.push(format(currentTime, "hh:mm a"));
     }

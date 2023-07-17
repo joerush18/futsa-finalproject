@@ -18,6 +18,7 @@ import { STATUS } from "core/src/types/futsals.types";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "core/src/db/hooks/useAuth";
 import useUserStore from "@/store/useUserStore";
+import SelectAmenities from "@/components/ui/tagsBox";
 
 const OnBoardingClient = () => {
   const { futsal, setFutsal } = useUserStore();
@@ -146,13 +147,22 @@ const OnBoardingClient = () => {
                   type="time"
                 />
               </Stack>
+              <SelectAmenities
+                control={setValue}
+                name="Amenities"
+                value={futsal.Amenities}
+              />
               <FormInputText
                 name={"description"}
                 control={control}
                 label={"Description"}
                 type="textArea"
+                props={{
+                  multiline: true,
+                  rows: 4,
+                }}
               />
-              <Typography variant="body2" mb={2}>
+              <Typography variant="body2" mt={2} mb={1}>
                 Upload Images
               </Typography>
               <Stack direction="row" gap={1}>

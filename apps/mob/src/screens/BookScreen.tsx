@@ -88,45 +88,46 @@ const BookScreen = ({ route }: BookScreenProps) => {
   }
 
   return (
-    <ScrollView className="pb-[10px]">
-      <View className="p-4">
-        <Text className="text-center text-xs">Select your timing</Text>
-        <Text className="text-center font-bold text-xl">{futsalName}</Text>
-        <Text className="text-yellow text-xl font-bold text-center">
-          {createRatingStars(ratings)}
-        </Text>
-      </View>
-      <Divider />
-      <MonthSelector
-        selectedMonth={MONTHS[monthIndex]}
-        increaseMonthIndex={increaseMonthIndex}
-        decreaseMonthIndex={decreaseMonthIndex}
-      />
-      <Divider />
-      <WeekSlider
-        days={DAYS}
-        setSelectedDay={setSelectedDay}
-        selectedDay={selectedDay}
-      />
-      <Divider />
-      <TimeSlots
-        timeSlots={TIME_SLOTS.timeSlots}
-        setCurrentTimeSlot={setCurrentTimeSlot}
-      />
+    <View className="relative pb-[50px]">
+      <ScrollView>
+        <View className="p-4">
+          <Text className="text-center text-xs">Select your timing</Text>
+          <Text className="text-center font-bold text-xl">{futsalName}</Text>
+          <Text className="text-yellow text-xl font-bold text-center">
+            {createRatingStars(ratings)}
+          </Text>
+        </View>
+        <Divider />
+        <MonthSelector
+          selectedMonth={MONTHS[monthIndex]}
+          increaseMonthIndex={increaseMonthIndex}
+          decreaseMonthIndex={decreaseMonthIndex}
+        />
+        <Divider />
+        <WeekSlider
+          days={DAYS}
+          setSelectedDay={setSelectedDay}
+          selectedDay={selectedDay}
+        />
+        <Divider />
+        <TimeSlots
+          timeSlots={TIME_SLOTS.timeSlots}
+          setCurrentTimeSlot={setCurrentTimeSlot}
+        />
+      </ScrollView>
       {TIME_SLOTS.timeSlots.length ? (
-        <View className="mx-4 mr-6">
+        <View className="fixed bottom-0 mx-2 bg-transparent">
           <BookNowButton
             onPress={() => {
               const date = addTimeToDate(currentDate, currentTimeSlot);
               alert(date);
             }}
             label={`Book for Rs. ${price.toString()}`}
-            className="py-4"
-            disabled={currentTimeSlot === ""}
+            className="py-4 rounded-2xl"
           />
         </View>
       ) : null}
-    </ScrollView>
+    </View>
   );
 };
 

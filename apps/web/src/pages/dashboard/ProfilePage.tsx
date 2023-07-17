@@ -138,6 +138,7 @@ import { useForm } from "react-hook-form";
 import { FormInputText } from "@/components/ui/InputBox";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { useToastContext } from "@/store/ToastContext";
+import SelectAmenities from "@/components/ui/tagsBox";
 
 const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
   const { futsal, setFutsal } = useUserStore();
@@ -177,9 +178,11 @@ const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
       <Box
         sx={{
           bgcolor: "background.paper",
-          width: "40%",
+          width: "50%",
           borderRadius: "10px",
           padding: "20px",
+          height: "80%",
+          overflowY: "scroll",
         }}
       >
         <Typography variant="h6" component="h2">
@@ -256,11 +259,20 @@ const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
                 type="time"
               />
             </Stack>
+            <SelectAmenities
+              control={setValue}
+              name="Amenities"
+              value={futsal.Amenities}
+            />
             <FormInputText
               name={"description"}
               control={control}
               label={"Description"}
               type="textArea"
+              props={{
+                multiline: true,
+                rows: 4,
+              }}
             />
             <Typography variant="body2" mb={2}>
               Upload Images
