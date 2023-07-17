@@ -49,13 +49,13 @@ const Navbar = () => {
           {pathname.split("/").map((path, index) => {
             if (index === 0) {
               return (
-                <NavLink to="/dashboard">
+                <NavLink to="/dashboard" key={index}>
                   <HomeIcon fontSize="medium" />
                 </NavLink>
               );
             } else {
               return (
-                <NavLink to={`/${path}`}>
+                <NavLink to={`/${path}`} key={index}>
                   <Typography textTransform="capitalize" variant="body2">
                     {path}
                   </Typography>

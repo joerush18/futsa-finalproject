@@ -1,5 +1,5 @@
 import { ScrollView, Text, View } from "react-native";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import color from "../assets/colors";
 
@@ -86,6 +86,11 @@ const BookScreen = ({ route }: BookScreenProps) => {
       }
     });
   }
+
+  useEffect(() => {
+    setSelectedDay(DAYS[0]);
+    setCurrentTimeSlot(TIME_SLOTS.timeSlots[0]);
+  }, [monthIndex]);
 
   return (
     <View className="relative pb-[50px]">

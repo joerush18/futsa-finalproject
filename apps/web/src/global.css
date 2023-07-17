@@ -5,9 +5,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -ms-overflow-style: none;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
