@@ -11,9 +11,9 @@ import MapView from "react-native-maps";
 import Review from "../components/Review";
 import IconText from "../components/ui/IconText";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import useFutsalsStore from "core/src/store/useFutsalsStore";
+import { useFutsalsStore } from "core";
 import { RootStackParamList } from "../StackNavigator";
-import { convertToAmPm } from "core/utils/date";
+import { convertToAmPm } from "core";
 
 type FutsalDetailScreenRouteProps = RouteProp<
   RootStackParamList,

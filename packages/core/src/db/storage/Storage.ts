@@ -4,7 +4,7 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-import createUniqueId from "core/utils/createUniqueId";
+import { createUniqueId } from "../../utils/createUniqueId";
 
 const storage = getStorage();
 

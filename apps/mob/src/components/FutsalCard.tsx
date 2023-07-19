@@ -8,7 +8,7 @@ import BookNowButton from "./ui/BookNowButton";
 import { Pressable, View, Image, Text } from "react-native";
 import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
-import { IFutsal } from "core/src/types/futsals.types";
+import { IFutsal } from "core";
 
 interface FutsalCardProps {
   futsal: IFutsal;

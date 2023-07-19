@@ -9,7 +9,7 @@ import {
   generateMonths,
   generateTimeSlots,
   getDateByDayAndMonth,
-} from "core/utils/date";
+} from "core";
 import { useEffect } from "react";
 
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
@@ -61,6 +61,7 @@ const CalenderView = () => {
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    event.preventDefault();
     setTabValue(newValue);
   };
 

@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import Avatar from "./ui/Avatar";
-import { createRatingStars } from "../utils/star";
+import { createRatingStars } from "core";
 
 const Review = () => {
   return (

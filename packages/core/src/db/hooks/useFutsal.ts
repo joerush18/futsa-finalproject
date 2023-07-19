@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { updateFutsal } from "../methods/users/futsal";
-import { IFutsal } from "../../types/futsals.types";
-import getAllFutsals from "../methods/futsals/getAllFutsals";
-import useFutsalsStore from "../../store/useFutsalsStore";
+import { IFutsal } from "../../types";
+import { getAllFutsals } from "../methods/futsals";
+import { useFutsalsStore } from "../../store";
 
 const useUpdateFutsal = () => {
   return useMutation(

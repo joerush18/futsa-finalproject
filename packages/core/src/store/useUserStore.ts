@@ -15,3 +15,4 @@ const useUserStore = create<IUserStore>((set) => ({
 }));
 
 export default useUserStore;
+export { useUserStore };

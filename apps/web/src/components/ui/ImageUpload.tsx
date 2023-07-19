@@ -7,7 +7,7 @@ import {
   StoragePath,
   uploadImage,
 } from "core/src/db/storage/Storage";
-import createUniqueId from "core/utils/createUniqueId";
+import { createUniqueId } from "core";
 import Color from "@/utils/color";
 
 const ImageUpload = ({

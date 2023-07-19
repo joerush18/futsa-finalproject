@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { IFutsal } from "core/src/types/futsals.types";
+import { IFutsal } from "core";
 
 interface FutsalImageCardProps {
   futsal: IFutsal;

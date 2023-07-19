@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { emailSignUp, emailLogin, logout } from "../methods/auth/auth";
 import { ISignUpCredentials } from "../../types/users.types";
-import { saveToken } from "../../utils";
+import { saveToken } from "../../utils/token";
 
 const useSignupEmail = () => {
   return useMutation(

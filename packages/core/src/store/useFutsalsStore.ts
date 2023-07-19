@@ -14,3 +14,4 @@ const useFutsalsStore = create<FutsalsStore>((set) => ({
 }));
 
 export default useFutsalsStore;
+export { useFutsalsStore };

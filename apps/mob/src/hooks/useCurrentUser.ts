@@ -1,8 +1,8 @@
-import { getCurrentPlayer } from "core/src/db/methods/users/player";
-import { ROLES } from "core/src/types/users.types";
+import { getCurrentPlayer } from "core";
+import { ROLES } from "core";
 import { useEffect, useRef, useState } from "react";
-import { auth } from "core/src/db";
-import useUserStore from "core/src/store/useUserStore";
+import { auth } from "core";
+import { useUserStore } from "core";
 
 const useCurrentUser = () => {
   const [isAuth, setIsAuth] = useState(false);

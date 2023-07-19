@@ -1,5 +1,5 @@
 import { ScrollView, Text, View } from "react-native";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import color from "../assets/colors";
 
@@ -8,7 +8,7 @@ import Divider from "../components/ui/Divider";
 import IconButton from "../components/ui/IconButton";
 import Sectionlayout from "../components/layout/Sectionlayout";
 import BookNowButton from "../components/ui/BookNowButton";
-import { createRatingStars } from "core/utils/star";
+import { createRatingStars } from "core";
 import {
   Days,
   MonthInfo,
@@ -17,9 +17,9 @@ import {
   generateMonths,
   generateTimeSlots,
   getDateByDayAndMonth,
-} from "core/utils/date";
+} from "core";
 import { RootStackParamList } from "../StackNavigator";
-import useFutsalsStore from "core/src/store/useFutsalsStore";
+import { useFutsalsStore } from "core";
 type BookScreenRouteProps = RouteProp<RootStackParamList, "Booking">;
 
 interface BookScreenProps {

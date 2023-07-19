@@ -12,10 +12,10 @@ import {
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { createRatingStars } from "core/utils/star";
+import { createRatingStars } from "core";
 import Color from "@/utils/color";
 import useModal from "@/hooks/useModal";
-import { useUpdateFutsal } from "core/src/db/hooks/useFutsal";
+import { useUpdateFutsal } from "core";
 import {
   IOnboardingState,
   createDefaultValues,

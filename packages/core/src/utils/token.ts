@@ -1,6 +1,6 @@
-import serviceProvider from "./services/storage/index";
-import StorageService from "./services/storage/StorageService";
-import { AvailableService, StorageKey } from "./services/storage/types";
+import serviceProvider from "../services/storage/index";
+import StorageService from "../services/storage/StorageService";
+import { AvailableService, StorageKey } from "../services/storage/types";
 
 export const saveToken = (token: string) => {
   if (!token) {

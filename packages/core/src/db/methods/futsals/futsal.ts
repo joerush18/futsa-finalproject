@@ -22,4 +22,4 @@ const getAllFutsals = async ({ id, ids }: { id?: string; ids?: string[] }) => {
   return snapshot.docs.map((document) => document.data() as IFutsal);
 };
 
-export default getAllFutsals;
+export { getAllFutsals };
