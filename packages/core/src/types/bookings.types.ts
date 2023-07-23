@@ -1,18 +1,24 @@
 import { IEntryMeta } from "./meta.types";
 
-enum BOOKING_STATUS {
+export enum BOOKING_STATUS {
   "PENDING" = "pending",
   "BOOKED" = "booked",
   "CANCELLED" = "cancelled",
 }
+export enum PAYMENT_METHOD {
+  "KHALTI" = "khalti",
+  "ESEWA" = "esewa",
+  "STRIPE" = "stripe",
+}
 
 export interface IBookings extends IEntryMeta {
-  id: string;
-  bookedBy: {
+  id?: string;
+  bookedByUser: {
     id: string;
     name: string;
+    email: string;
   };
-  bookedTo: {
+  bookedToFutsal: {
     id: string;
     name: string;
   };
@@ -21,4 +27,5 @@ export interface IBookings extends IEntryMeta {
   status: BOOKING_STATUS;
   hasPaid: boolean;
   hasExpired: boolean;
+  paymentMethod: PAYMENT_METHOD;
 }

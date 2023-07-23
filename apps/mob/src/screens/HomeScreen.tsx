@@ -17,9 +17,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SearchBox from "../components/ui/SearchBox";
 import { useGetAllFutsal } from "core/src/db/hooks/useFutsal";
 import Loading from "../components/ui/Loading";
+import useRefetch from "../hooks/useRefetch";
 
 const HomeScreen = () => {
-  const [refreshing, setRefreshing] = React.useState(false);
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,20 +58,18 @@ const HomeScreen = () => {
   }, []);
 
   const { data, isLoading, refetch } = useGetAllFutsal();
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      refetch();
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  const { onRefresh, refreshing } = useRefetch(refetch);
 
   if (isLoading) return <Loading />;
   if (!data) return <Text>No data</Text>;
 
   return (
-    <ScrollView>
+    <ScrollView
+      showsHorizontalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View
         className="flex-col items-start justify-center p-4"
         style={{
@@ -82,13 +80,7 @@ const HomeScreen = () => {
         <SearchBox />
       </View>
       <Sectionlayout title="Nearby futsals" buttonText="View all">
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
+        <ScrollView horizontal={true}>
           {data.length ? (
             data.map((futsal, index) => {
               return <FutsalImageCard key={`futsa_${index}`} futsal={futsal} />;

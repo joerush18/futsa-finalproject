@@ -1,8 +1,14 @@
+import Loading from "@/components/Loading";
 import DHeader from "@/components/dashboard/DHeader";
+import useBookings from "@/hooks/useBookings";
 import { Box } from "@mui/material";
-import CalenderView from "../auth/components/CalenderView";
 
 const HomePage = () => {
+  const { bookings, fetchingData } = useBookings();
+
+  if (fetchingData) {
+    <Loading />;
+  }
   return (
     <Box
       sx={{
@@ -14,7 +20,6 @@ const HomePage = () => {
     >
       <DHeader />
       <br />
-      <CalenderView />
     </Box>
   );
 };

@@ -13,6 +13,7 @@ import SignupScreen from "./screens/auth/SignupScreen";
 import OtpScreen from "./screens/auth/OtpScreen";
 import SetPasswordScreen from "./screens/auth/SetPasswordScreen";
 import useCurrentUser from "./hooks/useCurrentUser";
+import Toast from "react-native-toast-message";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -24,6 +25,8 @@ export type RootStackParamList = {
     futsalId: string;
   };
 };
+
+const toastConfig = {};
 
 const AfterAuthNavigationContainers = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -57,6 +60,7 @@ const AfterAuthNavigationContainers = () => {
           }}
         />
       </Stack.Navigator>
+      <Toast />
     </NavigationContainer>
   );
 };
@@ -102,6 +106,7 @@ const BeforeAuthNavigationContainers = () => {
           }}
         />
       </Stack.Navigator>
+      <Toast position="top" />
     </NavigationContainer>
   );
 };

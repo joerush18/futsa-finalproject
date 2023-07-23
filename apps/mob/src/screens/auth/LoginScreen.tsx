@@ -1,4 +1,4 @@
-import { Text, Pressable, View } from "react-native";
+import { Text, Pressable, View, ActivityIndicator } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -14,10 +14,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "core/src/validations/validations";
 import { useLoginEmail } from "core/src/db/hooks/useAuth";
 import { ISignUpCredentials } from "core/src/types/users.types";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const LoginScreen = () => {
   type ILoginCredentials = Pick<ISignUpCredentials, "email" | "password">;
-  const { mutate: loginWithEmail, isLoading, isSuccess } = useLoginEmail();
+  const {
+    mutate: loginWithEmail,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useLoginEmail();
 
   const navigation = useNavigation();
   const {
@@ -35,7 +41,19 @@ const LoginScreen = () => {
   const handleLogin = (data: ILoginCredentials) => {
     loginWithEmail(data);
     if (isSuccess) {
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Logged in successfully",
+      });
       navigation.navigate("Main" as never);
+    }
+    if (isError) {
+      Toast.show({
+        type: "error",
+        text1: "Oops!",
+        text2: "Something went wrong",
+      });
     }
   };
 
@@ -64,9 +82,11 @@ const LoginScreen = () => {
           </Text>
         </Pressable>
         <Button className="mt-1 mb-4" onPress={handleSubmit(handleLogin)}>
-          <Text className="text-center text-white font-bold py-2">
-            {isLoading ? "Loading" : "Login"}
-          </Text>
+          {isLoading ? (
+            <ActivityIndicator size="large" color={color.white} />
+          ) : (
+            <Text className="text-center text-white font-bold py-2">Login</Text>
+          )}
         </Button>
       </Card>
 

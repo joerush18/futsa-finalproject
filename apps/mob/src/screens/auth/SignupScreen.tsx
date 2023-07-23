@@ -1,4 +1,4 @@
-import { Text, Pressable, View } from "react-native";
+import { Text, Pressable, View, ActivityIndicator } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,9 +12,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchema } from "core/src/validations/validations";
 import { ISignUpCredentials, ROLES } from "core/src/types/users.types";
 import { useSignupEmail } from "core/src/db/hooks/useAuth";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const SignupScreen = () => {
-  const { mutate: signUpWithEmail, isLoading, isSuccess } = useSignupEmail();
+  const {
+    mutate: signUpWithEmail,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useSignupEmail();
   const {
     control,
     handleSubmit,
@@ -35,6 +41,13 @@ const SignupScreen = () => {
     signUpWithEmail(formData);
     if (isSuccess) {
       navigation.navigate("Main" as never);
+    }
+    if (isError) {
+      Toast.show({
+        type: "error",
+        text1: "Oops!",
+        text2: "Something went wrong.",
+      });
     }
   };
 
@@ -78,9 +91,13 @@ const SignupScreen = () => {
           error={errors.confirmPassword?.message}
         />
         <Button className="mt-2 mb-4" onPress={handleSubmit(handleSignUp)}>
-          <Text className="text-center text-white font-bold py-2">
-            {isLoading ? "Loading" : "Sign up"}
-          </Text>
+          {isLoading ? (
+            <ActivityIndicator size="large" color={color.white} />
+          ) : (
+            <Text className="text-center text-white font-bold py-2">
+              Sign up
+            </Text>
+          )}
         </Button>
       </Card>
       <Text className="text-sm opacity-60 text-center mt-8">

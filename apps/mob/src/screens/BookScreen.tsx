@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, RefreshControl } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import color from "../assets/colors";
@@ -8,7 +8,13 @@ import Divider from "../components/ui/Divider";
 import IconButton from "../components/ui/IconButton";
 import Sectionlayout from "../components/layout/Sectionlayout";
 import BookNowButton from "../components/ui/BookNowButton";
-import { createRatingStars } from "core";
+import {
+  BOOKING_STATUS,
+  IBookings,
+  PAYMENT_METHOD,
+  createRatingStars,
+  useCreateBooking,
+} from "core";
 import {
   Days,
   MonthInfo,
@@ -20,6 +26,12 @@ import {
 } from "core";
 import { RootStackParamList } from "../StackNavigator";
 import { useFutsalsStore } from "core";
+import useCurrentUser from "../hooks/useCurrentUser";
+import Loading from "../components/ui/Loading";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
+import useBookings from "../hooks/useBookings";
+import useRefetch from "../hooks/useRefetch";
+import { ref } from "firebase/storage";
 type BookScreenRouteProps = RouteProp<RootStackParamList, "Booking">;
 
 interface BookScreenProps {
@@ -29,6 +41,7 @@ interface BookScreenProps {
 const BookScreen = ({ route }: BookScreenProps) => {
   const { futsals } = useFutsalsStore();
   const { futsalId } = route.params;
+
   const futsal = futsals.filter((f) => f.id === futsalId)[0];
   const { ratings, futsalName, price } = futsal;
 
@@ -48,6 +61,35 @@ const BookScreen = ({ route }: BookScreenProps) => {
   const [monthIndex, setMonthIndex] = useState<number>(0);
   const DAYS = generateDaysForMonth(MONTHS[monthIndex].value);
   const [selectedDay, setSelectedDay] = useState<Days>(DAYS[0]);
+  const { user } = useCurrentUser();
+  const { mutate: createBooking, isLoading } = useCreateBooking();
+  const { fetchingData, DateStatusMap, refetch, bookingData } =
+    useBookings(futsalId);
+  const { refreshing, onRefresh } = useRefetch(refetch);
+
+  const _bookingDefaultValue: IBookings = {
+    bookedByUser: {
+      id: user.id,
+      name: user.fullname,
+      email: user.email,
+    },
+    bookedToFutsal: {
+      id: futsalId,
+      name: futsal.futsalName,
+    },
+    bookedFor: "",
+    hasExpired: false,
+    hasPaid: false,
+    paymentMethod: PAYMENT_METHOD.ESEWA,
+    price: futsal.price,
+    status: BOOKING_STATUS.PENDING,
+    createdAt: Date.now(),
+    createdBy: {
+      id: user.id,
+      email: user.email,
+      name: user.fullname,
+    },
+  };
 
   const currentDate = getDateByDayAndMonth(
     selectedDay.date,
@@ -64,9 +106,7 @@ const BookScreen = ({ route }: BookScreenProps) => {
     60
   );
 
-  const [currentTimeSlot, setCurrentTimeSlot] = useState<string>(
-    TIME_SLOTS.timeSlots[0] ?? ""
-  );
+  const [currentTimeSlot, setCurrentTimeSlot] = useState<string | null>("");
 
   function increaseMonthIndex() {
     setMonthIndex((prev) => {
@@ -89,12 +129,24 @@ const BookScreen = ({ route }: BookScreenProps) => {
 
   useEffect(() => {
     setSelectedDay(DAYS[0]);
-    setCurrentTimeSlot(TIME_SLOTS.timeSlots[0]);
-  }, [monthIndex]);
+  }, [monthIndex, futsalId]);
+
+  useEffect(() => {
+    // Quick fix need to work on it.
+    refetch();
+  }, []);
+
+  if (isLoading || fetchingData) {
+    return <Loading />;
+  }
 
   return (
     <View className="relative pb-[50px]">
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View className="p-4">
           <Text className="text-center text-xs">Select your timing</Text>
           <Text className="text-center font-bold text-xl">{futsalName}</Text>
@@ -116,8 +168,10 @@ const BookScreen = ({ route }: BookScreenProps) => {
         />
         <Divider />
         <TimeSlots
+          dateStatusMap={DateStatusMap}
           timeSlots={TIME_SLOTS.timeSlots}
           setCurrentTimeSlot={setCurrentTimeSlot}
+          currentDate={currentDate}
         />
       </ScrollView>
       {TIME_SLOTS.timeSlots.length ? (
@@ -125,10 +179,32 @@ const BookScreen = ({ route }: BookScreenProps) => {
           <BookNowButton
             onPress={() => {
               const date = addTimeToDate(currentDate, currentTimeSlot);
-              alert(date);
+              bookingData &&
+                bookingData.push({
+                  ..._bookingDefaultValue,
+                  bookedFor: date.toString(),
+                });
+              try {
+                createBooking({
+                  ..._bookingDefaultValue,
+                  bookedFor: date.toString(),
+                });
+                Toast.show({
+                  type: "success",
+                  text1: "Success",
+                  text2: "You have successfully booked.",
+                });
+              } catch (e) {
+                Toast.show({
+                  type: "error",
+                  text1: "Oops",
+                  text2: "Something went wrong.",
+                });
+              }
             }}
             label={`Book for Rs. ${price.toString()}`}
             className="py-4 rounded-2xl"
+            disabled={!currentTimeSlot}
           />
         </View>
       ) : null}
@@ -237,18 +313,27 @@ const WeekComponent = ({
 };
 interface TimeSlotProps {
   timeSlots: string[];
-  setCurrentTimeSlot: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentTimeSlot: React.Dispatch<React.SetStateAction<string | null>>;
+  dateStatusMap: Map<string, string>;
+  currentDate: Date;
 }
 
-const TimeSlots = ({ timeSlots, setCurrentTimeSlot }: TimeSlotProps) => {
-  const [selected, setSelected] = useState<number>(0);
-  setCurrentTimeSlot(timeSlots[selected]);
+const TimeSlots = ({
+  timeSlots,
+  setCurrentTimeSlot,
+  dateStatusMap,
+  currentDate,
+}: TimeSlotProps) => {
+  const [selected, setSelected] = useState<number>(NaN);
   return (
     <Sectionlayout title="Select Available Time Slot">
       <View className="flex-row w-full flex-wrap items-center justify-between flex-2">
         {timeSlots.length ? (
           timeSlots.map((timeSlot, index) => {
             const isSelected = index === selected;
+            const date = addTimeToDate(currentDate, timeSlot);
+            const formattedDate = date.toString().split(" ").join("_");
+            const status = dateStatusMap.get(formattedDate);
             return (
               <TimeSlotComponent
                 key={`timeslot_${index}`}
@@ -257,6 +342,7 @@ const TimeSlots = ({ timeSlots, setCurrentTimeSlot }: TimeSlotProps) => {
                 setSelected={setSelected}
                 timeslot={timeSlot}
                 setCurrentTimeSlot={setCurrentTimeSlot}
+                status={status}
               />
             );
           })
@@ -273,7 +359,8 @@ interface TimeSlotComponentProps {
   isSelected: boolean;
   setSelected: React.Dispatch<React.SetStateAction<number>>;
   timeslot: string;
-  setCurrentTimeSlot: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentTimeSlot: React.Dispatch<React.SetStateAction<string | null>>;
+  status?: string;
 }
 const TimeSlotComponent = ({
   index,
@@ -281,20 +368,34 @@ const TimeSlotComponent = ({
   setSelected,
   timeslot,
   setCurrentTimeSlot,
+  status,
 }: TimeSlotComponentProps) => {
+  const isBooked = status === BOOKING_STATUS.BOOKED;
+  const isPending = status === BOOKING_STATUS.PENDING;
   return (
     <IconButton
       className={`px-5 py-4 rounded-2xl my-2 min-w-[170px] ${
-        isSelected ? "bg-primary" : "bg-white"
+        isPending
+          ? "bg-yellow disabled"
+          : isBooked
+          ? "bg-green-600 disabled"
+          : isSelected
+          ? "bg-primary"
+          : ""
       }`}
       onPress={() => {
         setCurrentTimeSlot(timeslot);
         setSelected(index);
       }}
+      disabled={isBooked || isPending}
     >
       <Text
         className={`text-md font-bold text-center ${
-          isSelected ? "text-white" : ""
+          isPending || isBooked || isSelected
+            ? "text-white disabled"
+            : isSelected
+            ? "bg-primary"
+            : ""
         } `}
       >
         {timeslot}

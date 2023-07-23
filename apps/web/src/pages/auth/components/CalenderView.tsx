@@ -1,8 +1,17 @@
 import useUserStore from "@/store/useUserStore";
 import Color from "@/utils/color";
-import { Box, Button, Card, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  IconButton,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import { tabsClasses } from "@mui/material/Tabs";
 import {
+  BOOKING_STATUS,
   Days,
   addTimeToDate,
   generateDaysForMonth,
@@ -14,10 +23,15 @@ import { useEffect } from "react";
 
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 import { useState } from "react";
+interface CalenderViewProps {
+  dateStatusMap: Map<string, string>;
+  refresh: () => void;
+}
 
-const CalenderView = () => {
+const CalenderView = ({ dateStatusMap, refresh }: CalenderViewProps) => {
   const { futsal } = useUserStore();
   const MONTHS = generateMonths();
   const [monthIndex, setMonthIndex] = useState<number>(0);
@@ -80,6 +94,9 @@ const CalenderView = () => {
           p: 2,
         }}
       >
+        <IconButton onClick={refresh}>
+          <RefreshIcon />
+        </IconButton>
         <Box marginTop={2}>
           <Typography variant="h6" textAlign="center">
             Available slots for {selectedDay.month} {selectedDay.date} , 2023
@@ -159,30 +176,54 @@ const CalenderView = () => {
           <Box
             display="grid"
             sx={{
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
               mt: 2,
             }}
           >
             {TIME_SLOTS.timeSlots.length ? (
-              TIME_SLOTS.timeSlots.map((timeSlot) => (
-                <Button
-                  key={timeSlot}
-                  onClick={() => {
-                    const date = addTimeToDate(currentDate, timeSlot);
-                    console.log(date);
-                  }}
-                  variant="contained"
-                  sx={{
-                    margin: "0.5rem",
-                    px: 10,
-                    py: 3,
-                    fontWeight: "bold",
-                    borderRadius: 2,
-                  }}
-                >
-                  {timeSlot}
-                </Button>
-              ))
+              TIME_SLOTS.timeSlots.map((timeSlot) => {
+                const date = addTimeToDate(currentDate, timeSlot);
+                const formattedDate = date
+                  .toString()
+                  .split(" ")
+                  .slice(0, -2)
+                  .join("_");
+                const status = dateStatusMap.get(formattedDate);
+                const isBooked = status === BOOKING_STATUS.BOOKED;
+                const isPending = status === BOOKING_STATUS.PENDING;
+
+                return (
+                  <Button
+                    key={timeSlot}
+                    variant={isBooked || isPending ? "text" : "outlined"}
+                    onClick={() => {
+                      console.log("Hello");
+                    }}
+                    sx={{
+                      margin: "0.5rem",
+                      px: 4,
+                      py: 2,
+                      fontWeight: "bold",
+                      borderRadius: 2,
+                      color:
+                        isBooked || isPending
+                          ? Color.white.focus
+                          : Color.primary.main,
+                      bgcolor: isPending
+                        ? Color.gradients.warning.state
+                        : isBooked
+                        ? Color.success.main
+                        : Color.transparent,
+                      ":disabled": {
+                        color: Color.white.main,
+                      },
+                    }}
+                    disabled={isBooked || isPending}
+                  >
+                    {timeSlot}
+                  </Button>
+                );
+              })
             ) : (
               <Typography
                 variant="h5"

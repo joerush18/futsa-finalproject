@@ -1,6 +1,14 @@
+import Loading from "@/components/Loading";
 import { Box } from "@mui/material";
+import CalenderView from "../auth/components/CalenderView";
+import useBookings from "@/hooks/useBookings";
 
 const BookingPage = () => {
+  const { fetchingData, DateStatusMap, refetch } = useBookings();
+
+  if (fetchingData) {
+    return <Loading />;
+  }
   return (
     <Box
       sx={{
@@ -9,7 +17,9 @@ const BookingPage = () => {
         overflowY: "scroll",
         scrollbarWidth: "none",
       }}
-    ></Box>
+    >
+      <CalenderView dateStatusMap={DateStatusMap} refresh={refetch} />
+    </Box>
   );
 };
 

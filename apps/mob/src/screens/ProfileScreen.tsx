@@ -14,7 +14,6 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const { mutate: logout } = useLogout();
   const { user } = useCurrentUser();
-  console.log(user);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
