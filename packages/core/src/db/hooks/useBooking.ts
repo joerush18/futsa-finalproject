@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createBooking, getBookingByFutsalId } from "../methods";
+import { createBooking, getBookingByFutsalId, updateBooking } from "../methods";
 import { IBookings } from "../../types";
 import { useBookingStore } from "../../store";
 
@@ -34,4 +34,22 @@ const useGetBookingByFutsalId = (futsalId: string) => {
   );
 };
 
-export { useCreateBooking, useGetBookingByFutsalId };
+const useUpdateBooking = () => {
+  return useMutation(
+    ["update-booking"],
+    async (data: Partial<IBookings> & Pick<IBookings, "id">) =>
+      updateBooking(data),
+    {
+      onSuccess: (data) => {
+        console.log("Booking updated successfully");
+        // Do something with the data if needed
+      },
+      onError: (error) => {
+        console.log("Booking update failed");
+        // Handle the error if needed
+      },
+    }
+  );
+};
+
+export { useCreateBooking, useGetBookingByFutsalId, useUpdateBooking };

@@ -12,11 +12,11 @@ const useCurrentUser = () => {
   const unsubscribe = useRef<() => void>();
 
   useEffect(() => {
+    setIsLoading(true);
     if (typeof unsubscribe.current === "function") {
       unsubscribe.current();
     }
     const fetchCurrentUser = async () => {
-      setIsLoading(true);
       unsubscribe.current = auth.onAuthStateChanged(async (user) => {
         setIsAuth(!!user);
         try {
@@ -29,9 +29,8 @@ const useCurrentUser = () => {
           }
         } catch (e) {
           console.log(e);
-        } finally {
-          setIsLoading(false);
         }
+        setIsLoading(false);
       });
     };
     fetchCurrentUser();
@@ -44,7 +43,7 @@ const useCurrentUser = () => {
 
   return {
     isAuth,
-    futsal,
+    futsal: futsal ?? null,
     isLoading,
   };
 };

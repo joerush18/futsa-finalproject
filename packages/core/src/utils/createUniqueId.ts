@@ -1,6 +1,23 @@
-import { v4 as uuid4 } from "uuid";
+const createUniqueId = () => {
+  const S4 = () => {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  };
 
-const createUniqueId = () => uuid4();
+  return (
+    S4() +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    S4() +
+    S4()
+  );
+};
 
 export { createUniqueId };
 export default createUniqueId;

@@ -8,6 +8,7 @@ import {
   Badge,
   Box,
   Typography,
+  Chip,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -66,11 +67,15 @@ const Navbar = () => {
         </Breadcrumbs>
         <Icons alignItems="center" gap="4px">
           <TextField variant="outlined" label="Search here" size="small" />
-          <Avatar
+          <Chip
             onClick={() => setOpen(true)}
-            alt="Joe Rush"
-            src={futsal?.profilePicture ?? ""}
+            avatar={
+              <Avatar alt="Joe Rush" src={futsal?.profilePicture ?? ""} />
+            }
+            label={futsal?.futsalName ?? ""}
+            variant="outlined"
           />
+
           <Badge
             badgeContent={0}
             color="error"
@@ -81,7 +86,7 @@ const Navbar = () => {
         </Icons>
       </StyledToolbar>
       <Menu
-        sx={{ marginTop: "3.5rem" }}
+        sx={{ marginTop: "3.5rem", marginRight: "20px" }}
         id="demo-positioned-menu"
         open={open}
         anchorOrigin={{

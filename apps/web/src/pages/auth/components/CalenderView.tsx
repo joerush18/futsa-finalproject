@@ -4,10 +4,12 @@ import {
   Box,
   Button,
   Card,
-  IconButton,
+  CircularProgress,
+  Chip,
   Tab,
   Tabs,
   Typography,
+  Stack,
 } from "@mui/material";
 import { tabsClasses } from "@mui/material/Tabs";
 import {
@@ -23,15 +25,20 @@ import { useEffect } from "react";
 
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import RefreshIcon from "@mui/icons-material/Refresh";
 
 import { useState } from "react";
+import { Refresh } from "@mui/icons-material";
 interface CalenderViewProps {
   dateStatusMap: Map<string, string>;
   refresh: () => void;
+  fetchingData: boolean;
 }
 
-const CalenderView = ({ dateStatusMap, refresh }: CalenderViewProps) => {
+const CalenderView = ({
+  dateStatusMap,
+  refresh,
+  fetchingData,
+}: CalenderViewProps) => {
   const { futsal } = useUserStore();
   const MONTHS = generateMonths();
   const [monthIndex, setMonthIndex] = useState<number>(0);
@@ -94,9 +101,12 @@ const CalenderView = ({ dateStatusMap, refresh }: CalenderViewProps) => {
           p: 2,
         }}
       >
-        <IconButton onClick={refresh}>
-          <RefreshIcon />
-        </IconButton>
+        <Chip
+          label="Refresh"
+          onClick={() => refresh()}
+          icon={fetchingData ? <CircularProgress size={20} /> : <Refresh />}
+          variant="outlined"
+        />
         <Box marginTop={2}>
           <Typography variant="h6" textAlign="center">
             Available slots for {selectedDay.month} {selectedDay.date} , 2023
@@ -105,12 +115,16 @@ const CalenderView = ({ dateStatusMap, refresh }: CalenderViewProps) => {
             Please choose an available time
           </Typography>
         </Box>
-
+        <Stack flexDirection="row" gap={2} alignItems="center">
+          <LabelBox label="Available" color="transparent" />
+          <LabelBox label="Booked" color={Color.success.main} />
+          <LabelBox label="Pending" color={Color.warning.main} />
+        </Stack>
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          mb={2}
+          my={2}
           width="300px"
         >
           <Button onClick={decreaseMonthIndex}>
@@ -123,7 +137,7 @@ const CalenderView = ({ dateStatusMap, refresh }: CalenderViewProps) => {
         </Box>
         <Box
           sx={{
-            maxWidth: "72vw",
+            width: "72vw",
             bgcolor: "background.paper",
           }}
         >
@@ -176,7 +190,7 @@ const CalenderView = ({ dateStatusMap, refresh }: CalenderViewProps) => {
           <Box
             display="grid"
             sx={{
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1.5fr))",
               mt: 2,
             }}
           >
@@ -240,3 +254,18 @@ const CalenderView = ({ dateStatusMap, refresh }: CalenderViewProps) => {
   );
 };
 export default CalenderView;
+
+const LabelBox = ({ label, color }: { label: string; color?: string }) => {
+  return (
+    <Stack gap={1} flexDirection="row" alignItems="center">
+      <Typography>{label} :</Typography>
+      <Box
+        height={16}
+        width={49}
+        borderRadius={1}
+        bgcolor={color}
+        border={label === "Available" ? "1px solid green" : "none"}
+      ></Box>
+    </Stack>
+  );
+};

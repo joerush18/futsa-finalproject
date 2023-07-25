@@ -2,9 +2,10 @@ import Loading from "@/components/Loading";
 import DHeader from "@/components/dashboard/DHeader";
 import useBookings from "@/hooks/useBookings";
 import { Box } from "@mui/material";
+import CalenderView from "../auth/components/CalenderView";
 
 const HomePage = () => {
-  const { bookings, fetchingData } = useBookings();
+  const { fetchingData, DateStatusMap, refetch } = useBookings();
 
   if (fetchingData) {
     <Loading />;
@@ -20,6 +21,11 @@ const HomePage = () => {
     >
       <DHeader />
       <br />
+      <CalenderView
+        dateStatusMap={DateStatusMap}
+        refresh={refetch}
+        fetchingData={fetchingData}
+      />
     </Box>
   );
 };

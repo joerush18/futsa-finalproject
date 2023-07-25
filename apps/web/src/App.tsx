@@ -4,7 +4,7 @@ import DashboardRoutes from "./navigation/DashboardRoutes";
 import useCurrentUser from "./hooks/useCurrentUser";
 import Loading from "./components/Loading";
 
-function App() {
+function Routes() {
   const { isAuth, isLoading } = useCurrentUser();
 
   if (isLoading) {
@@ -17,5 +17,9 @@ function App() {
     return <DashboardRoutes />;
   }
 }
+
+const App = () => {
+  return <Routes />;
+};
 
 export default App;

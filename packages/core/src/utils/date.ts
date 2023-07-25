@@ -9,6 +9,7 @@ import {
   isSameMonth,
   isBefore,
   set,
+  fromUnixTime,
 } from "date-fns";
 
 export interface MonthInfo {
@@ -152,6 +153,85 @@ function convertToAmPm(time) {
   return `${formattedHours} ${period}`;
 }
 
+const formatBookingDate = (dateString: string) => {
+  const dateObj = new Date(dateString);
+
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const dayOfWeek = daysOfWeek[dateObj.getDay()];
+  const dayOfMonth = dateObj.getDate();
+  const month = months[dateObj.getMonth()];
+  const hours = dateObj.getHours();
+  const minutes = dateObj.getMinutes();
+
+  const formattedDate = `${dayOfWeek} ${dayOfMonth} ${month},`;
+
+  let formattedTime;
+  if (hours === 12) {
+    formattedTime = `12:${minutes.toString().padStart(2, "0")} PM`;
+  } else if (hours > 12) {
+    formattedTime = `${(hours - 12).toString()}:${minutes
+      .toString()
+      .padStart(2, "0")} PM`;
+  } else {
+    formattedTime = `${hours}:${minutes.toString().padStart(2, "0")} AM`;
+  }
+
+  const finalFormattedDateTime = `${formattedDate} ${formattedTime}`;
+  return finalFormattedDateTime;
+};
+
+const convertTimeStamp = (timestamp) => {
+  const ts = Math.floor(+timestamp);
+  const dateObj = fromUnixTime(ts / 1000);
+
+  const formattedDate = format(dateObj, "EEE dd MMMM");
+  const formattedTime = format(dateObj, "h:mm a");
+
+  return `${formattedDate}, ${formattedTime}`;
+};
+
+function timeAgo(timestamp) {
+  const now = new Date().getTime();
+  const secondsAgo = Math.floor((now - timestamp) / 1000);
+
+  if (secondsAgo < 60) {
+    return `recently`;
+  } else if (secondsAgo < 3600) {
+    const minutesAgo = Math.floor(secondsAgo / 60);
+    return `${minutesAgo} minute${minutesAgo === 1 ? "" : "s"} ago`;
+  } else if (secondsAgo < 86400) {
+    const hoursAgo = Math.floor(secondsAgo / 3600);
+    return `${hoursAgo} hour${hoursAgo === 1 ? "" : "s"} ago`;
+  } else if (secondsAgo < 604800) {
+    const daysAgo = Math.floor(secondsAgo / 86400);
+    return `${daysAgo} day${daysAgo === 1 ? "" : "s"} ago`;
+  } else if (secondsAgo < 2419200) {
+    const weeksAgo = Math.floor(secondsAgo / 604800);
+    return `${weeksAgo} week${weeksAgo === 1 ? "" : "s"} ago`;
+  } else if (secondsAgo < 29030400) {
+    const monthsAgo = Math.floor(secondsAgo / 2419200);
+    return `${monthsAgo} month${monthsAgo === 1 ? "" : "s"} ago`;
+  } else {
+    const yearsAgo = Math.floor(secondsAgo / 29030400);
+    return `${yearsAgo} year${yearsAgo === 1 ? "" : "s"} ago`;
+  }
+}
+
 export {
   generateDaysForMonth,
   generateMonths,
@@ -159,4 +239,7 @@ export {
   getDateByDayAndMonth,
   addTimeToDate,
   convertToAmPm,
+  formatBookingDate,
+  convertTimeStamp,
+  timeAgo,
 };

@@ -4,6 +4,7 @@ export enum BOOKING_STATUS {
   "PENDING" = "pending",
   "BOOKED" = "booked",
   "CANCELLED" = "cancelled",
+  "REJECTED" = "rejected",
 }
 export enum PAYMENT_METHOD {
   "KHALTI" = "khalti",
