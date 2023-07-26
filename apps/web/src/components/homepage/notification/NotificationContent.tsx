@@ -36,21 +36,29 @@ const NotificationContent = ({
       }}
     >
       {booked ? (
-        <GppGoodRoundedIcon color="success" />
+        <GppGoodRoundedIcon
+          color="warning"
+          sx={{
+            fontSize: 30,
+          }}
+        />
       ) : (
         <GppBadRoundedIcon color="error" />
       )}
 
       <Box>
-        <Typography variant="body1" fontWeight="bold">
+        <Typography variant="body2" fontWeight="bold" lineHeight={0.5}>
           {username}
         </Typography>
-        <Typography variant="caption">
-          has {type} for {impDate}.
+        <Typography variant="caption" lineHeight={0.8}>
+          has {type} for{" "}
+          <Typography fontWeight="bold" variant="caption" lineHeight={1}>
+            {impDate}
+          </Typography>
         </Typography>
-        <br />
         <Typography
-          variant="caption"
+          lineHeight={1}
+          fontSize="10px"
           color={viewed ? Color.grey[700] : Color.primary.focus}
         >
           {date}

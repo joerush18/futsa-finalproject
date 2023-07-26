@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Toolbar,
   styled,
   Avatar,
@@ -7,8 +6,6 @@ import {
   Box,
   Typography,
   Chip,
-  MenuItem,
-  IconButton,
   Divider,
   Stack,
   Button,
@@ -21,21 +18,20 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "@/store/useUserStore";
 import MenuComponent, { IMenuItems } from "./MenuComponent";
 import useModal from "@/hooks/useModal";
-import { NOTIFICATION_TYPE, useLogout } from "core";
+import { INotification, formatBookingDate, timeAgo, useLogout } from "core";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationContent from "./homepage/notification/NotificationContent";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import Color from "@/utils/color";
+import useNotifications from "@/hooks/useNotifications";
 
 const Navbar = () => {
-  // const [notificationPop, setNotificationPop] = useState<boolean>(false);
   const { mutate: logout, isLoading: logOutLoading } = useLogout();
   const navigate = useNavigate();
   const { onClose, onOpen, open } = useModal();
   const {
     onClose: onNotificationClose,
     onOpen: onNotificationOpen,
-    open: notification,
+    open: notificationOpen,
   } = useModal();
 
   const StyledToolbar = styled(Toolbar)({
@@ -73,6 +69,8 @@ const Navbar = () => {
     },
   ];
 
+  const { notifications } = useNotifications();
+
   return (
     <Box position="sticky">
       <StyledToolbar>
@@ -97,12 +95,11 @@ const Navbar = () => {
         </Breadcrumbs>
         <Icons alignItems="center" gap="4px">
           <TextField variant="outlined" label="Search here" size="small" />
-
           <MenuComponent
-            open={notification}
+            open={notificationOpen}
             onClose={onNotificationClose}
             messages={
-              <>
+              <Box>
                 <Stack
                   flexDirection="row"
                   justifyContent="space-between"
@@ -117,34 +114,49 @@ const Navbar = () => {
                 </Stack>
                 <Divider />
                 <Box>
-                  <NotificationContent
-                    type={NOTIFICATION_TYPE.BOOKING_CANCELLED}
-                    date="2 days ago"
-                    impDate="Mon 24 July, 9:00 AM"
-                    username="Ramu Kaka"
-                    viewed={true}
-                  />
-                  <NotificationContent
-                    type={NOTIFICATION_TYPE.BOOKING}
-                    date="10 days ago"
-                    impDate="Mon 24 July, 8:00 AM"
-                    username="Joerush"
-                    viewed={false}
-                  />
+                  {notifications.length === 0 ? (
+                    <Typography variant="body2" textAlign="center" mt={2}>
+                      No notifications
+                    </Typography>
+                  ) : (
+                    notifications.map((notification: INotification) => {
+                      if (!notification) {
+                        return null;
+                      }
+                      return (
+                        <NotificationContent
+                          key={notification.id}
+                          type={notification.type}
+                          date={timeAgo(notification.createdAt)}
+                          impDate={formatBookingDate(
+                            notification.bookedForTime?.toString() ?? ""
+                          )}
+                          username={notification?.createdBy?.name ?? ""}
+                          viewed={notification.viewed}
+                        />
+                      );
+                    })
+                  )}
                 </Box>
-              </>
+              </Box>
             }
             sx={{
               marginTop: 6,
               padding: 0,
               minHeight: "70vh",
             }}
-            paperMinW="300px"
+            paperMinW="400px"
           >
-            <Badge badgeContent={10} color="error" onClick={onNotificationOpen}>
+            <Badge
+              badgeContent={notifications?.length ?? 0}
+              color="error"
+              onClick={onNotificationOpen}
+            >
               <NotificationsIcon
                 sx={{
-                  color: notification ? Color.primary.focus : Color.grey[500],
+                  color: notificationOpen
+                    ? Color.primary.focus
+                    : Color.grey[500],
                 }}
               />
             </Badge>

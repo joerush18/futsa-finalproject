@@ -50,7 +50,12 @@ export const textStyles: Partial<Typography> = {
     lineHeight: "1.6",
   },
   body2: {
-    fontSize: "14px",
+    fontSize: "12px",
+    fontWeight: 400,
+    lineHeight: "1.6",
+  },
+  caption: {
+    fontSize: "12px",
     fontWeight: 400,
     lineHeight: "1.6",
   },
