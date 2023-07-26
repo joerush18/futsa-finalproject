@@ -16,6 +16,7 @@ const HomePage = () => {
         paddingY: "20px",
         height: "105%",
         overflowY: "scroll",
+        width: "full",
         scrollbarWidth: "none",
       }}
     >

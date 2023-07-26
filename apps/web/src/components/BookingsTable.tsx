@@ -8,7 +8,6 @@ import Paper from "@mui/material/Paper";
 import {
   BOOKING_STATUS,
   IBookings,
-  convertTimeStamp,
   formatBookingDate,
   timeAgo,
   useBookingStore,
@@ -33,7 +32,7 @@ export default function BookingsTable({ bookings, type }: BookingsTableProps) {
   const isPending = type === BOOKING_STATUS.PENDING;
   const isBooked = type === BOOKING_STATUS.BOOKED;
   const isRejected = type === BOOKING_STATUS.REJECTED;
-  const isCancelled = type === BOOKING_STATUS.CANCELLED;
+  // const isCancelled = type === BOOKING_STATUS.CANCELLED;
 
   const { mutate: updateBooking } = useUpdateBooking();
   const { updateBookingStatus } = useBookingStore();

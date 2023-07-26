@@ -9,11 +9,12 @@ import PaymentPage from "@/pages/dashboard/PaymentPage";
 import OnBoardingClient from "@/pages/auth/onboarding/OnBoardingClient";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { STATUS } from "core/src/types/futsals.types";
+import { Typography } from "@mui/material";
 
 const DashboardRoutes = () => {
-  const { futsal, isAuth } = useCurrentUser();
-  if (!futsal || !isAuth) {
-    return null;
+  const { futsal } = useCurrentUser();
+  if (futsal === undefined || futsal.email === "") {
+    return <Typography>Something went wrong.</Typography>;
   }
   if (futsal.status !== STATUS.ACTIVE) {
     return (
@@ -23,23 +24,20 @@ const DashboardRoutes = () => {
     );
   }
 
-  if (futsal.status === STATUS.ACTIVE) {
-    return (
-      <>
-        <Routes>
-          <Route path="/" element={<Dashboard />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="bookings" element={<BookingPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="news" element={<NewsPage />} />
-            <Route path="events" element={<EventsPage />} />
-            <Route path="payments" element={<PaymentPage />} />
-          </Route>
-        </Routes>
-      </>
-    );
-  }
-  return null;
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Dashboard />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="bookings" element={<BookingPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="news" element={<NewsPage />} />
+          <Route path="events" element={<EventsPage />} />
+          <Route path="payments" element={<PaymentPage />} />
+        </Route>
+      </Routes>
+    </>
+  );
 };
 
 export default DashboardRoutes;

@@ -45,6 +45,9 @@ const CalenderView = ({
   const DAYS = generateDaysForMonth(MONTHS[monthIndex].value);
   const [selectedDay, setSelectedDay] = useState<Days>(DAYS[0]);
 
+  if (!dateStatusMap || !futsal) {
+    return null;
+  }
   const currentDate = getDateByDayAndMonth(
     selectedDay.date,
     MONTHS[monthIndex].value + 1,
@@ -92,7 +95,7 @@ const CalenderView = ({
   }, [monthIndex]);
 
   return (
-    <Box>
+    <>
       <Card
         sx={{
           width: "100%",
@@ -137,7 +140,7 @@ const CalenderView = ({
         </Box>
         <Box
           sx={{
-            width: "72vw",
+            width: "70vw",
             bgcolor: "background.paper",
           }}
         >
@@ -250,7 +253,7 @@ const CalenderView = ({
           </Box>
         </Box>
       </Card>
-    </Box>
+    </>
   );
 };
 export default CalenderView;

@@ -4,6 +4,7 @@ import {
   collection,
   doc,
   getDocs,
+  onSnapshot,
   orderBy,
   query,
   updateDoc,
@@ -30,6 +31,7 @@ const getBookingByFutsalId = async (futsalId: string): Promise<IBookings[]> => {
     query(
       collection(db, "bookings"),
       where("bookedToFutsal.id", "==", futsalId),
+      where("hasExpired", "==", false),
       orderBy("createdAt", "asc")
     )
   );

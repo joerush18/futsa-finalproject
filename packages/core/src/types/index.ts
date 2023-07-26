@@ -6,3 +6,4 @@ export * from "./events.types";
 export * from "./bookings.types";
 export * from "./meta.types";
 export * from "./reviews.types";
+export * from "./notification.types";

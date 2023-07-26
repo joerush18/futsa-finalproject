@@ -203,7 +203,9 @@ const BookScreen = ({ route }: BookScreenProps) => {
               }
             }}
             label={`Book for Rs. ${price.toString()}`}
-            className="py-4 rounded-2xl"
+            className={`py-4 rounded-2xl w-[90%] m-auto ${
+              !currentTimeSlot ? "bg-gray-400" : "bg-primary"
+            }`}
             disabled={!currentTimeSlot}
           />
         </View>
@@ -384,7 +386,13 @@ const TimeSlotComponent = ({
           : ""
       }`}
       onPress={() => {
-        setCurrentTimeSlot(timeslot);
+        setCurrentTimeSlot((prev) => {
+          if (prev === timeslot) {
+            setSelected(NaN);
+            return null;
+          }
+          return timeslot;
+        });
         setSelected(index);
       }}
       disabled={isBooked || isPending}

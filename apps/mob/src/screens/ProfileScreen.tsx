@@ -50,6 +50,9 @@ const ProfileScreen = () => {
         <Text className="text-white text-sm">{user?.email}</Text>
       </View>
       <View className="p-4">
+        <OptionsCard label="Your Bookings">
+          <Ionicons name="book" size={36} color={color.primary} />
+        </OptionsCard>
         <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />
         </OptionsCard>
@@ -59,6 +62,9 @@ const ProfileScreen = () => {
             size={36}
             color={color.yellow}
           />
+        </OptionsCard>
+        <OptionsCard label="Settings">
+          <Ionicons name="settings" size={34} color={color.primary} />
         </OptionsCard>
       </View>
     </ScrollView>
