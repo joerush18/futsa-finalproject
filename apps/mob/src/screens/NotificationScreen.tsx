@@ -1,9 +1,11 @@
-import { ScrollView } from "react-native";
+import { ScrollView, Text } from "react-native";
 import React, { useLayoutEffect } from "react";
 import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import Sectionlayout from "../components/layout/Sectionlayout";
 import NotificationCard from "../components/NotificationCard";
+import useNotifications from "../hooks/useNotification";
+import { formatBookingDate, timeAgo } from "core";
 const NotificationScreen = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -16,19 +18,33 @@ const NotificationScreen = () => {
       },
     });
   }, []);
+
+  const { notifications } = useNotifications();
+
+  if (notifications.length === 0) return <Text>No notifications</Text>;
+
   return (
-    <ScrollView>
-      {Array.from({ length: 4 }).map((item, index) => {
-        return (
-          <Sectionlayout title="Today" key={index}>
-            <ScrollView>
-              <NotificationCard type="accept" message="See you there !" />
-              <NotificationCard type="reject" message="Sorry !" />
-            </ScrollView>
-          </Sectionlayout>
-        );
-      })}
-    </ScrollView>
+    <Sectionlayout title="Today">
+      <ScrollView>
+        {notifications.map((notification) => {
+          const message = `has ${
+            notification.type.split(" ")[0]
+          } your booking for`;
+          return (
+            <NotificationCard
+              key={`notification_${notification.id}`}
+              type={notification.type}
+              message={message}
+              bookedForTime={formatBookingDate(
+                notification?.bookedForTime ?? ""
+              )}
+              createdAtTime={timeAgo(notification.createdAt)}
+              createdByName={notification.createdBy?.name ?? ""}
+            />
+          );
+        })}
+      </ScrollView>
+    </Sectionlayout>
   );
 };
 
