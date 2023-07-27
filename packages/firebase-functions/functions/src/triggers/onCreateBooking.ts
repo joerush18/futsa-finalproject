@@ -17,6 +17,7 @@ const listener = async (snapshot: QueryDocumentSnapshot) => {
     createdBy: booking.createdBy,
     createdFor: booking.bookedToFutsal.id,
     bookedForTime: booking.bookedFor,
+    bookingId: booking.id,
   };
   try {
     await notificationRef.set(_notification);

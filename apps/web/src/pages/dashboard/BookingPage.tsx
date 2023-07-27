@@ -49,12 +49,12 @@ const BookingPage = () => {
       </Box>
       <br />
       <Typography variant="h6" marginBottom={2}>
-        Rejected bookings
+        Cancelled bookings
       </Typography>
       <Box>
         <BookingsTable
-          bookings={bookingsByStatus.rejected}
-          type={BOOKING_STATUS.REJECTED}
+          bookings={bookingsByStatus.cancelled}
+          type={BOOKING_STATUS.CANCELLED}
         />
       </Box>
     </Box>

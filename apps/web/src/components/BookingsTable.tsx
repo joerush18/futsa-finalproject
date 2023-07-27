@@ -5,14 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import {
-  BOOKING_STATUS,
-  IBookings,
-  formatBookingDate,
-  timeAgo,
-  useBookingStore,
-  useUpdateBooking,
-} from "core";
+import { BOOKING_STATUS, IBookings, formatBookingDate, timeAgo } from "core";
 import { Avatar, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import Color from "@/utils/color";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,7 +13,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { ReactNode } from "react";
-import { toast } from "react-hot-toast/headless";
+import useBookings from "@/hooks/useBookings";
 
 interface BookingsTableProps {
   bookings: IBookings[];
@@ -34,42 +27,7 @@ export default function BookingsTable({ bookings, type }: BookingsTableProps) {
   const isRejected = type === BOOKING_STATUS.REJECTED;
   // const isCancelled = type === BOOKING_STATUS.CANCELLED;
 
-  const { mutate: updateBooking } = useUpdateBooking();
-  const { updateBookingStatus } = useBookingStore();
-
-  const handleAccept = (id: string) => {
-    const data = {
-      id,
-      status: BOOKING_STATUS.BOOKED,
-      updatedAt: +new Date(),
-    };
-    try {
-      updateBooking(data);
-      updateBookingStatus(data);
-      toast.success("Booking accepted");
-    } catch (e) {
-      console.log(e);
-      toast.error("Something went wrong");
-    }
-  };
-
-  const handleReject = (id: string) => {
-    const data = {
-      id,
-      status: BOOKING_STATUS.REJECTED,
-      hasExpired: true,
-      updatedAt: +new Date(),
-    };
-    try {
-      updateBooking(data);
-      updateBookingStatus(data);
-
-      toast.success("Booking rejected");
-    } catch (e) {
-      console.log(e);
-      toast.error("Something went wrong");
-    }
-  };
+  const { handleAccept, handleReject } = useBookings();
 
   if (!rows.length) {
     return <Typography>No bookings yet</Typography>;
