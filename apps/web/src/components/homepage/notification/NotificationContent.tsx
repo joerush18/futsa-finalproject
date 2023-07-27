@@ -10,6 +10,7 @@ interface INotificationContentProps {
   date: string;
   impDate: string;
   viewed: boolean;
+  onClick: () => void;
 }
 
 const NotificationContent = ({
@@ -18,11 +19,13 @@ const NotificationContent = ({
   date,
   impDate,
   viewed,
+  onClick,
 }: INotificationContentProps) => {
   const booked = type === NOTIFICATION_TYPE.BOOKING;
 
   return (
     <Stack
+      onClick={onClick}
       flexDirection="row"
       gap={1}
       sx={{

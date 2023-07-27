@@ -14,6 +14,7 @@ interface INotification extends IEntryMeta {
   type: NOTIFICATION_TYPE;
   createdFor: string;
   bookedForTime?: string;
+  bookingId?: string;
 }
 
 export { INotification };

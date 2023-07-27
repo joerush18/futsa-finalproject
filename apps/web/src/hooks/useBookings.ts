@@ -3,8 +3,10 @@ import {
   IBookings,
   useBookingStore,
   useGetBookingByFutsalId,
+  useUpdateBooking,
 } from "core";
 import useCurrentUser from "./useCurrentUser";
+import { toast } from "react-hot-toast";
 interface IBookingTypes {
   pendings: IBookings[];
   approved: IBookings[];
@@ -13,11 +15,12 @@ interface IBookingTypes {
   upComings: IBookings[];
 }
 const useBookings = () => {
-  const { bookings } = useBookingStore();
+  const { bookings, updateBookingStatus } = useBookingStore();
   const { futsal } = useCurrentUser();
   const { isLoading: fetchingData, refetch } = useGetBookingByFutsalId(
     futsal.id
   );
+  const { mutate: updateBooking } = useUpdateBooking();
 
   let DateStatusMap = new Map<string, string>();
 
@@ -53,12 +56,48 @@ const useBookings = () => {
     }
   );
 
+  const handleAccept = (id: string) => {
+    const data = {
+      id,
+      status: BOOKING_STATUS.BOOKED,
+      updatedAt: +new Date(),
+    };
+    try {
+      updateBooking(data);
+      updateBookingStatus(data);
+      toast.success("Booking accepted");
+    } catch (e) {
+      console.log(e);
+      toast.error("Something went wrong");
+    }
+  };
+
+  const handleReject = (id: string) => {
+    const data = {
+      id,
+      status: BOOKING_STATUS.REJECTED,
+      hasExpired: true,
+      updatedAt: +new Date(),
+    };
+    try {
+      updateBooking(data);
+      updateBookingStatus(data);
+
+      toast.success("Booking rejected");
+    } catch (e) {
+      console.log(e);
+      toast.error("Something went wrong");
+    }
+  };
+
   return {
     bookings,
     fetchingData,
     DateStatusMap,
     refetch,
     bookingsByStatus,
+    handleAccept,
+    handleReject,
   };
 };
 

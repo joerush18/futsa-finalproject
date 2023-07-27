@@ -3,12 +3,12 @@ export interface IEntryMeta {
   createdBy?: {
     id: string;
     name: string;
-    email: string;
+    email?: string;
   };
   updatedAt?: number;
   updatedBy?: {
     id: string;
     name: string;
-    email: string;
+    email?: string;
   };
 }

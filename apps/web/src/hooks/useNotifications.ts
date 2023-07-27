@@ -2,10 +2,12 @@ import { INotification, db } from "core";
 import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import useCurrentUser from "./useCurrentUser";
+import useBookings from "./useBookings";
 
 const useNotifications = () => {
   const [notifications, setNotification] = useState<INotification[]>([]);
   const { futsal } = useCurrentUser();
+  const { refetch } = useBookings();
 
   useEffect(() => {
     const notificationRef = db.collection("notifications");
@@ -16,6 +18,7 @@ const useNotifications = () => {
           (doc) => doc.data() as INotification
         );
         setNotification(notifications);
+        refetch();
       } else {
         setNotification([]);
       }
