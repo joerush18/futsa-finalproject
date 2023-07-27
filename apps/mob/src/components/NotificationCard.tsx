@@ -4,28 +4,30 @@ import Card from "./ui/Card";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import color from "../assets/colors";
-
-enum NOTIFICATION_TYPE_ENUM {
-  ACCEPT = "accept",
-  REJECT = "reject",
-}
+import { NOTIFICATION_TYPE } from "core";
 
 interface NotificationCardProps {
-  type: "accept" | "reject";
+  type: NOTIFICATION_TYPE;
   message?: string;
+  bookedForTime: string;
+  createdAtTime: string;
+  createdByName: string;
 }
 
 const NotificationCard: React.FC<NotificationCardProps> = ({
   type,
   message,
+  bookedForTime,
+  createdAtTime,
+  createdByName,
 }) => {
   return (
     <Card>
       <View style={styles.flex}>
-        {type === NOTIFICATION_TYPE_ENUM.ACCEPT && (
+        {type === NOTIFICATION_TYPE.BOOKING_CONFIRMED && (
           <AntDesign name="checkcircle" size={36} color={color.primary} />
         )}
-        {type === NOTIFICATION_TYPE_ENUM.REJECT && (
+        {type === NOTIFICATION_TYPE.BOOKING_REJECTED && (
           <Entypo name="circle-with-cross" size={36} color={color.red} />
         )}
         <View style={styles.VFlex}>
@@ -34,18 +36,16 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               fontWeight: "bold",
             }}
           >
-            Hardik Futsal{" "}
-            <Text style={{ fontWeight: "200", color: color.grayText }}>
-              has {type}ed your booking request.
-            </Text>
+            {createdByName}
+            <Text className="font-normal"> {message}</Text>
           </Text>
-          <Text>{message}</Text>
+          <Text>{bookedForTime}</Text>
           <Text
             style={{
               color: color.grayLight,
             }}
           >
-            2 hrs ago.
+            {createdAtTime}
           </Text>
         </View>
       </View>
