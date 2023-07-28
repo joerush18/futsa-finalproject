@@ -3,19 +3,22 @@ import { IBookings } from "../types";
 
 interface BookingStore {
   bookings: IBookings[];
-  singleBooking: IBookings;
+  userBookings: IBookings[];
   setBookings: (values: IBookings[]) => void;
+  setUserBookings: (values: IBookings[]) => void;
   updateBookingStatus: (
     data: Partial<IBookings> & Pick<IBookings, "id">
   ) => void;
-  setSingleBooking: (id: string) => void;
 }
 
 const useBookingStore = create<BookingStore>((set) => ({
   bookings: [],
-  singleBooking: {} as IBookings,
+  userBookings: [],
   setBookings: (value: IBookings[]) => {
     set((state) => ({ ...state.bookings, bookings: value }));
+  },
+  setUserBookings: (value: IBookings[]) => {
+    set((state) => ({ ...state.userBookings, userBookings: value }));
   },
   updateBookingStatus: (data: Partial<IBookings> & Pick<IBookings, "id">) => {
     set((state) => {
@@ -26,12 +29,6 @@ const useBookingStore = create<BookingStore>((set) => ({
         return booking;
       });
       return { ...state, bookings: newBookings };
-    });
-  },
-  setSingleBooking: (id: string) => {
-    set((state) => {
-      const singleBooking = state.bookings.find((booking) => booking.id === id);
-      return { ...state, singleBooking };
     });
   },
 }));

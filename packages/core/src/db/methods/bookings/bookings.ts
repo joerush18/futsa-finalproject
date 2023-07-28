@@ -4,7 +4,6 @@ import {
   collection,
   doc,
   getDocs,
-  onSnapshot,
   orderBy,
   query,
   updateDoc,
@@ -31,8 +30,17 @@ const getBookingByFutsalId = async (futsalId: string): Promise<IBookings[]> => {
     query(
       collection(db, "bookings"),
       where("bookedToFutsal.id", "==", futsalId),
-      where("hasExpired", "==", false),
-      orderBy("createdAt", "asc")
+      orderBy("createdAt", "desc")
+    )
+  );
+  return snapshot.docs.map((doc) => doc.data() as IBookings);
+};
+const getBookingByUserId = async (userId: string): Promise<IBookings[]> => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, "bookings"),
+      where("createdBy.id", "==", userId),
+      orderBy("createdAt", "desc")
     )
   );
   return snapshot.docs.map((doc) => doc.data() as IBookings);
@@ -45,4 +53,9 @@ const updateBooking = async (
   return booking;
 };
 
-export { createBooking, getBookingByFutsalId, updateBooking };
+export {
+  createBooking,
+  getBookingByFutsalId,
+  updateBooking,
+  getBookingByUserId,
+};

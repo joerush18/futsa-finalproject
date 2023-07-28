@@ -22,12 +22,6 @@ const useBookings = () => {
   );
   const { mutate: updateBooking } = useUpdateBooking();
 
-  let DateStatusMap = new Map<string, string>();
-
-  bookings?.forEach((booking) => {
-    DateStatusMap.set(booking.bookedFor.split(" ").join("_"), booking.status);
-  });
-
   const bookingsByStatus = bookings.reduce(
     (acc: IBookingTypes, booking: IBookings) => {
       if (booking.status === BOOKING_STATUS.PENDING) {
@@ -45,6 +39,7 @@ const useBookings = () => {
       } else if (booking.status === BOOKING_STATUS.CANCELLED) {
         acc.cancelled.push(booking);
       }
+
       return acc;
     },
     {
@@ -55,6 +50,14 @@ const useBookings = () => {
       upComings: [],
     }
   );
+
+  let DateStatusMap = new Map<string, string>();
+
+  bookings
+    .filter((book) => !book.hasExpired)
+    .forEach((booking) => {
+      DateStatusMap.set(booking.bookedFor.split(" ").join("_"), booking.status);
+    });
 
   const handleAccept = (id: string) => {
     const data = {

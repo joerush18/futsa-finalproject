@@ -14,6 +14,7 @@ export const createDefaultValues = (futsal: IFutsal): IOnboardingState => {
       street: futsal.address?.street ?? "",
     },
     geoLocation: {
+      value: futsal.geoLocation?.value ?? "",
       lat: futsal.geoLocation?.lat ?? "",
       lng: futsal.geoLocation?.lng ?? "",
     },

@@ -1,5 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createBooking, getBookingByFutsalId, updateBooking } from "../methods";
+import {
+  createBooking,
+  getBookingByFutsalId,
+  getBookingByUserId,
+  updateBooking,
+} from "../methods";
 import { IBookings } from "../../types";
 import { useBookingStore } from "../../store";
 
@@ -34,6 +39,18 @@ const useGetBookingByFutsalId = (futsalId: string) => {
   );
 };
 
+const useGetBookingByUserId = (userId: string) => {
+  const { setUserBookings } = useBookingStore();
+  return useQuery(["get-booking-by-userId"], () => getBookingByUserId(userId), {
+    onSuccess: (data) => {
+      setUserBookings(data);
+    },
+    onError: (data) => {
+      console.log({ data });
+    },
+  });
+};
+
 const useUpdateBooking = () => {
   return useMutation(
     ["update-booking"],
@@ -52,4 +69,9 @@ const useUpdateBooking = () => {
   );
 };
 
-export { useCreateBooking, useGetBookingByFutsalId, useUpdateBooking };
+export {
+  useCreateBooking,
+  useGetBookingByFutsalId,
+  useUpdateBooking,
+  useGetBookingByUserId,
+};

@@ -20,6 +20,7 @@ import {
   IOnboardingState,
   createDefaultValues,
 } from "../auth/onboarding/types";
+import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
 
 const ProfilePage = () => {
   const { futsal } = useUserStore();
@@ -108,6 +109,14 @@ const ProfilePage = () => {
             label="Amenities"
             value={futsal.Amenities.map((amenity) => amenity).join(", ")}
           />
+          {futsal.geoLocation?.lat ? (
+            <Stack alignItems="flex-end" gap={1} flexDirection="row">
+              <WhereToVoteIcon color="success" />
+              <Typography variant="caption" fontWeight="bold" color="green">
+                Geolocation enabled
+              </Typography>
+            </Stack>
+          ) : null}
         </CardContent>
       </Card>
       <ProfileEditModal
@@ -139,6 +148,7 @@ import { FormInputText } from "@/components/ui/InputBox";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { useToastContext } from "@/store/ToastContext";
 import SelectAmenities from "@/components/ui/tagsBox";
+import LocationAutoComplete from "@/components/ui/LocationAutoComplete";
 
 const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
   const { futsal, setFutsal } = useUserStore();
@@ -238,7 +248,6 @@ const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
                 type="number"
               />
             </Stack>
-
             <Stack direction="row" gap={4}>
               <FormInputText
                 name={"groundSize"}
@@ -259,6 +268,10 @@ const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
                 type="time"
               />
             </Stack>
+            <LocationAutoComplete
+              control={setValue}
+              placeValue={futsal.geoLocation}
+            />
             <SelectAmenities
               control={setValue}
               name="Amenities"
@@ -291,7 +304,6 @@ const ProfileEditModal = ({ open, handleClose }: ProfileEditModalProps) => {
                 defaultImage={futsal?.coverPicture}
               />
             </Stack>
-
             <Button
               variant="contained"
               type="submit"

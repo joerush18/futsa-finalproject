@@ -17,7 +17,8 @@ export interface IFutsal extends IEntryMeta {
     city: string;
     street: string;
   };
-  geoLocation: {
+  geoLocation?: {
+    value?: any;
     lat?: string;
     lng?: string;
   };

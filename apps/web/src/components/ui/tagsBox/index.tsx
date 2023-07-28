@@ -63,7 +63,7 @@ export default function SelectAmenities({
       <FormControl
         fullWidth
         sx={{
-          mb: 2,
+          my: 2,
         }}
       >
         <InputLabel id="demo-multiple-chip-label">Amenities</InputLabel>

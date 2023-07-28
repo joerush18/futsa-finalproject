@@ -11,7 +11,9 @@ const useNotifications = () => {
 
   useEffect(() => {
     const notificationRef = db.collection("notifications");
-    const query = notificationRef.where("createdFor", "==", futsal.id);
+    const query = notificationRef
+      .where("createdFor", "==", futsal.id)
+      .orderBy("createdAt", "desc");
     const unsubscribe = onSnapshot(query, (snapshot) => {
       if (snapshot) {
         const notifications: INotification[] = snapshot.docs.map(
