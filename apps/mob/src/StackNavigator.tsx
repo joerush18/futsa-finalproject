@@ -14,6 +14,8 @@ import OtpScreen from "./screens/auth/OtpScreen";
 import SetPasswordScreen from "./screens/auth/SetPasswordScreen";
 import useCurrentUser from "./hooks/useCurrentUser";
 import Toast from "react-native-toast-message";
+import BookDetailsScreen from "./screens/BookDetailsScreen";
+import MyBookingsScreen from "./screens/MyBookingsScreen";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -24,6 +26,8 @@ export type RootStackParamList = {
   Booking: {
     futsalId: string;
   };
+  "Booking-Detail": { bookingId: string };
+  "My-Bookings": {};
 };
 
 const toastConfig = {};
@@ -55,6 +59,20 @@ const AfterAuthNavigationContainers = () => {
         <Stack.Screen
           name="Booking"
           component={BookScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="My-Bookings"
+          component={MyBookingsScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Booking-Detail"
+          component={BookDetailsScreen}
           options={{
             headerShown: false,
           }}

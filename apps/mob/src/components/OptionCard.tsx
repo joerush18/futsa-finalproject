@@ -5,11 +5,16 @@ import { Entypo } from "@expo/vector-icons";
 interface OptionsCardProps {
   children?: React.ReactNode;
   label: string;
+  onPress?: () => void;
 }
 
-const OptionsCard: React.FC<OptionsCardProps> = ({ children, label }) => {
+const OptionsCard: React.FC<OptionsCardProps> = ({
+  children,
+  label,
+  onPress,
+}) => {
   return (
-    <TouchableOpacity className="w-full">
+    <TouchableOpacity className="w-full" onPress={onPress}>
       <Card>
         <View className="flex-row items-center w-full justify-between">
           <View className="flex-row items-center gap-4">

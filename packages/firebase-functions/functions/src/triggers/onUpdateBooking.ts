@@ -7,6 +7,9 @@ import { Change } from "firebase-functions/v1";
 
 const listener = async (snapshot: Change<QueryDocumentSnapshot>) => {
   const booking = snapshot.after.data() as IBookings;
+  if (!booking) {
+    return;
+  }
   const id = createUniqueId();
   const notificationRef = Database.collection(Collection.Notification).doc(id);
 
@@ -33,6 +36,28 @@ const listener = async (snapshot: Change<QueryDocumentSnapshot>) => {
     };
     try {
       await notificationRef.set(_notification);
+    } catch (e) {
+      throw new Error("Error while creating notification");
+    }
+  }
+  if (booking.status === BOOKING_STATUS.CANCELLED) {
+    const _notification: INotification = {
+      id,
+      description: `The booking for ${booking.bookedFor} has been ${booking.status} by ${booking.createdBy?.name}.`,
+      viewed: false,
+      type: NOTIFICATION_TYPE.BOOKING_CANCELLED,
+      createdAt: +new Date(),
+      createdBy: booking.createdBy,
+      createdFor: booking.bookedToFutsal.id,
+      bookedForTime: booking.bookedFor,
+      bookingId: booking.id,
+      updatedAt: +new Date(),
+    };
+    try {
+      await notificationRef.set(_notification);
+      await Database.collection(Collection.Bookings)
+        .doc(booking?.id ?? "")
+        .delete();
     } catch (e) {
       throw new Error("Error while creating notification");
     }

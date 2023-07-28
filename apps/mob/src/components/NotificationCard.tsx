@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
 import Card from "./ui/Card";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { NOTIFICATION_TYPE } from "core";
+import { useNavigation } from "@react-navigation/native";
 
 interface NotificationCardProps {
   type: NOTIFICATION_TYPE;
@@ -12,6 +13,7 @@ interface NotificationCardProps {
   bookedForTime: string;
   createdAtTime: string;
   createdByName: string;
+  bookingId?: string;
 }
 
 const NotificationCard: React.FC<NotificationCardProps> = ({
@@ -20,36 +22,47 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   bookedForTime,
   createdAtTime,
   createdByName,
+  bookingId,
 }) => {
+  const navigation = useNavigation();
   return (
-    <Card>
-      <View style={styles.flex}>
-        {type === NOTIFICATION_TYPE.BOOKING_CONFIRMED && (
-          <AntDesign name="checkcircle" size={36} color={color.primary} />
-        )}
-        {type === NOTIFICATION_TYPE.BOOKING_REJECTED && (
-          <Entypo name="circle-with-cross" size={36} color={color.red} />
-        )}
-        <View style={styles.VFlex}>
-          <Text
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            {createdByName}
-            <Text className="font-normal"> {message}</Text>
-          </Text>
-          <Text>{bookedForTime}</Text>
-          <Text
-            style={{
-              color: color.grayLight,
-            }}
-          >
-            {createdAtTime}
-          </Text>
+    <Pressable
+      onPress={() => {
+        // @ts-ignore
+        navigation.navigate("Booking-Detail", {
+          bookingId: bookingId,
+        });
+      }}
+    >
+      <Card>
+        <View style={styles.flex}>
+          {type === NOTIFICATION_TYPE.BOOKING_CONFIRMED && (
+            <AntDesign name="checkcircle" size={36} color={color.primary} />
+          )}
+          {type === NOTIFICATION_TYPE.BOOKING_REJECTED && (
+            <Entypo name="circle-with-cross" size={36} color={color.red} />
+          )}
+          <View style={styles.VFlex}>
+            <Text
+              style={{
+                fontWeight: "bold",
+              }}
+            >
+              {createdByName}
+              <Text className="font-normal"> {message}</Text>
+            </Text>
+            <Text>{bookedForTime}</Text>
+            <Text
+              style={{
+                color: color.grayLight,
+              }}
+            >
+              {createdAtTime}
+            </Text>
+          </View>
         </View>
-      </View>
-    </Card>
+      </Card>
+    </Pressable>
   );
 };
 

@@ -21,28 +21,31 @@ const NotificationScreen = () => {
 
   const { notifications } = useNotifications();
 
-  if (notifications.length === 0) return <Text>No notifications</Text>;
-
   return (
     <Sectionlayout title="Today">
       <ScrollView>
-        {notifications.map((notification) => {
-          const message = `has ${
-            notification.type.split(" ")[0]
-          } your booking for`;
-          return (
-            <NotificationCard
-              key={`notification_${notification.id}`}
-              type={notification.type}
-              message={message}
-              bookedForTime={formatBookingDate(
-                notification?.bookedForTime ?? ""
-              )}
-              createdAtTime={timeAgo(notification.createdAt)}
-              createdByName={notification.createdBy?.name ?? ""}
-            />
-          );
-        })}
+        {notifications.length === 0 ? (
+          <Text className="font-bold m-4">No notifications</Text>
+        ) : (
+          notifications.map((notification) => {
+            const message = `has ${
+              notification.type.split(" ")[0]
+            } your booking for`;
+            return (
+              <NotificationCard
+                key={`notification_${notification.id}`}
+                type={notification.type}
+                message={message}
+                bookedForTime={formatBookingDate(
+                  notification?.bookedForTime ?? ""
+                )}
+                createdAtTime={timeAgo(notification.createdAt)}
+                createdByName={notification.createdBy?.name ?? ""}
+                bookingId={notification.bookingId}
+              />
+            );
+          })
+        )}
       </ScrollView>
     </Sectionlayout>
   );

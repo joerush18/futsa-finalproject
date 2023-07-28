@@ -50,7 +50,13 @@ const ProfileScreen = () => {
         <Text className="text-white text-sm">{user?.email}</Text>
       </View>
       <View className="p-4">
-        <OptionsCard label="Your Bookings">
+        <OptionsCard
+          label="Your Bookings"
+          onPress={() =>
+            // @ts-ignore
+            navigation.navigate("My-Bookings")
+          }
+        >
           <Ionicons name="book" size={36} color={color.primary} />
         </OptionsCard>
         <OptionsCard label="Saved">

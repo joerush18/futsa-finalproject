@@ -31,7 +31,6 @@ import Loading from "../components/ui/Loading";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import useBookings from "../hooks/useBookings";
 import useRefetch from "../hooks/useRefetch";
-import { ref } from "firebase/storage";
 type BookScreenRouteProps = RouteProp<RootStackParamList, "Booking">;
 
 interface BookScreenProps {
