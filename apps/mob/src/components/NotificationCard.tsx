@@ -49,9 +49,9 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               }}
             >
               {createdByName}
-              <Text className="font-normal"> {message}</Text>
             </Text>
-            <Text>{bookedForTime}</Text>
+            <Text className="font-normal">{message}</Text>
+            <Text className="font-bold opacity-60">{bookedForTime}</Text>
             <Text
               style={{
                 color: color.grayLight,

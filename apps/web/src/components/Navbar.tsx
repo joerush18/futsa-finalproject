@@ -83,7 +83,8 @@ const Navbar = () => {
   ];
 
   const [bookingId, setBookingId] = useState<string>("");
-  const { notifications } = useNotifications();
+  const { notifications, updateNotification, unReadNotificationsCount } =
+    useNotifications();
   const {
     open: modalOpen,
     onClose: modalOnClose,
@@ -153,6 +154,10 @@ const Navbar = () => {
                           username={notification?.createdBy?.name ?? ""}
                           viewed={notification.viewed}
                           onClick={() => {
+                            updateNotification({
+                              id: notification.id ?? "",
+                              viewed: true,
+                            });
                             modalOnOpen();
                             setBookingId(notification.bookingId ?? "");
                           }}
@@ -171,7 +176,7 @@ const Navbar = () => {
             paperMinW="400px"
           >
             <Badge
-              badgeContent={notifications?.length ?? 0}
+              badgeContent={unReadNotificationsCount ?? 0}
               color="error"
               onClick={onNotificationOpen}
             >

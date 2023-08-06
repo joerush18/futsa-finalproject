@@ -9,18 +9,13 @@ import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import color from "../assets/colors";
 import Card from "../components/ui/Card";
-import {
-  BOOKING_STATUS,
-  formatBookingDate,
-  timeAgo,
-  useGetBookingByUserId,
-} from "core";
-import useCurrentUser from "../hooks/useCurrentUser";
+import { BOOKING_STATUS, formatBookingDate, timeAgo } from "core";
 import Loading from "../components/ui/Loading";
-import useRefetch from "../hooks/useRefetch";
+import useYourBookings from "../hooks/useYourBookings";
 
 const MyBookingsScreen = () => {
   const navigation = useNavigation();
+  const { fetchingData, bookings, refreshing, onRefresh } = useYourBookings();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -31,14 +26,6 @@ const MyBookingsScreen = () => {
       },
     });
   }, []);
-
-  const { user } = useCurrentUser();
-  const {
-    data: bookings,
-    isLoading: fetchingData,
-    refetch,
-  } = useGetBookingByUserId(user.id ?? "");
-  const { onRefresh, refreshing } = useRefetch(refetch);
 
   if (fetchingData) {
     return <Loading />;
