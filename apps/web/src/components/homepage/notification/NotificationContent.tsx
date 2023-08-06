@@ -35,7 +35,7 @@ const NotificationContent = ({
         },
         paddingY: 2,
         paddingX: 1,
-        bgcolor: viewed ? Color.grey[200] : Color.grey[100],
+        bgcolor: viewed ? Color.grey[100] : Color.grey[200],
       }}
     >
       {booked ? (

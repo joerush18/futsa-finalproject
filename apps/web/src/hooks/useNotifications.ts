@@ -3,6 +3,7 @@ import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import useCurrentUser from "./useCurrentUser";
 import useBookings from "./useBookings";
+import { useUpdateNotification } from "core";
 
 const useNotifications = () => {
   const [notifications, setNotification] = useState<INotification[]>([]);
@@ -28,7 +29,21 @@ const useNotifications = () => {
     return () => unsubscribe();
   }, []);
 
-  return { notifications };
+  const { mutate: updateNotification, isLoading } = useUpdateNotification();
+
+  const unReadNotificationsCount = notifications.reduce((acc, curr) => {
+    if (curr.viewed === false) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+
+  return {
+    notifications,
+    updateNotification,
+    isLoading,
+    unReadNotificationsCount,
+  };
 };
 
 export default useNotifications;

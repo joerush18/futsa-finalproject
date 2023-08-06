@@ -7,7 +7,7 @@ import Divider from "../components/ui/Divider";
 import Sectionlayout from "../components/layout/Sectionlayout";
 import { AntDesign } from "@expo/vector-icons";
 import BookNowButton from "../components/ui/BookNowButton";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import Review from "../components/Review";
 import IconText from "../components/ui/IconText";
 import { RouteProp, useNavigation } from "@react-navigation/native";
@@ -40,6 +40,7 @@ const FutsalDetailScreen = ({ route }: FutsalDetailScreenProps) => {
     openTime,
     closeTime,
     groundSize,
+    geoLocation,
   } = futsal;
 
   return (
@@ -110,7 +111,10 @@ const FutsalDetailScreen = ({ route }: FutsalDetailScreenProps) => {
         </Sectionlayout>
         <Divider />
         <Sectionlayout title="Location">
-          <Location />
+          <Location
+            lat={geoLocation?.lat ? +geoLocation?.lat : 0}
+            lng={geoLocation?.lng ? +geoLocation?.lng : 0}
+          />
         </Sectionlayout>
         <Divider />
         <Sectionlayout title="Reviews">
@@ -218,10 +222,25 @@ const GroundComponent = ({
   );
 };
 
-const Location = () => {
+const Location = ({ lat, lng }: { lat?: number; lng?: number }) => {
+  const initialRegion = {
+    latitude: lat || 28.208218948316958,
+    longitude: lng || 84.00158931591984,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  };
   return (
     <View className="h-150">
-      <MapView className="h-[100] w-full" />
+      <MapView className="h-[100] w-full" initialRegion={initialRegion}>
+        <Marker
+          coordinate={{
+            latitude: lat ?? 0,
+            longitude: lng ?? 0,
+          }}
+          title="Your Location"
+          description="You are here"
+        />
+      </MapView>
     </View>
   );
 };

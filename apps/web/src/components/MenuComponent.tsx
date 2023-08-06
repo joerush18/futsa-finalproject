@@ -45,6 +45,8 @@ export default function MenuComponent({
             minWidth: paperMinW,
             border: "1px solid #e0e0e0",
             bgcolor: Color.grey[100],
+            maxHeight: "calc(100% - 170px)",
+            overflowY: "scroll",
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
