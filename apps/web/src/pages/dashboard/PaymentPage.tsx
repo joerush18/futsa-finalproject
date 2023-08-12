@@ -1,7 +1,18 @@
-import React from "react";
+import { Button } from "@mui/material";
+import { initiatePayment } from "core";
 
 const PaymentPage = () => {
-  return <div>PaymentPage</div>;
+  const handlePayment = async () => {
+    const res = await initiatePayment();
+    console.log(res);
+  };
+  return (
+    <div>
+      <Button variant="contained" onClick={() => handlePayment()}>
+        Pay via Khalti
+      </Button>
+    </div>
+  );
 };
 
 export default PaymentPage;
