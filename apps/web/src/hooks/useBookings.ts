@@ -9,10 +9,10 @@ import useCurrentUser from "./useCurrentUser";
 import { toast } from "react-hot-toast";
 interface IBookingTypes {
   pendings: IBookings[];
-  approved: IBookings[];
+  booked: IBookings[];
   rejected: IBookings[];
   cancelled: IBookings[];
-  upComings: IBookings[];
+  upcoming: IBookings[];
 }
 const useBookings = () => {
   const { bookings, updateBookingStatus } = useBookingStore();
@@ -24,15 +24,18 @@ const useBookings = () => {
 
   const bookingsByStatus = bookings.reduce(
     (acc: IBookingTypes, booking: IBookings) => {
+      console.log(
+        booking.bookedFor.split(" ")[0] > new Date().toISOString().split("T")[0]
+      );
       if (booking.status === BOOKING_STATUS.PENDING) {
         acc.pendings.push(booking);
       } else if (booking.status === BOOKING_STATUS.BOOKED) {
-        acc.approved.push(booking);
+        acc.booked.push(booking);
         if (
           booking.bookedFor.split(" ")[0] >
           new Date().toISOString().split("T")[0]
         ) {
-          acc.upComings.push(booking);
+          acc.upcoming.push(booking);
         }
       } else if (booking.status === BOOKING_STATUS.REJECTED) {
         acc.rejected.push(booking);
@@ -44,10 +47,10 @@ const useBookings = () => {
     },
     {
       pendings: [],
-      approved: [],
+      booked: [],
       rejected: [],
       cancelled: [],
-      upComings: [],
+      upcoming: [],
     }
   );
 

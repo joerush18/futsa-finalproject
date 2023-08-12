@@ -29,9 +29,6 @@ export default function BookingsTable({ bookings, type }: BookingsTableProps) {
 
   const { handleAccept, handleReject } = useBookings();
 
-  if (!rows.length) {
-    return <Typography>No bookings yet</Typography>;
-  }
   return (
     <>
       <TableContainer component={Paper}>
@@ -58,92 +55,102 @@ export default function BookingsTable({ bookings, type }: BookingsTableProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row: IBookings, index) => (
-              <TableRow
-                key={`bookings_${index}_${row.id}`}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableBodyCell>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar>{row.bookedByUser.name.slice(0, 1)}</Avatar>
-                    <Stack>
-                      <Typography
-                        variant="caption"
-                        align="left"
-                        fontWeight="bold"
-                        color={Color.text.focus}
-                      >
-                        {row.bookedByUser.name}
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        align="left"
-                        color={Color.text.focus}
-                      >
-                        {row.bookedByUser.email}
-                      </Typography>
+            {rows.length ? (
+              rows.map((row: IBookings, index) => (
+                <TableRow
+                  key={`bookings_${index}_${row.id}`}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableBodyCell>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Avatar>{row.bookedByUser.name.slice(0, 1)}</Avatar>
+                      <Stack>
+                        <Typography
+                          variant="caption"
+                          align="left"
+                          fontWeight="bold"
+                          color={Color.text.focus}
+                        >
+                          {row.bookedByUser.name}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          align="left"
+                          color={Color.text.focus}
+                        >
+                          {row.bookedByUser.email}
+                        </Typography>
+                      </Stack>
                     </Stack>
-                  </Stack>
-                </TableBodyCell>
-                <TableBodyCell label={formatBookingDate(row.bookedFor)} />
-                <TableBodyCell
-                  label={timeAgo(isPending ? row.createdAt : row.updatedAt)}
-                />
-                <TableBodyCell>
-                  <Typography
-                    variant="caption"
-                    align="left"
-                    color={Color.white.focus}
-                    px={1}
-                    py={0.5}
-                    borderRadius={5}
-                    bgcolor={
-                      row.status === BOOKING_STATUS.PENDING
-                        ? Color.warning.main
-                        : row.status === BOOKING_STATUS.BOOKED
-                        ? Color.success.main
-                        : row.status === BOOKING_STATUS.CANCELLED ||
-                          row.status === BOOKING_STATUS.REJECTED
-                        ? Color.error.main
-                        : Color.warning.main
-                    }
-                    textTransform="capitalize"
-                  >
-                    {row.status}
-                  </Typography>
-                </TableBodyCell>
-                <TableBodyCell label={row.price.toString()} />
+                  </TableBodyCell>
+                  <TableBodyCell label={formatBookingDate(row.bookedFor)} />
+                  <TableBodyCell
+                    label={timeAgo(isPending ? row.createdAt : row.updatedAt)}
+                  />
+                  <TableBodyCell>
+                    <Typography
+                      variant="caption"
+                      align="left"
+                      color={Color.white.focus}
+                      px={1}
+                      py={0.5}
+                      borderRadius={5}
+                      bgcolor={
+                        row.status === BOOKING_STATUS.PENDING
+                          ? Color.warning.main
+                          : row.status === BOOKING_STATUS.BOOKED
+                          ? Color.success.main
+                          : row.status === BOOKING_STATUS.CANCELLED ||
+                            row.status === BOOKING_STATUS.REJECTED
+                          ? Color.error.main
+                          : Color.warning.main
+                      }
+                      textTransform="capitalize"
+                    >
+                      {row.status}
+                    </Typography>
+                  </TableBodyCell>
+                  <TableBodyCell label={row.price.toString()} />
 
-                <TableCell align="left">
-                  <Stack direction="row" gap={1}>
-                    {row.hasPaid ? (
-                      <CheckIcon color="success" />
-                    ) : (
-                      <CloseIcon color="error" />
-                    )}
-                    <Typography>{row.paymentMethod ?? "Esewa"}</Typography>
-                  </Stack>
-                </TableCell>
-                {isPending ? (
                   <TableCell align="left">
-                    <Stack direction="row">
-                      <Tooltip title="Accept" arrow>
-                        <IconButton onClick={() => handleAccept(row?.id ?? "")}>
-                          <CheckCircleIcon color="success" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Reject" arrow>
-                        <IconButton onClick={() => handleReject(row?.id ?? "")}>
-                          <CancelIcon color="error" />
-                        </IconButton>
-                      </Tooltip>
+                    <Stack direction="row" gap={1}>
+                      {row.hasPaid ? (
+                        <CheckIcon color="success" />
+                      ) : (
+                        <CloseIcon color="error" />
+                      )}
+                      <Typography>{row.paymentMethod ?? "Esewa"}</Typography>
                     </Stack>
                   </TableCell>
-                ) : (
-                  ""
-                )}
-              </TableRow>
-            ))}
+                  {isPending ? (
+                    <TableCell align="left">
+                      <Stack direction="row">
+                        <Tooltip title="Accept" arrow>
+                          <IconButton
+                            onClick={() => handleAccept(row?.id ?? "")}
+                          >
+                            <CheckCircleIcon color="success" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Reject" arrow>
+                          <IconButton
+                            onClick={() => handleReject(row?.id ?? "")}
+                          >
+                            <CancelIcon color="error" />
+                          </IconButton>
+                        </Tooltip>
+                      </Stack>
+                    </TableCell>
+                  ) : (
+                    ""
+                  )}
+                </TableRow>
+              ))
+            ) : (
+              <TableBodyCell>
+                <Typography>No bookings yet</Typography>
+              </TableBodyCell>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

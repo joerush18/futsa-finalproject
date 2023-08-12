@@ -15,11 +15,15 @@ const ImageUpload = ({
   control,
   name,
   defaultImage,
+  height,
+  width,
 }: {
   label: string;
   control: any;
   name: string;
   defaultImage?: string;
+  height?: string;
+  width?: string;
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isBusy, setBusy] = useState(false);
@@ -79,6 +83,9 @@ const ImageUpload = ({
     fileInputRef.current?.click();
   };
 
+  const imageHeight = `calc(${height} -  10px)`;
+  const imageWidth = `calc(${width} -  10px)`;
+
   return (
     <>
       <Box
@@ -95,8 +102,8 @@ const ImageUpload = ({
             borderRadius: 4,
             border: "1px dashed #000",
             padding: "10px 10px",
-            height: "100px",
-            width: "100px",
+            height: height ?? "100px",
+            width: width ?? "100px",
             display: "grid",
             placeItems: "center",
             objectFit: "contain",
@@ -109,8 +116,8 @@ const ImageUpload = ({
             <img
               src={imageURL ?? defaultImage}
               alt="futsal"
-              height={"90px"}
-              width="90px"
+              height={height ? imageHeight : "90px"}
+              width={width ? imageWidth : "90px"}
               style={{
                 objectFit: "cover",
                 position: "absolute",
