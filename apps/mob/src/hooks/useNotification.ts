@@ -1,4 +1,4 @@
-import { INotification, db, formatBookingDate } from "core";
+import { INotification, db } from "core";
 import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import useCurrentUser from "./useCurrentUser";
@@ -22,23 +22,19 @@ const useNotifications = () => {
           (doc) => doc.data() as INotification
         );
         setNotification(notifications);
+        onRefresh();
+        schedulePushNotification({
+          title: "New Notification",
+          body: `You have new notification from ${notifications[0].createdBy?.name}`,
+          imageUrl:
+            "https://banner2.cleanpng.com/20180519/xfp/kisspng-futsal-football-pitch-antequera-clip-art-5affdc64131bb1.7245461315267175400783.jpg",
+          data: {
+            value: "Futsa",
+          },
+        });
       } else {
         setNotification([]);
       }
-      onRefresh();
-      schedulePushNotification({
-        title: "New Notification.",
-        body: `Your booking for ${formatBookingDate(
-          notifications[0].bookedForTime ?? ""
-        )} has been ${notifications[0].type.split(" ")[0]} by ${
-          notifications[0].createdBy?.name
-        }.`,
-        imageUrl:
-          "https://banner2.cleanpng.com/20180519/xfp/kisspng-futsal-football-pitch-antequera-clip-art-5affdc64131bb1.7245461315267175400783.jpg",
-        data: {
-          value: "Futsa",
-        },
-      });
     });
     return () => unsubscribe();
   }, []);

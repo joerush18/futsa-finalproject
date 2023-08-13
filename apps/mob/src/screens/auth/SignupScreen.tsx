@@ -15,12 +15,7 @@ import { useSignupEmail } from "core/src/db/hooks/useAuth";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const SignupScreen = () => {
-  const {
-    mutate: signUpWithEmail,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useSignupEmail();
+  const { mutate: signUpWithEmail, isLoading } = useSignupEmail();
   const {
     control,
     handleSubmit,
@@ -38,17 +33,23 @@ const SignupScreen = () => {
       ...data,
       role: "player" as ROLES,
     };
-    signUpWithEmail(formData);
-    if (isSuccess) {
-      navigation.navigate("Main" as never);
-    }
-    if (isError) {
-      Toast.show({
-        type: "error",
-        text1: "Oops!",
-        text2: "Something went wrong.",
-      });
-    }
+    signUpWithEmail(formData, {
+      onSuccess: () => {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Signed up successfully",
+        });
+        navigation.navigate("Main" as never);
+      },
+      onError: (data) => {
+        Toast.show({
+          type: "error",
+          text1: "Oops!",
+          text2: "Something went wrong",
+        });
+      },
+    });
   };
 
   return (

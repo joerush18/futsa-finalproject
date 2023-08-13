@@ -1,28 +1,15 @@
-export const initiatePayment = async () => {
+import { IInitiatePaymentResponse, IInitiatiatePayment } from "../../../types";
+
+export const initiatePayment = async (
+  initial: IInitiatiatePayment
+): Promise<IInitiatePaymentResponse> => {
   const res = await fetch(
     `https://us-central1-futsa-e5f8a.cloudfunctions.net/initiatePayment`,
     {
       method: "POST",
+      body: JSON.stringify(initial),
     }
   );
-  const data = await res.json();
+  const data: IInitiatePaymentResponse = await res.json();
   return data;
 };
-
-// const dbCreateTeamInvitation = async (
-//   details: TeamInvitationArgs
-// ): Promise<ITeamInvitation | undefined> => {
-//   const { data } = await httpsCallable<
-//     TeamInvitationArgs,
-//     TeamInvitationResponse
-//   >(
-//     firebaseFunctions,
-//     "createTeamInvitation"
-//   )(details);
-
-//   if (!data.success) {
-//     throw new Error(data.message);
-//   }
-
-//   return data.data;
-// };

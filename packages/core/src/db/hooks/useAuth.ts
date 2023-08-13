@@ -12,7 +12,7 @@ const useSignupEmail = () => {
         saveToken(data.uid);
       },
       onError: (data) => {
-        console.log({ data });
+        return data;
       },
     }
   );

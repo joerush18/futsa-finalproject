@@ -31,6 +31,7 @@ import Loading from "../components/ui/Loading";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import useBookings from "../hooks/useBookings";
 import useRefetch from "../hooks/useRefetch";
+import ModalComponent from "../components/ui/ModalComponent";
 type BookScreenRouteProps = RouteProp<RootStackParamList, "Booking">;
 
 interface BookScreenProps {
@@ -65,6 +66,8 @@ const BookScreen = ({ route }: BookScreenProps) => {
   const { fetchingData, DateStatusMap, refetch, bookingData } =
     useBookings(futsalId);
   const { refreshing, onRefresh } = useRefetch(refetch);
+
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const _bookingDefaultValue: IBookings = {
     bookedByUser: {
@@ -141,6 +144,10 @@ const BookScreen = ({ route }: BookScreenProps) => {
 
   return (
     <View className="relative pb-[50px]">
+      <ModalComponent
+        isVisible={isModalVisible}
+        setIsVisible={setModalVisible}
+      />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -183,23 +190,24 @@ const BookScreen = ({ route }: BookScreenProps) => {
                   ..._bookingDefaultValue,
                   bookedFor: date.toString(),
                 });
-              try {
-                createBooking({
+              createBooking(
+                {
                   ..._bookingDefaultValue,
                   bookedFor: date.toString(),
-                });
-                Toast.show({
-                  type: "success",
-                  text1: "Success",
-                  text2: "You have successfully booked.",
-                });
-              } catch (e) {
-                Toast.show({
-                  type: "error",
-                  text1: "Oops",
-                  text2: "Something went wrong.",
-                });
-              }
+                },
+                {
+                  onSuccess: () => {
+                    setModalVisible(true);
+                  },
+                  onError: () => {
+                    Toast.show({
+                      type: "error",
+                      text1: "Oops",
+                      text2: "Something went wrong.",
+                    });
+                  },
+                }
+              );
             }}
             label={`Book for Rs. ${price.toString()}`}
             className={`py-4 rounded-2xl w-[90%] m-auto ${

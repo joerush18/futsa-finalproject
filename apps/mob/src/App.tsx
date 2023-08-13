@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import StackNavigator from "./StackNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import usePushNotification from "./hooks/usePushNotification";
 import * as Notifications from "expo-notifications";
+import useNotifications from "./hooks/useNotification";
 
 export default function App() {
   const queryClient = new QueryClient({
@@ -29,7 +29,7 @@ export default function App() {
     .then((value) => console.log("AsyncStorage is working:", value))
     .catch((error) => console.error("AsyncStorage is not working:", error));
 
-  usePushNotification();
+  useNotifications();
 
   return (
     <>

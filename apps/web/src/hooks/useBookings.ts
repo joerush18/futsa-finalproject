@@ -24,9 +24,6 @@ const useBookings = () => {
 
   const bookingsByStatus = bookings.reduce(
     (acc: IBookingTypes, booking: IBookings) => {
-      console.log(
-        booking.bookedFor.split(" ")[0] > new Date().toISOString().split("T")[0]
-      );
       if (booking.status === BOOKING_STATUS.PENDING) {
         acc.pendings.push(booking);
       } else if (booking.status === BOOKING_STATUS.BOOKED) {

@@ -42,7 +42,7 @@ const usePushNotification = () => {
   async function schedulePushNotification(content: INotificationContent) {
     await Notifications.scheduleNotificationAsync({
       content: content,
-      trigger: { seconds: 2 },
+      trigger: null,
     });
   }
 
