@@ -17,8 +17,17 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+const Collections = {
+  Users: "users",
+  Events: "events",
+  Bookings: "bookings",
+  Notification: "notifications",
+  Futsals: "futsal",
+  Player: "player",
+};
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 const firebaseFunctions = firebase.functions();
 
-export { auth, db, firebaseFunctions, firebaseConfig };
+export { auth, db, Collections, firebaseFunctions, firebaseConfig };

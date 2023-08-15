@@ -40,13 +40,15 @@ interface PlaceType {
 }
 
 interface LocationAutoCompleteProps {
-  placeValue: any;
+  placeValue?: any;
   control: any;
+  label?: string;
 }
 
 export default function LocationAutoComplete({
   placeValue,
   control,
+  label,
 }: LocationAutoCompleteProps) {
   const [value, setValue] = React.useState<PlaceType | null>(
     placeValue.value ?? null
@@ -140,6 +142,14 @@ export default function LocationAutoComplete({
     };
   }, [value, inputValue, fetch]);
 
+  React.useEffect(() => {
+    if (placeValue) {
+      control("geoLocation.lat", placeValue.lat.toString());
+      control("geoLocation.lng", placeValue.lng.toString());
+      control("geoLocation.value", placeValue.value);
+    }
+  }, [placeValue]);
+
   return (
     <Autocomplete
       key={value?.place_id ?? ""}
@@ -154,7 +164,7 @@ export default function LocationAutoComplete({
       includeInputInList
       filterSelectedOptions
       value={value}
-      noOptionsText="No locations"
+      noOptionsText={"No locations"}
       onChange={(_, newValue: PlaceType | null) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
@@ -164,7 +174,7 @@ export default function LocationAutoComplete({
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Add Geolocation" fullWidth />
+        <TextField {...params} label={label ?? "Geo Location"} fullWidth />
       )}
       renderOption={(props, option) => {
         const matches =

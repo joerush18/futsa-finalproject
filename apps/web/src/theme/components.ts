@@ -80,7 +80,7 @@ const componentStyles: Components<Omit<Theme, "components">> = {
     styleOverrides: {
       root: {
         margin: "0 10px",
-        borderRadius: "8px",
+        borderRadius: "5px",
       },
     },
   },

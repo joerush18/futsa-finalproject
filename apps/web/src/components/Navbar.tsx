@@ -92,7 +92,7 @@ const Navbar = () => {
   } = useModal();
 
   return (
-    <Box position="sticky">
+    <Box position="sticky" top={0} bgcolor={Color.background.default} p={2}>
       <StyledToolbar>
         <Breadcrumbs>
           {pathname.split("/").map((path, index) => {

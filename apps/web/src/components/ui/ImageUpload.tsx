@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Box, CircularProgress, Input } from "@mui/material";
+import { Box, CircularProgress, Input, Typography } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 import {
@@ -17,6 +17,7 @@ const ImageUpload = ({
   defaultImage,
   height,
   width,
+  error,
 }: {
   label: string;
   control: any;
@@ -24,6 +25,7 @@ const ImageUpload = ({
   defaultImage?: string;
   height?: string;
   width?: string;
+  error?: string;
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isBusy, setBusy] = useState(false);
@@ -99,8 +101,8 @@ const ImageUpload = ({
       >
         <Box
           sx={{
-            borderRadius: 4,
-            border: "1px dashed #000",
+            borderRadius: 1,
+            border: `1px dashed ${error ? "red" : "gray"}`,
             padding: "10px 10px",
             height: height ?? "100px",
             width: width ?? "100px",
@@ -116,13 +118,13 @@ const ImageUpload = ({
             <img
               src={imageURL ?? defaultImage}
               alt="futsal"
-              height={height ? imageHeight : "90px"}
-              width={width ? imageWidth : "90px"}
               style={{
                 objectFit: "cover",
                 position: "absolute",
-                top: "5px",
-                borderRadius: "10px",
+                top: "3px",
+                borderRadius: "4px",
+                height: height ? imageHeight : "90px",
+                width: width ? imageWidth : "90px",
               }}
             />
           ) : null}
@@ -154,6 +156,11 @@ const ImageUpload = ({
           await handleChange(e);
         }}
       />
+      {error ? (
+        <Typography color={Color.error.main} fontSize="12px" mt={"-16px"}>
+          {error}
+        </Typography>
+      ) : null}
     </>
   );
 };

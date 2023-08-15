@@ -2,15 +2,15 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "@/pages/dashboard";
 import HomePage from "@/pages/dashboard/HomePage";
 import BookingPage from "@/pages/dashboard/BookingPage";
-import ProfilePage from "@/pages/dashboard/ProfilePage";
+import ProfilePage from "@/pages/dashboard/profile/ProfilePage";
 import NewsPage from "@/pages/dashboard/NewsPage";
-import EventsPage from "@/pages/dashboard/EventsPage";
+import EventsPage from "@/pages/dashboard/events/EventsPage";
 import PaymentPage from "@/pages/dashboard/PaymentPage";
 import OnBoardingClient from "@/pages/auth/onboarding/OnBoardingClient";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { STATUS } from "core/src/types/futsals.types";
 import { Typography } from "@mui/material";
-import CreateEventPage from "@/pages/dashboard/CreateEventPage";
+import CreateEventPage from "@/pages/dashboard/events/CreateEventPage";
 
 const DashboardRoutes = () => {
   const { futsal } = useCurrentUser();

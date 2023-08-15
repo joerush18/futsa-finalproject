@@ -39,4 +39,28 @@ const PasswordSetSchema = z
     path: ["confirmPassword"],
   });
 
-export { SignUpSchema, OTPSchema, LoginSchema, PasswordSetSchema };
+const EventSchema = z.object({
+  name: z
+    .string()
+    .min(8, { message: "Name must be at least 8 characters long" }),
+  description: z
+    .string()
+    .min(10, { message: "Description must be at least 10 characters long" }),
+  eventDate: z.string(),
+  endDate: z.string(),
+  eventImage: z.string().min(1, { message: "Required" }),
+  entryFee: z.string().min(1, { message: "Required" }),
+  tournamentType: z.string(),
+  gameTime: z.string().min(1, { message: "Required" }),
+  numberOfPlayers: z.string().min(1, { message: "Required" }),
+  hasExpired: z.boolean(),
+  geoLocation: z.object({
+    lat: z.string(),
+    lng: z.string(),
+    value: z.any(),
+  }),
+  prizes: z.array(z.string()),
+  teams: z.array(z.string()),
+});
+
+export { SignUpSchema, OTPSchema, LoginSchema, PasswordSetSchema, EventSchema };

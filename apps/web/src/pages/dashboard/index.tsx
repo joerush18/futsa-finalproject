@@ -9,16 +9,25 @@ import { Outlet } from "react-router-dom";
 const Dashboard: React.FC = () => {
   return (
     <>
-      <Toaster position="bottom-left" />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+        }}
+      />
       <Stack
         direction="row"
         justifyItems="left"
         bgcolor={Color.background.default}
       >
         <Sidebar />
-        <Box width="100%" p={2}>
+        <Box width="100%">
           <Navbar />
-          <Box p={2} height="calc(100vh - 100px)">
+          <Box px={2} height="calc(100vh - 100px)" overflow="scroll">
             {<Outlet />}
           </Box>
         </Box>
