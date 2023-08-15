@@ -31,6 +31,7 @@ const BookingPage = () => {
     event: React.MouseEvent<HTMLElement>,
     newAlignment: BOOKING_TYPE_ENUM
   ) => {
+    event.preventDefault();
     setAlignment(newAlignment);
   };
 

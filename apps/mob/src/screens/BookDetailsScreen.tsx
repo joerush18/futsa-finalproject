@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import color from "../assets/colors";
@@ -58,7 +65,7 @@ const BookDetailsScreen = ({ route }: BookDetailsScreenProps) => {
           <Ionicons name="arrow-back" size={24} color="white" />
         </Pressable>
       </View>
-      <View className=" mt-40 py-10 rounded-xl bg-white pt-16 flex items-center relative">
+      <View className=" mt-40 mb-4 py-10 rounded-xl bg-white pt-16 flex items-center relative">
         <Image
           // source={require("../assets/images/firstpage.png")}
           source={{
@@ -128,31 +135,44 @@ const BookDetailsScreen = ({ route }: BookDetailsScreenProps) => {
         </View>
       </View>
       {booking?.status === BOOKING_STATUS.PENDING ? (
-        <Text className="text-center text-white mt-2 text-xs">
+        <Text className="text-center text-white my-2 text-xs">
           Someone from the futsal will accept your request and will contact you
           soon.
         </Text>
       ) : null}
 
-      {booking?.status !== BOOKING_STATUS.REJECTED &&
-      booking?.status !== BOOKING_STATUS.CANCELLED ? (
-        <Button
-          label={isLoading ? "Canceling..." : "Cancel Booking"}
-          onPress={cancelBooking}
-          className="mt-5 py-4 bg-white text-primary"
+      <View className="flex my-4 items-center justify-center gap-2 ">
+        {booking?.status !== BOOKING_STATUS.REJECTED &&
+        booking?.status !== BOOKING_STATUS.CANCELLED &&
+        !booking?.hasPaid ? (
+          <TouchableOpacity
+            onPress={() => {}}
+            className=" p-4 bg-violet-600 rounded-md"
+          >
+            <Text className="text-center text-white font-bold">Pay now</Text>
+          </TouchableOpacity>
+        ) : null}
+        {booking?.status !== BOOKING_STATUS.REJECTED &&
+        booking?.status !== BOOKING_STATUS.CANCELLED ? (
+          <TouchableOpacity
+            onPress={cancelBooking}
+            className="p-4 bg-rose-600 rounded-md"
+          >
+            <Text className="text-center text-white font-bold">
+              {isLoading ? "Canceling..." : "Cancel Booking"}
+            </Text>
+          </TouchableOpacity>
+        ) : null}
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Main" as never);
+          }}
+          className="p-4 bg-white rounded-md"
         >
-          <Text className="text-center text-rose-600">Cancel Booking</Text>
-        </Button>
-      ) : null}
-      <Button
-        label="Cancel Booking"
-        onPress={() => {
-          navigation.navigate("Main" as never);
-        }}
-        className="mt-5 py-4 bg-white"
-      >
-        <Text className="text-center text-primary">Back to Home Page</Text>
-      </Button>
+          <Text className="text-center text-primary">Back to Home Page</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

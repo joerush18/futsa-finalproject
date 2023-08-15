@@ -18,12 +18,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const LoginScreen = () => {
   type ILoginCredentials = Pick<ISignUpCredentials, "email" | "password">;
-  const {
-    mutate: loginWithEmail,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useLoginEmail();
+  const { mutate: loginWithEmail, isLoading, error } = useLoginEmail();
 
   const navigation = useNavigation();
   const {
@@ -39,22 +34,23 @@ const LoginScreen = () => {
   };
 
   const handleLogin = (data: ILoginCredentials) => {
-    loginWithEmail(data);
-    if (isSuccess) {
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Logged in successfully",
-      });
-      navigation.navigate("Main" as never);
-    }
-    if (isError) {
-      Toast.show({
-        type: "error",
-        text1: "Oops!",
-        text2: "Something went wrong",
-      });
-    }
+    loginWithEmail(data, {
+      onSuccess: () => {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Logged in successfully",
+        });
+        navigation.navigate("Main" as never);
+      },
+      onError: () => {
+        Toast.show({
+          type: "error",
+          text1: "Oops!",
+          text2: "Something went wrong",
+        });
+      },
+    });
   };
 
   return (
