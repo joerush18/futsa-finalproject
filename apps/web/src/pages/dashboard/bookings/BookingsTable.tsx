@@ -6,13 +6,21 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { BOOKING_STATUS, IBookings, formatBookingDate, timeAgo } from "core";
-import { Avatar, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  IconButton,
+  Stack,
+  TableFooter,
+  TablePagination,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Color from "@/utils/color";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { ReactNode } from "react";
+import { ReactNode, useState, useRef } from "react";
 import useBookings from "@/hooks/useBookings";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
@@ -39,6 +47,26 @@ export default function BookingsTable({
   const { handleAccept, handleReject } = useBookings();
   const navigate = useNavigate();
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   return (
     <>
       <TableContainer component={Paper}>
@@ -66,7 +94,13 @@ export default function BookingsTable({
           </TableHead>
           <TableBody>
             {rows.length ? (
-              rows.map((row: IBookings, index) => (
+              (rowsPerPage > 0
+                ? rows.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : rows
+              ).map((row: IBookings, index) => (
                 <TableRow
                   key={`bookings_${index}_${row.id}`}
                   sx={{
@@ -166,17 +200,41 @@ export default function BookingsTable({
                         </Tooltip>
                       </Stack>
                     </TableCell>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                 </TableRow>
               ))
             ) : (
-              <TableBodyCell>
-                <Typography>No bookings yet</Typography>
-              </TableBodyCell>
+              <TableRow>
+                <Typography
+                  sx={{
+                    marginLeft: 2,
+                    mt: 2,
+                  }}
+                >
+                  No bookings yet
+                </Typography>
+              </TableRow>
             )}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[4, 8, 12, { label: "All", value: -1 }]}
+                colSpan={3}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    "aria-label": "rows per page",
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </>
