@@ -24,6 +24,8 @@ const Collections = {
   Notification: "notifications",
   Futsals: "futsal",
   Player: "player",
+  Teams: "teams",
+  Members: "members",
 };
 
 const auth = firebase.auth();

@@ -63,4 +63,29 @@ const EventSchema = z.object({
   teams: z.array(z.string()),
 });
 
-export { SignUpSchema, OTPSchema, LoginSchema, PasswordSetSchema, EventSchema };
+const MemberSchema = z.object({
+  memberName: z.string().min(1, { message: "Required" }),
+  gender: z.string().min(1, { message: "Required" }),
+  age: z.string().min(1, { message: "Required" }),
+  position: z.string().min(1, { message: "Required" }),
+  jerseyNumber: z.string().min(1, { message: "Required" }),
+  email: emailSchema,
+  phoneNumber: z.string().min(1, { message: "Required" }),
+});
+
+const TeamSchema = z.object({
+  name: z.string().min(1, { message: "Required" }),
+  members: z.array(MemberSchema),
+  ownerId: z.string().min(1, { message: "Required" }),
+  verified: z.boolean(),
+});
+
+export {
+  SignUpSchema,
+  OTPSchema,
+  LoginSchema,
+  PasswordSetSchema,
+  EventSchema,
+  MemberSchema,
+  TeamSchema,
+};

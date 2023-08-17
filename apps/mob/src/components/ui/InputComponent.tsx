@@ -1,4 +1,4 @@
-import { View, TextInput, TextInputProps, Text } from "react-native";
+import { TextInput, TextInputProps, Text, View } from "react-native";
 import React from "react";
 import { useController } from "react-hook-form";
 
@@ -25,7 +25,7 @@ const InputComponent = ({
   });
 
   return (
-    <>
+    <View className="flex-col space-y-1">
       <TextInput
         value={field.value}
         className={`px-4 py-2 border-[1px]  ${
@@ -39,7 +39,7 @@ const InputComponent = ({
       {error ? (
         <Text className="text-xs text-red ml-1 mt-1">{error}</Text>
       ) : null}
-    </>
+    </View>
   );
 };
 

@@ -5,7 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import Card from "../components/ui/Card";
 import color from "../assets/colors";
 import Divider from "../components/ui/Divider";
 
@@ -31,7 +30,11 @@ const FilterScreen = () => {
         <Radios />
         <Divider />
         <View className="my-4">
-          <BookNowButton label="Apply Filters" onPress={() => {}} className="py-4" />
+          <BookNowButton
+            label="Apply Filters"
+            onPress={() => {}}
+            className="py-4"
+          />
         </View>
       </View>
     </SafeAreaView>

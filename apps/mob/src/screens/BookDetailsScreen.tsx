@@ -12,7 +12,6 @@ import color from "../assets/colors";
 import { RootStackParamList } from "../StackNavigator";
 
 import { Ionicons } from "@expo/vector-icons";
-import Button from "../components/ui/Button";
 import {
   BOOKING_STATUS,
   formatBookingDate,

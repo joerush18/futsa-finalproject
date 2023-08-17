@@ -50,3 +50,5 @@ const getAllEvents = async (): Promise<IEvents[]> => {
 };
 
 export { createEvent, updateEvent, getEventsByFutsal, getAllEvents };
+export * from "./team";
+export * from "./member";

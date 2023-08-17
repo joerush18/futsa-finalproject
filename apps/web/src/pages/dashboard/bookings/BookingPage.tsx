@@ -10,9 +10,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import useBookings from "@/hooks/useBookings";
-import BookingsTable from "@/components/BookingsTable";
+import BookingsTable from "@/pages/dashboard/bookings/BookingsTable";
 import { BOOKING_STATUS } from "core";
 import { Refresh } from "@mui/icons-material";
+import { BookingDetailModal } from "@/pages/dashboard/bookings/BookingDetailModal";
+import useModal from "@/hooks/useModal";
+import { useSearchParams } from "react-router-dom";
 
 enum BOOKING_TYPE_ENUM {
   UPCOMING = "upcoming",
@@ -26,6 +29,9 @@ const BookingPage = () => {
   const [alignment, setAlignment] = useState<BOOKING_TYPE_ENUM>(
     BOOKING_TYPE_ENUM.UPCOMING
   );
+  const { open, onOpen, onClose } = useModal();
+  const [id] = useSearchParams();
+  console.log(id);
 
   const handleAlignMent = (
     event: React.MouseEvent<HTMLElement>,
@@ -68,6 +74,7 @@ const BookingPage = () => {
         <BookingsTable
           bookings={bookingsByStatus.pendings}
           type={BOOKING_STATUS.PENDING}
+          modalOnOpen={onOpen}
         />
       </Box>
       <br />
@@ -95,8 +102,17 @@ const BookingPage = () => {
         <BookingsTable
           bookings={bookingsByStatus[alignment]}
           type={BOOKING_STATUS.BOOKED}
+          modalOnOpen={onOpen}
         />
       </Box>
+      <BookingDetailModal
+        bookingId={id.get("id") ?? ""}
+        modalOnClose={() => {
+          id.delete("id");
+          onClose();
+        }}
+        modalOpen={open}
+      />
     </Box>
   );
 };

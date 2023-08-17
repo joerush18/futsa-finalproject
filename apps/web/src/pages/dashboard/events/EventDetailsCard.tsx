@@ -4,82 +4,15 @@ import { IEvents, ITeam } from "core";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import ErrorIcon from "@mui/icons-material/Error";
 import { EventHighlights } from "./EventHighlights";
+import { useState } from "react";
+import useModal from "@/hooks/useModal";
+import { TeamDetailsModal } from "./TeamDetailsModal";
 
 export const EventDetailsCard = ({ event }: { event: IEvents }) => {
-  const teams: ITeam[] = [
-    {
-      id: "",
-      name: "Team 1",
-      verified: true,
-      ownerId: "2",
-      createdBy: {
-        name: "Player 2",
-        email: "sds",
-        id: "sdsdj",
-      },
-      members: [
-        {
-          name: "Player 1",
-          age: 20,
-          gender: "male",
-          jerseyNumber: 1,
-          id: "1",
-          phoneNumber: "9841234567",
-          position: "Goalkeeper",
-          isCaptain: true,
-          teamId: "1",
-        },
-        {
-          name: "Player 2",
-          age: 22,
-          gender: "male",
-          jerseyNumber: 7,
-          id: "1",
-          phoneNumber: "9841234567",
-          position: "Forward",
-          isCaptain: true,
-          teamId: "62",
-        },
-      ],
-    },
-    {
-      id: "",
-      name: "Team 2",
-      verified: false,
-      ownerId: "2",
-      createdBy: {
-        name: "Player 2",
-        email: "sds",
-        id: "sdsdj",
-      },
-      members: [
-        {
-          name: "Player 1",
-          age: 20,
-          gender: "male",
-          jerseyNumber: 1,
-          id: "1",
-          phoneNumber: "9841234567",
-          position: "Goalkeeper",
-          isCaptain: true,
-          teamId: "1",
-        },
-        {
-          name: "Player 2",
-          age: 22,
-          gender: "male",
-          jerseyNumber: 7,
-          id: "1",
-          phoneNumber: "9841234567",
-          position: "Forward",
-          isCaptain: true,
-          teamId: "62",
-        },
-      ],
-    },
-  ];
   // @ts-ignore
   const venue = event.geoLocation?.value?.description.split(",")[1] ?? "";
+  const [selectedTeam, setSelectedTeam] = useState<ITeam>();
+  const { open, onOpen, onClose } = useModal();
   return (
     <Box
       flex={1}
@@ -159,8 +92,8 @@ export const EventDetailsCard = ({ event }: { event: IEvents }) => {
             Registered Teams
           </Typography>
           <Box>
-            {teams.length ? (
-              teams.map((team, index) => (
+            {event.teams.length ? (
+              event.teams.map((team, index) => (
                 <Chip
                   key={`team-${index}`}
                   label={team.name}
@@ -171,7 +104,10 @@ export const EventDetailsCard = ({ event }: { event: IEvents }) => {
                     borderRadius: "4px",
                     border: "1px solid #ccc",
                   }}
-                  onClick={() => console.log("team")}
+                  onClick={() => {
+                    onOpen();
+                    setSelectedTeam(team);
+                  }}
                   avatar={
                     team.verified ? (
                       <VerifiedIcon color="info" />
@@ -197,6 +133,24 @@ export const EventDetailsCard = ({ event }: { event: IEvents }) => {
           </Box>
         </Box>
       </Box>
+      <Typography
+        variant="caption"
+        color={Color.primary.main}
+        mt={5}
+        sx={{
+          cursor: "pointer",
+          "&:hover": { textDecoration: "underline" },
+          textAlign: "right",
+        }}
+      >
+        More details
+      </Typography>
+      <TeamDetailsModal
+        open={open}
+        onClose={onClose}
+        selectedTeam={selectedTeam}
+        key={`team-details-${selectedTeam?.id}`}
+      />
     </Box>
   );
 };

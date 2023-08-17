@@ -17,6 +17,7 @@ import Toast from "react-native-toast-message";
 import BookDetailsScreen from "./screens/BookDetailsScreen";
 import MyBookingsScreen from "./screens/MyBookingsScreen";
 import EventDetailsScreen from "./screens/EventDetailsScreen";
+import MyTeamsScreen from "./screens/MyTeamsScreen";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -30,6 +31,7 @@ export type RootStackParamList = {
   "Booking-Detail": { bookingId: string };
   "My-Bookings": {};
   "Event-Detail": { eventId: string };
+  "My-Teams": {};
 };
 
 const AfterAuthNavigationContainers = () => {
@@ -80,6 +82,13 @@ const AfterAuthNavigationContainers = () => {
         <Stack.Screen
           name="Event-Detail"
           component={EventDetailsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="My-Teams"
+          component={MyTeamsScreen}
           options={{
             headerShown: true,
           }}
@@ -138,6 +147,8 @@ const BeforeAuthNavigationContainers = () => {
 
 const StackNavigator = () => {
   const { isAuth } = useCurrentUser();
+  // useNotifications();
+
   if (isAuth) {
     return <AfterAuthNavigationContainers />;
   }

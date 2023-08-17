@@ -62,7 +62,7 @@ const MyBookingsScreen = () => {
                 moment={timeAgo(booking?.updatedAt ?? booking.createdAt)}
                 status={booking?.status}
                 payment={`${booking?.hasPaid ? "Paid" : "Not Paid"} (${
-                  booking.paymentMethod
+                  booking?.paymentMethod
                 })`}
               />
             );

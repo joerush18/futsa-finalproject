@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { FontAwesome } from "@expo/vector-icons";

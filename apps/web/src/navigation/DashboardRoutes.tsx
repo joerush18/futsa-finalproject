@@ -1,9 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "@/pages/dashboard";
 import HomePage from "@/pages/dashboard/HomePage";
-import BookingPage from "@/pages/dashboard/BookingPage";
+import BookingPage from "@/pages/dashboard/bookings/BookingPage";
 import ProfilePage from "@/pages/dashboard/profile/ProfilePage";
-import NewsPage from "@/pages/dashboard/NewsPage";
 import EventsPage from "@/pages/dashboard/events/EventsPage";
 import PaymentPage from "@/pages/dashboard/PaymentPage";
 import OnBoardingClient from "@/pages/auth/onboarding/OnBoardingClient";

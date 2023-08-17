@@ -13,7 +13,7 @@ export interface IEvents extends IEntryMeta {
   eventDate: string;
   endDate: string;
   eventImage: string;
-  teams?: ITeam[];
+  teams: ITeam[];
   hasExpired: boolean;
   entryFee: string;
   tournamentType: TOURNAMENT_TYPE;
@@ -31,19 +31,19 @@ export interface IEvents extends IEntryMeta {
 export interface ITeam extends IEntryMeta {
   id: string;
   name: string;
-  members: IMember[];
   ownerId: string;
   verified: boolean;
 }
 
 export interface IMember {
   id: string;
-  name: string;
+  memberName: string;
   gender: string;
   age: number;
   position: string;
   jerseyNumber: number;
   phoneNumber: string;
+  email: string;
   isCaptain: boolean;
   teamId: string;
 }
