@@ -14,13 +14,22 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { ReactNode } from "react";
 import useBookings from "@/hooks/useBookings";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 interface BookingsTableProps {
   bookings: IBookings[];
   type: BOOKING_STATUS;
+  modalOnOpen: () => void;
 }
 
-export default function BookingsTable({ bookings, type }: BookingsTableProps) {
+export default function BookingsTable({
+  bookings,
+  type,
+  modalOnOpen,
+}: BookingsTableProps) {
+  if (!bookings) {
+    return <Typography>No bookings yet</Typography>;
+  }
   const rows = [...bookings];
   const isPending = type === BOOKING_STATUS.PENDING;
   const isBooked = type === BOOKING_STATUS.BOOKED;
@@ -28,6 +37,7 @@ export default function BookingsTable({ bookings, type }: BookingsTableProps) {
   // const isCancelled = type === BOOKING_STATUS.CANCELLED;
 
   const { handleAccept, handleReject } = useBookings();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -42,10 +52,10 @@ export default function BookingsTable({ bookings, type }: BookingsTableProps) {
                   isPending
                     ? "Booked At"
                     : isBooked
-                    ? "Confirmed At"
+                    ? "Confirmed"
                     : isRejected
-                    ? "Rejected At"
-                    : "Cancelled At"
+                    ? "Rejected"
+                    : "Cancelled"
                 }
               />
               <TableHeaderCell label="Status" />
@@ -59,7 +69,22 @@ export default function BookingsTable({ bookings, type }: BookingsTableProps) {
               rows.map((row: IBookings, index) => (
                 <TableRow
                   key={`bookings_${index}_${row.id}`}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    "&:hover": {
+                      backgroundColor: Color.grey[100],
+                      cursor: "pointer",
+                    },
+                  }}
+                  onClick={() => {
+                    modalOnOpen();
+                    navigate({
+                      pathname: "",
+                      search: createSearchParams({
+                        id: row.id ?? "",
+                      }).toString(),
+                    });
+                  }}
                 >
                   <TableBodyCell>
                     <Stack direction="row" spacing={2} alignItems="center">

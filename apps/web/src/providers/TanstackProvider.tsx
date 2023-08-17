@@ -2,7 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
+const options = {
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
@@ -12,7 +12,9 @@ const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000,
     },
   },
-});
+};
+
+const queryClient = new QueryClient();
 
 export default function TanstackProvider({
   children,

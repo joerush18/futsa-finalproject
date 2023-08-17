@@ -28,10 +28,7 @@ const useBookings = () => {
         acc.pendings.push(booking);
       } else if (booking.status === BOOKING_STATUS.BOOKED) {
         acc.booked.push(booking);
-        if (
-          booking.bookedFor.split(" ")[0] >
-          new Date().toISOString().split("T")[0]
-        ) {
+        if (new Date(booking.bookedFor) > new Date()) {
           acc.upcoming.push(booking);
         }
       } else if (booking.status === BOOKING_STATUS.REJECTED) {

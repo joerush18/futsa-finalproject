@@ -57,12 +57,12 @@ const MyBookingsScreen = () => {
                   });
                 }}
                 id={booking.id?.toString() ?? ""}
-                fname={booking.bookedToFutsal.name ?? ""}
-                date={formatBookingDate(booking.bookedFor)}
-                moment={timeAgo(booking.updatedAt ?? booking.createdAt)}
-                status={booking.status}
-                payment={`${booking.hasPaid ? "Paid" : "Not Paid"} (${
-                  booking.paymentMethod
+                fname={booking?.bookedToFutsal?.name ?? ""}
+                date={formatBookingDate(booking?.bookedFor)}
+                moment={timeAgo(booking?.updatedAt ?? booking.createdAt)}
+                status={booking?.status}
+                payment={`${booking?.hasPaid ? "Paid" : "Not Paid"} (${
+                  booking?.paymentMethod
                 })`}
               />
             );

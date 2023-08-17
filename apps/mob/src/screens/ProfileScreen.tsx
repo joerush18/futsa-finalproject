@@ -59,6 +59,15 @@ const ProfileScreen = () => {
         >
           <Ionicons name="book" size={36} color={color.primary} />
         </OptionsCard>
+        <OptionsCard
+          label="My team"
+          onPress={() =>
+            // @ts-ignore
+            navigation.navigate("My-Teams")
+          }
+        >
+          <Ionicons name="person-sharp" size={36} color={color.primary} />
+        </OptionsCard>
         <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />
         </OptionsCard>

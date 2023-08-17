@@ -12,7 +12,6 @@ import color from "../assets/colors";
 import { RootStackParamList } from "../StackNavigator";
 
 import { Ionicons } from "@expo/vector-icons";
-import Button from "../components/ui/Button";
 import {
   BOOKING_STATUS,
   formatBookingDate,
@@ -80,7 +79,7 @@ const BookDetailsScreen = ({ route }: BookDetailsScreenProps) => {
           className="absolute top-[-50px] left-[37%]  z-10 bg-white"
         />
         <Text className="text-gray-800 font-bold">
-          {booking?.bookedToFutsal.name ?? ""}
+          {booking?.bookedToFutsal?.name ?? ""}
         </Text>
         <Text className=" opacity-60">Rs. {booking?.price ?? ""}</Text>
         <View className="flex-row  mt-2">
