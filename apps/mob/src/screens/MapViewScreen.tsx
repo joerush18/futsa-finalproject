@@ -33,12 +33,14 @@ const MapViewScreen = () => {
     })();
   }, []);
 
+  // const [searchText, setSearchText] = React.useState("");
+
   return (
     <SafeAreaView>
       <View className="h-screen w-full relative">
-        <View className="absolute top-0 z-10 px-2 mt-4 w-full">
-          <SearchInput />
-        </View>
+        {/* <View className="absolute top-0 z-10 px-2 mt-4 w-full">
+          <SearchInput setSearchText={setSearchText} />
+        </View> */}
         <MapView className="h-screen w-full" initialRegion={initialRegion}>
           {currentLocation && (
             <Marker
