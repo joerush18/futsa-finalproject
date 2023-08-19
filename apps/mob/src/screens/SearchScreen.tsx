@@ -1,8 +1,11 @@
-import { View } from "react-native";
-import React, { useLayoutEffect } from "react";
+import { View, ScrollView, TextInput } from "react-native";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import SearchInput from "../components/ui/SearchInput";
 import { useNavigation } from "@react-navigation/native";
 import color from "../assets/colors";
+import { useFutsalsStore } from "core";
+import FutsalCard from "../components/FutsalCard";
+import Empty from "../components/ui/Empty";
 
 const SearchScreen = () => {
   const navigation = useNavigation();
@@ -16,15 +19,39 @@ const SearchScreen = () => {
       },
     });
   }, []);
+  const { futsals } = useFutsalsStore();
+
+  const [searchText, setSearchText] = React.useState("");
+
   return (
-    <View
-      className="flex-col items-start justify-center p-4"
-      style={{
-        backgroundColor: color.primary,
-      }}
-    >
-      <SearchInput />
-    </View>
+    <>
+      <View
+        className="flex-col items-start justify-center p-4"
+        style={{
+          backgroundColor: color.primary,
+        }}
+      >
+        <SearchInput setSearchText={setSearchText} />
+      </View>
+      <ScrollView className="p-2">
+        {futsals.length ? (
+          futsals.map((futsal) => {
+            if (
+              searchText &&
+              searchText.trim() &&
+              !futsal.futsalName
+                .toUpperCase()
+                .includes(searchText.toUpperCase())
+            ) {
+              return null;
+            }
+            return <FutsalCard futsal={futsal} key={futsal.id} />;
+          })
+        ) : (
+          <Empty label="No futsals found" />
+        )}
+      </ScrollView>
+    </>
   );
 };
 
