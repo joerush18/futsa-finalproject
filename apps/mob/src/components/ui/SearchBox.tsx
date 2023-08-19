@@ -1,5 +1,5 @@
 import { Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Pressable } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";

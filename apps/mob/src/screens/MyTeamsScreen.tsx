@@ -8,8 +8,7 @@ import Loading from "../components/ui/Loading";
 import { ITeam, createUniqueId } from "core";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import CreateTeamForm from "./CreateTeamForm";
-
-const emptyImage = require("../assets/svg/empty.png");
+import Empty from "../components/ui/Empty";
 
 const MyTeamsScreen = () => {
   const navigation = useNavigation();
@@ -47,16 +46,7 @@ const MyTeamsScreen = () => {
         ))
       ) : (
         <View className="flex-col  items-center m-auto">
-          <View className="flex-col items-center h-80 mt-12 w-80">
-            <Image
-              source={emptyImage}
-              style={{
-                resizeMode: "stretch",
-                height: "100%",
-                width: "100%",
-              }}
-            />
-          </View>
+          <Empty />
           <Text className="mt-4 text-gray-500 mx-10 text-center">
             Looks like you don't have a team. Create one by Clicking below.
           </Text>

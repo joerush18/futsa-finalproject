@@ -20,7 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { ReactNode, useState, useRef } from "react";
+import { ReactNode, useState } from "react";
 import useBookings from "@/hooks/useBookings";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
