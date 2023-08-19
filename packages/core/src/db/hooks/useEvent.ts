@@ -22,7 +22,7 @@ const useCreateEvent = () => {
 const useGetEventsByFutsal = (futsalId: string) => {
   // const { setBookings } = useBookingStore();
   return useQuery(
-    ["get-event-by-futsalId"],
+    ["get-events-by-futsalId"],
     () => getEventsByFutsal(futsalId),
     {
       onSuccess: (data) => {
@@ -37,7 +37,7 @@ const useGetEventsByFutsal = (futsalId: string) => {
 
 const useGetAllEvents = () => {
   const { setEvents } = useEventStore();
-  return useQuery(["get-booking-by-userId"], () => getAllEvents(), {
+  return useQuery(["get-events-by-userId"], () => getAllEvents(), {
     onSuccess: (data) => {
       setEvents(data);
     },

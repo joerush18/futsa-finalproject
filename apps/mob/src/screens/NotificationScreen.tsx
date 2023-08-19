@@ -23,7 +23,7 @@ const NotificationScreen = () => {
 
   return (
     <Sectionlayout title="Today">
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {notifications.length === 0 ? (
           <Text className="font-bold m-4">No notifications</Text>
         ) : (
