@@ -91,6 +91,17 @@ const BidSchema = z.object({
   freebies: z.array(z.string()),
 });
 
+const RequestSchema = z.object({
+  title: z.string().min(1, { message: "Required" }),
+  description: z.string().min(1, { message: "Required" }),
+  startDate: z.string().min(1, { message: "Required" }),
+  endDate: z.string().min(1, { message: "Required" }),
+  location: z.string().min(1, { message: "Required" }),
+  budget: z.string().min(1, { message: "Required" }),
+  deadline: z.string().min(1, { message: "Required" }),
+  status: z.string().min(1, { message: "Required" }),
+});
+
 export {
   SignUpSchema,
   OTPSchema,
@@ -100,4 +111,5 @@ export {
   MemberSchema,
   TeamSchema,
   BidSchema,
+  RequestSchema,
 };

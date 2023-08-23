@@ -1,4 +1,4 @@
-import { Text, View, Image, ScrollView, TextInput } from "react-native";
+import { Text, View, ScrollView, TextInput } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import color from "../assets/colors";

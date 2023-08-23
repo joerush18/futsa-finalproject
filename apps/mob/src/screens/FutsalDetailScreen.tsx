@@ -71,22 +71,17 @@ const FutsalDetailScreen = ({ route }: FutsalDetailScreenProps) => {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            className="gap-2 m-1"
+            className="gap-2"
           >
             {Amenities.length ? (
               Amenities.map((amenity, index) => {
                 return (
-                  <IconText
-                    key={index}
-                    label={amenity}
-                    icon={
-                      <AntDesign
-                        // @ts-ignore
-                        name={amenity.toLowerCase().trim() ?? "Trophy"}
-                        size={24}
-                      />
-                    }
-                  />
+                  <Text
+                    key={`amenity_${index}`}
+                    className="px-3 py-2 bg-gray-300 rounded-md text-md text-grayText"
+                  >
+                    {amenity}
+                  </Text>
                 );
               })
             ) : (

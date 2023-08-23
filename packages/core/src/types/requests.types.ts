@@ -6,13 +6,13 @@ export enum REQUEST_STATUS {
 }
 
 export interface IRequest extends IEntryMeta {
-  id: string;
+  id?: string;
   title: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   location: string;
-  budget: number;
-  deadline: Date;
+  budget: string;
+  deadline: string;
   status: REQUEST_STATUS;
 }

@@ -68,6 +68,15 @@ const ProfileScreen = () => {
         >
           <Ionicons name="person-sharp" size={36} color={color.primary} />
         </OptionsCard>
+        <OptionsCard
+          label="Requests"
+          onPress={() =>
+            // @ts-ignore
+            navigation.navigate("Requests")
+          }
+        >
+          <Ionicons name="git-pull-request" size={36} color={color.primary} />
+        </OptionsCard>
         <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />
         </OptionsCard>
