@@ -51,6 +51,7 @@ const RequestPage = () => {
     <>
       <RequestCardList onOpen={onOpen} setSelected={setSelected} />
       <RequestDetailsDrawer
+        key={`${selectedRequest.id}_request_details`}
         onClose={onClose}
         open={open}
         request={selectedRequest}

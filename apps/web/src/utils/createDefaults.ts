@@ -1,4 +1,4 @@
-import { IEntryMeta, IEvents, IFutsal, TOURNAMENT_TYPE } from "core";
+import { IBids, IEntryMeta, IEvents, IFutsal, TOURNAMENT_TYPE } from "core";
 
 export const createEventDefaultValue = (event?: IEvents) => {
   const defaultEvent: IEvents = {
@@ -29,4 +29,21 @@ export const createIMetaDefaultValue = (futsal: IFutsal) => {
     },
   };
   return defaultMeta;
+};
+
+export const createBidDefaultValue = (bid?: IBids) => {
+  const defaultBid: IBids = {
+    id: bid?.id ?? "",
+    budget: bid?.budget ?? 0,
+    message: bid?.message ?? "",
+    isSelected: bid?.isSelected ?? false,
+    freebies: bid?.freebies ?? [],
+    requestId: bid?.requestId ?? "",
+    venue: bid?.venue ?? {
+      lat: "",
+      lng: "",
+      value: "",
+    },
+  };
+  return defaultBid;
 };

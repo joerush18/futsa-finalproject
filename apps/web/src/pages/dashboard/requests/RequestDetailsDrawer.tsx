@@ -13,6 +13,8 @@ import { LogoText } from "./LogoText";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import { BiddingCardLists } from "./BiddingCardLists";
+import { BiddingForm } from "./BiddingForm";
+import { useEffect, useState } from "react";
 
 const bids: IBids[] = [
   {
@@ -27,7 +29,11 @@ const bids: IBids[] = [
       name: "Saroj Aryal",
       email: "saroj@gmail.com",
     },
-    venue: "Pokhara",
+    venue: {
+      lat: "27.717245",
+      lng: "85.323959",
+      value: "Kathmandu",
+    },
     freebies: [
       "Match official",
       "Scoring Board",
@@ -49,7 +55,11 @@ const bids: IBids[] = [
       name: "Ramu Kaka",
       email: "ramu@gmail.com",
     },
-    venue: "Pokhara",
+    venue: {
+      lat: "27.717245",
+      lng: "85.323959",
+      value: "Kathmandu",
+    },
   },
   {
     id: "asdasd",
@@ -63,7 +73,11 @@ const bids: IBids[] = [
       name: "Rahul Subedi",
       email: "rahuls@gmail.com",
     },
-    venue: "Pokhara",
+    venue: {
+      lat: "27.717245",
+      lng: "85.323959",
+      value: "Kathmandu",
+    },
   },
   {
     id: "asdasd",
@@ -77,7 +91,11 @@ const bids: IBids[] = [
       name: "Rahul Subedi",
       email: "rahuls@gmail.com",
     },
-    venue: "Pokhara",
+    venue: {
+      lat: "27.717245",
+      lng: "85.323959",
+      value: "Kathmandu",
+    },
   },
 ];
 
@@ -106,6 +124,8 @@ export const RequestDetailsDrawer = ({
 
   const biddings = bids.filter((bid) => bid.requestId === request.id);
   const borderColor = `1px solid ${Color.grey[300]}`;
+
+  const [view, setView] = useState<"bids" | "form">("bids");
 
   return (
     <Drawer anchor={"right"} open={open} onClose={onClose}>
@@ -224,20 +244,27 @@ export const RequestDetailsDrawer = ({
           }}
         >
           <Button
+            onClick={() => setView(view === "bids" ? "form" : "bids")}
             variant="contained"
             sx={{ margin: 2, maxWidth: "200px" }}
-            disabled={status === REQUEST_STATUS.ACCEPTED}
+            disabled={
+              view === "bids" ? status === REQUEST_STATUS.ACCEPTED : false
+            }
           >
-            Bid now
+            {view === "bids" ? "Create Bid" : "View Bids"}
           </Button>
         </Stack>
       </Box>
-      <Box>
-        <Typography variant="h6" px={2}>
-          Other Biddings
-        </Typography>
-        <BiddingCardLists bids={biddings} />
-      </Box>
+      {view === "form" ? (
+        <BiddingForm />
+      ) : (
+        <Box>
+          <Typography variant="h6" px={2}>
+            Other Biddings
+          </Typography>
+          <BiddingCardLists bids={biddings} />
+        </Box>
+      )}
     </Drawer>
   );
 };

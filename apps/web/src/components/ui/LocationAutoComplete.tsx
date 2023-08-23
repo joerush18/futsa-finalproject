@@ -43,12 +43,16 @@ interface LocationAutoCompleteProps {
   placeValue?: any;
   control: any;
   label?: string;
+  name?: string;
+  error?: string;
 }
 
 export default function LocationAutoComplete({
   placeValue,
   control,
   label,
+  name,
+  error,
 }: LocationAutoCompleteProps) {
   const [value, setValue] = React.useState<PlaceType | null>(
     placeValue.value ?? null
@@ -67,9 +71,15 @@ export default function LocationAutoComplete({
       const data = await response.json();
       if (data && data.results && data.results.length > 0) {
         const { lat, lng } = data.results[0].geometry.location;
-        control("geoLocation.lat", lat.toString());
-        control("geoLocation.lng", lng.toString());
-        control("geoLocation.value", newValue);
+        if (name) {
+          control(`${[name]}.lat`, lat.toString());
+          control(`${[name]}.lng`, lng.toString());
+          control(`${[name]}.value`, newValue);
+        } else {
+          control("geoLocation.lat", lat.toString());
+          control("geoLocation.lng", lng.toString());
+          control("geoLocation.value", newValue);
+        }
       }
     },
     [value]
@@ -144,9 +154,15 @@ export default function LocationAutoComplete({
 
   React.useEffect(() => {
     if (placeValue) {
-      control("geoLocation.lat", placeValue.lat.toString());
-      control("geoLocation.lng", placeValue.lng.toString());
-      control("geoLocation.value", placeValue.value);
+      if (name) {
+        control(`${[name]}.lat`, placeValue.lat.toString());
+        control(`${[name]}.lng`, placeValue.lng.toString());
+        control(`${[name]}.value`, placeValue.value);
+      } else {
+        control("geoLocation.lat", placeValue.lat.toString());
+        control("geoLocation.lng", placeValue.lng.toString());
+        control("geoLocation.value", placeValue.value);
+      }
     }
   }, [placeValue]);
 
@@ -174,7 +190,14 @@ export default function LocationAutoComplete({
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField {...params} label={label ?? "Geo Location"} fullWidth />
+        <TextField
+          {...params}
+          label={label ?? "Geo Location"}
+          fullWidth
+          sx={{
+            border: error ? "1px solid red" : "",
+          }}
+        />
       )}
       renderOption={(props, option) => {
         const matches =

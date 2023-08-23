@@ -35,20 +35,24 @@ const names = [
   "Jersey",
   "Tournament",
   "Training",
+  "Referee",
+  "Scoring",
 ];
 
 export default function SelectAmenities({
   control,
   name,
   value,
+  error,
+  label,
 }: {
   control: any;
   name: string;
   value: string[];
+  error?: string;
+  label?: string;
 }) {
-  const [amenities, setAmenities] = React.useState<string[]>(
-    value ?? ["Free Wifi"]
-  );
+  const [amenities, setAmenities] = React.useState<string[]>(value ?? []);
   const handleChange = (event: SelectChangeEvent<typeof amenities>) => {
     const {
       target: { value },
@@ -68,11 +72,18 @@ export default function SelectAmenities({
       >
         <InputLabel id="demo-multiple-chip-label">Amenities</InputLabel>
         <Select
-          label="Select Amenities"
+          label={`Select ${label ?? "Ameneties"}`}
           multiple
           value={amenities}
           onChange={handleChange}
-          input={<OutlinedInput label="Chip" />}
+          input={
+            <OutlinedInput
+              label="Chip"
+              sx={{
+                border: error ? `1px solid red` : ``,
+              }}
+            />
+          }
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selected.map((value) => (

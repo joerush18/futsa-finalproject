@@ -6,6 +6,10 @@ export interface IBids extends IEntryMeta {
   budget: number;
   requestId: string;
   isSelected: boolean;
-  venue: string;
+  venue?: {
+    lat: string;
+    lng: string;
+    value: string;
+  };
   freebies?: string[];
 }

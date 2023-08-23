@@ -17,8 +17,9 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
   }
   return (
     <Box>
-      {bids.map((bid) => {
+      {bids.map((bid, index) => {
         const {
+          id,
           isSelected,
           budget,
           message,
@@ -29,6 +30,7 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
         } = bid;
         return (
           <Box
+            key={`${id}-${index}_bids`}
             sx={{
               border: `1px solid ${
                 isSelected ? Color.primary.main : Color.grey[300]
@@ -72,7 +74,7 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
                 }
               />
               <LogoText
-                text={venue}
+                text={venue?.value ?? "Pokhara"}
                 icon={
                   <LocationOnIcon
                     sx={{
@@ -91,8 +93,9 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
             </Typography>
             <Stack flexDirection="row" alignItems="center" flexWrap="wrap">
               {freebies?.length ? (
-                freebies.map((facility) => (
+                freebies.map((facility, index) => (
                   <Typography
+                    key={`${facility}-${index}_bids`}
                     variant="body2"
                     p={1}
                     sx={{
