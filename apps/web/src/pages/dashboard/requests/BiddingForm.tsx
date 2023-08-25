@@ -1,6 +1,13 @@
 import Color from "@/utils/color";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { BidSchema, IBids } from "core";
+import {
+  BidSchema,
+  IBids,
+  createUniqueId,
+  useBidsStore,
+  useCreateBid,
+  useUpdateBids,
+} from "core";
 import LocationAutoComplete from "@/components/ui/LocationAutoComplete";
 import SelectAmenities from "@/components/ui/tagsBox";
 import { useForm } from "react-hook-form";
@@ -11,27 +18,77 @@ import {
 } from "@/utils/createDefaults";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { toast } from "react-hot-toast";
 
-export const BiddingForm = () => {
-  const defaultValues = createBidDefaultValue();
+export const BiddingForm = ({
+  onCompleteCreate,
+  requestId,
+  myDefaultBid,
+}: {
+  onCompleteCreate: React.Dispatch<React.SetStateAction<"form" | "bids">>;
+  requestId: string;
+  myDefaultBid?: IBids;
+}) => {
+  const defaultValues = createBidDefaultValue(myDefaultBid);
   const {
     handleSubmit,
     control,
     setValue,
-    formState: { isDirty, errors },
+    formState: { errors },
   } = useForm<IBids>({
-    defaultValues: defaultValues,
+    defaultValues: myDefaultBid ? myDefaultBid : defaultValues,
     resolver: zodResolver(BidSchema),
   });
 
   const { futsal } = useCurrentUser();
 
+  const { mutate: createBids, isLoading: isCreatingBid } = useCreateBid();
+  const { mutate: updateBids, isLoading: isUpdatingBid } = useUpdateBids();
+  const { updateBids: updateBidsLocal } = useBidsStore();
+  const { setBids, bids } = useBidsStore();
+
   const handleCreateBid = (values: IBids) => {
     const meta = createIMetaDefaultValue(futsal);
-    console.log({
-      ...values,
-      ...meta,
+    const id = createUniqueId();
+    const _bid: IBids = { ...values, ...meta, id, requestId: requestId };
+    setBids([...bids, _bid]);
+    createBids(_bid, {
+      onSuccess: () => {
+        toast.success("Bid created successfully");
+        onCompleteCreate("bids");
+      },
+      onError: () => {
+        toast.error("Error creating bid");
+      },
     });
+  };
+
+  const handleUpdateBid = (values: IBids) => {
+    console.log({ myDefaultBid });
+    const updatedBid: Partial<IBids> & Pick<IBids, "id"> = {
+      ...values,
+      id: myDefaultBid?.id ?? "",
+      updatedAt: +new Date(),
+      updatedBy: {
+        id: futsal?.id ?? "",
+        name: futsal.futsalName ?? "",
+        email: futsal.email ?? "",
+      },
+    };
+    console.log(updatedBid);
+    updateBids(
+      { ...updatedBid },
+      {
+        onSuccess: () => {
+          toast.success("Bid updated successfully");
+          onCompleteCreate("bids");
+          updateBidsLocal({ ...updatedBid });
+        },
+        onError: () => {
+          toast.error("Error updating bid");
+        },
+      }
+    );
   };
 
   return (
@@ -57,7 +114,11 @@ export const BiddingForm = () => {
           mt: 2,
         }}
       >
-        <form onSubmit={handleSubmit(handleCreateBid)}>
+        <form
+          onSubmit={handleSubmit(
+            myDefaultBid ? handleUpdateBid : handleCreateBid
+          )}
+        >
           <FormInputText
             name={"budget"}
             control={control}
@@ -67,7 +128,7 @@ export const BiddingForm = () => {
 
           <LocationAutoComplete
             control={setValue}
-            placeValue={""}
+            placeValue={myDefaultBid?.venue ?? ""}
             name="venue"
             error={errors.venue?.lat?.message}
           />
@@ -75,7 +136,7 @@ export const BiddingForm = () => {
             control={setValue}
             name="freebies"
             label="Freebies"
-            value={[]}
+            value={myDefaultBid?.freebies ?? []}
             error={errors.freebies && errors?.freebies?.message}
           />
           <FormInputText
@@ -93,13 +154,18 @@ export const BiddingForm = () => {
           <Button
             variant="contained"
             type="submit"
-            disabled={!isDirty}
+            disabled={isCreatingBid}
             sx={{
               mt: 2,
             }}
           >
-            {/* {isLoading ? "Updating..." : "Update"} */}
-            Create
+            {isCreatingBid
+              ? "Creating..."
+              : isUpdatingBid
+              ? "Updating"
+              : myDefaultBid
+              ? "Update"
+              : "Create"}
           </Button>
         </form>
       </Stack>

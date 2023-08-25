@@ -6,6 +6,7 @@ import {
   getRequestsByUserId,
   updateRequest,
 } from "../methods";
+import { useRequestStore } from "../../store";
 
 const useCreateRequest = () => {
   return useMutation(["create-request"], (data: IRequest) =>
@@ -14,22 +15,23 @@ const useCreateRequest = () => {
 };
 
 const useGetAllRequests = () => {
-  //   const { setBookings } = useBookingStore();
+  const { setRequests } = useRequestStore();
   return useQuery(["get-all-requests"], () => getAllRequests(), {
-    onSuccess: () => {
-      // setBookings(data);
+    onSuccess: (data) => {
+      setRequests(data);
     },
   });
 };
 
 const useGetRequestByUserId = (userId: string) => {
-  //   const { setBookings } = useBookingStore();
+  const { setRequests } = useRequestStore();
+
   return useQuery(
     ["get-request-by-userId"],
     () => getRequestsByUserId(userId),
     {
       onSuccess: (data) => {
-        // setBookings(data);
+        setRequests(data);
       },
     }
   );

@@ -1,20 +1,21 @@
 import Color from "@/utils/color";
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import { IBids, timeAgo } from "core";
 import { LogoText } from "./LogoText";
-import { CurrencyRupeeRounded } from "@mui/icons-material";
+import { CurrencyRupeeRounded, Edit } from "@mui/icons-material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 interface BiddingCardListsProps {
   bids: IBids[];
+  myBidIndex?: boolean;
+  handleClick?: (bid: IBids) => void;
 }
-export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
-  const selectedIndex = bids.findIndex((bid) => bid.isSelected === true);
-  if (selectedIndex !== -1) {
-    const selectedBid = bids.splice(selectedIndex, 1)[0];
-    bids.unshift(selectedBid);
-  }
+export const BiddingCardLists = ({
+  bids,
+  myBidIndex,
+  handleClick,
+}: BiddingCardListsProps) => {
   return (
     <Box>
       {bids.map((bid, index) => {
@@ -27,6 +28,7 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
           createdAt,
           venue,
           freebies,
+          updatedAt,
         } = bid;
         return (
           <Box
@@ -39,9 +41,30 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
               m: 2,
               borderRadius: 1,
               position: "relative",
+              maxWidth: "800px",
             }}
           >
             <Stack direction="row" spacing={2} alignItems="center">
+              {myBidIndex && !isSelected ? (
+                <IconButton
+                  onClick={() => {
+                    handleClick?.(bid);
+                  }}
+                  sx={{
+                    position: "absolute",
+                    top: 4,
+                    right: 4,
+                  }}
+                >
+                  <Edit
+                    sx={{
+                      color: Color.text.main,
+                    }}
+                  />
+                </IconButton>
+              ) : (
+                ""
+              )}
               <Avatar>{createdBy?.name.slice(0, 1)}</Avatar>
               <Stack>
                 <Typography
@@ -63,7 +86,7 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
             </Stack>
             <Stack flexDirection="row" gap={2} alignItems="center" mt={2}>
               <LogoText
-                text={budget?.toString()}
+                text={budget.toString()}
                 icon={
                   <CurrencyRupeeRounded
                     sx={{
@@ -74,7 +97,8 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
                 }
               />
               <LogoText
-                text={venue?.value ?? "Pokhara"}
+                // @ts-ignore
+                text={venue?.value.description.split(",")[0] ?? "Pokhara"}
                 icon={
                   <LocationOnIcon
                     sx={{
@@ -91,7 +115,12 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
             <Typography variant="body1" fontWeight="600">
               Freebies
             </Typography>
-            <Stack flexDirection="row" alignItems="center" flexWrap="wrap">
+            <Stack
+              flexDirection="row"
+              alignItems="center"
+              flexWrap="wrap"
+              mb={1.5}
+            >
               {freebies?.length ? (
                 freebies.map((facility, index) => (
                   <Typography
@@ -136,12 +165,10 @@ export const BiddingCardLists = ({ bids }: BiddingCardListsProps) => {
             ) : (
               ""
             )}
-            <Typography
-              variant="caption"
-              color={Color.text.focus}
-              marginTop={1}
-            >
-              {timeAgo(createdAt)}
+            <Typography variant="caption" color={Color.text.focus}>
+              {updatedAt
+                ? `Edited : ${timeAgo(updatedAt)}`
+                : timeAgo(createdAt)}
             </Typography>
           </Box>
         );

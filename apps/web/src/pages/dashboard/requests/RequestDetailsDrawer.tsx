@@ -14,90 +14,9 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import { BiddingCardLists } from "./BiddingCardLists";
 import { BiddingForm } from "./BiddingForm";
-import { useEffect, useState } from "react";
-
-const bids: IBids[] = [
-  {
-    id: "alsjdksjd",
-    message: "adjkshkdja",
-    budget: 15000,
-    isSelected: false,
-    requestId: "a123",
-    createdAt: +new Date(),
-    createdBy: {
-      id: "I want to conduct futsal.",
-      name: "Saroj Aryal",
-      email: "saroj@gmail.com",
-    },
-    venue: {
-      lat: "27.717245",
-      lng: "85.323959",
-      value: "Kathmandu",
-    },
-    freebies: [
-      "Match official",
-      "Scoring Board",
-      "First Aid",
-      "Parking",
-      "Free Water",
-      "Changing Room",
-    ],
-  },
-  {
-    id: "asdasd",
-    message: "I want to conduct futsal.",
-    budget: 12000,
-    isSelected: true,
-    requestId: "a124",
-    createdAt: +new Date(),
-    createdBy: {
-      id: "askldjasl",
-      name: "Ramu Kaka",
-      email: "ramu@gmail.com",
-    },
-    venue: {
-      lat: "27.717245",
-      lng: "85.323959",
-      value: "Kathmandu",
-    },
-  },
-  {
-    id: "asdasd",
-    message: "I want to conduct futsal.",
-    budget: 12000,
-    isSelected: false,
-    requestId: "a124",
-    createdAt: +new Date(),
-    createdBy: {
-      id: "askldjasl",
-      name: "Rahul Subedi",
-      email: "rahuls@gmail.com",
-    },
-    venue: {
-      lat: "27.717245",
-      lng: "85.323959",
-      value: "Kathmandu",
-    },
-  },
-  {
-    id: "asdasd",
-    message: "I want to conduct futsal.",
-    budget: 12000,
-    isSelected: false,
-    requestId: "a124",
-    createdAt: +new Date(),
-    createdBy: {
-      id: "askldjasl",
-      name: "Rahul Subedi",
-      email: "rahuls@gmail.com",
-    },
-    venue: {
-      lat: "27.717245",
-      lng: "85.323959",
-      value: "Kathmandu",
-    },
-  },
-];
+import { useState } from "react";
+import Loading from "@/components/Loading";
+import useBids from "@/hooks/useBids";
 
 export const RequestDetailsDrawer = ({
   open,
@@ -120,12 +39,21 @@ export const RequestDetailsDrawer = ({
     status,
     createdAt,
     createdBy,
+    id,
   } = request;
 
-  const biddings = bids.filter((bid) => bid.requestId === request.id);
+  const { bids: biddings, isFetchingBids, myBidIndex } = useBids(id);
+
   const borderColor = `1px solid ${Color.grey[300]}`;
 
   const [view, setView] = useState<"bids" | "form">("bids");
+  const [myDefaultBid, setMyDefaultBid] = useState<IBids | undefined>(
+    undefined
+  );
+
+  if (isFetchingBids) {
+    return <Loading label="" />;
+  }
 
   return (
     <Drawer anchor={"right"} open={open} onClose={onClose}>
@@ -211,9 +139,9 @@ export const RequestDetailsDrawer = ({
           />
           <LogoText
             text={
-              formatBookingDate(startDate?.toISOString()).split(",")[0] +
+              formatBookingDate(startDate).split(",")[0] +
               " - " +
-              formatBookingDate(endDate?.toISOString()).split(",")[0]
+              formatBookingDate(endDate).split(",")[0]
             }
             icon={
               <AccessTimeIcon
@@ -225,9 +153,7 @@ export const RequestDetailsDrawer = ({
             }
           />
           <LogoText
-            text={`Deadline : ${
-              formatBookingDate(deadline?.toISOString()).split(",")[0]
-            }`}
+            text={`Deadline : ${formatBookingDate(deadline).split(",")[0]}`}
             icon={
               <HourglassFullIcon
                 sx={{
@@ -248,7 +174,13 @@ export const RequestDetailsDrawer = ({
             variant="contained"
             sx={{ margin: 2, maxWidth: "200px" }}
             disabled={
-              view === "bids" ? status === REQUEST_STATUS.ACCEPTED : false
+              view === "form"
+                ? false
+                : status === REQUEST_STATUS.ACCEPTED
+                ? true
+                : myBidIndex
+                ? true
+                : false
             }
           >
             {view === "bids" ? "Create Bid" : "View Bids"}
@@ -256,13 +188,30 @@ export const RequestDetailsDrawer = ({
         </Stack>
       </Box>
       {view === "form" ? (
-        <BiddingForm />
+        <BiddingForm
+          onCompleteCreate={setView}
+          requestId={request.id ?? ""}
+          myDefaultBid={myDefaultBid}
+        />
       ) : (
         <Box>
           <Typography variant="h6" px={2}>
             Other Biddings
           </Typography>
-          <BiddingCardLists bids={biddings} />
+          {biddings && biddings?.length > 0 ? (
+            <BiddingCardLists
+              bids={biddings}
+              myBidIndex={myBidIndex}
+              handleClick={(bid) => {
+                setMyDefaultBid(bid);
+                setView("form");
+              }}
+            />
+          ) : (
+            <Typography variant="caption" mx={2}>
+              No bids yet.
+            </Typography>
+          )}
         </Box>
       )}
     </Drawer>

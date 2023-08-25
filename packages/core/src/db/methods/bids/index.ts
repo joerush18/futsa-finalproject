@@ -9,15 +9,12 @@ import {
 } from "firebase/firestore";
 import { Collections, db } from "../..";
 import { IBids } from "../../../types";
-import { createUniqueId } from "../../../utils";
 
 const createBid = async (bid: IBids) => {
-  const id = createUniqueId();
   try {
-    const ref = db.collection(Collections.Bids).doc(id);
+    const ref = db.collection(Collections.Bids).doc(bid.id);
     ref.set({
       ...bid,
-      id,
     });
     return true;
   } catch (error) {
@@ -28,7 +25,7 @@ const createBid = async (bid: IBids) => {
 
 const updateBid = async (bid: Partial<IBids> & Pick<IBids, "id">) => {
   try {
-    await updateDoc(doc(db, Collections.Requests, bid.id as string), bid);
+    await updateDoc(doc(db, Collections.Bids, bid.id as string), bid);
     return true;
   } catch (error) {
     console.error("Error updating bid collection:", error);
@@ -40,7 +37,7 @@ const getBidByRequestId = async (requestId: string): Promise<IBids[]> => {
   try {
     const snapshot = await getDocs(
       query(
-        collection(db, Collections.Requests),
+        collection(db, Collections.Bids),
         where("requestId", "==", requestId),
         orderBy("createdAt", "desc")
       )

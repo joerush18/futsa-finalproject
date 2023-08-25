@@ -1,19 +1,20 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { IBids } from "../../types";
 import { createBid, getBidByRequestId, updateBid } from "../methods/bids";
+import { useBidsStore } from "../../store";
 
 const useCreateBid = () => {
   return useMutation(["create-bid"], (data: IBids) => createBid(data));
 };
 
 const useGetBidByRequestId = (requestId: string) => {
-  //   const { setBookings } = useBookingStore();
+  const { setBids } = useBidsStore();
   return useQuery(
     ["get-bids-by-requestId"],
     () => getBidByRequestId(requestId),
     {
-      onSuccess: () => {
-        // setBookings(data);
+      onSuccess: (data) => {
+        setBids(data);
       },
     }
   );
