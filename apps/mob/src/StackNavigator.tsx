@@ -20,6 +20,7 @@ import EventDetailsScreen from "./screens/EventDetailsScreen";
 import MyTeamsScreen from "./screens/MyTeamsScreen";
 import RequestsScreen from "./screens/RequestsScreen";
 import CreateRequestScreen from "./screens/CreateRequestScreen";
+import RequestDetailsScreen from "./screens/RequestDetailsScreen";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -36,6 +37,7 @@ export type RootStackParamList = {
   "My-Teams": {};
   Requests: {};
   "Create-Request": {};
+  "Request-Detail": { requestId: string };
 };
 
 const AfterAuthNavigationContainers = () => {
@@ -86,6 +88,13 @@ const AfterAuthNavigationContainers = () => {
         <Stack.Screen
           name="Event-Detail"
           component={EventDetailsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Request-Detail"
+          component={RequestDetailsScreen}
           options={{
             headerShown: true,
           }}

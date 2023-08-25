@@ -1,37 +1,56 @@
 import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import { View, useWindowDimensions, Text, ScrollView } from "react-native";
+import {
+  View,
+  useWindowDimensions,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import color from "../assets/colors";
 import IconButton from "../components/ui/IconButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import useRequests from "../hooks/useRequests";
 import Loading from "../components/ui/Loading";
+import { IRequest, REQUEST_STATUS, timeAgo } from "core";
+import Empty from "../components/ui/Empty";
 
 const Active = () => {
-  const { requests, isfetchingRequests } = useRequests();
+  const { activeRequests: requests, isfetchingRequests } = useRequests();
 
-  return !requests && isfetchingRequests ? (
+  return isfetchingRequests ? (
     <Loading />
   ) : (
     <ScrollView style={{ flex: 1 }}>
-      {requests &&
-        requests.map((request) => {
-          const { title, description } = request;
-          return (
-            <View className="px-2 py-3 border-b-[1px] border-gray-300">
-              <View className="mx-4">
-                <Text className="font-bold text-lg">{title}</Text>
-                <Text>{description}</Text>
-              </View>
-            </View>
-          );
-        })}
+      {requests.length ? (
+        requests.map((request, index) => {
+          return <RequestCard request={request} key={`request_${index}`} />;
+        })
+      ) : (
+        <Empty />
+      )}
     </ScrollView>
   );
 };
 
-const Completed = () => <View style={{ flex: 1 }}></View>;
+const Completed = () => {
+  const { completedRequests: requests, isfetchingRequests } = useRequests();
+
+  return isfetchingRequests ? (
+    <Loading />
+  ) : (
+    <ScrollView style={{ flex: 1 }}>
+      {requests.length ? (
+        requests.map((request, index) => {
+          return <RequestCard request={request} key={`request_${index}`} />;
+        })
+      ) : (
+        <Empty />
+      )}
+    </ScrollView>
+  );
+};
 
 const renderScene = SceneMap({
   first: Active,
@@ -88,3 +107,43 @@ const RequestsScreen = () => {
   );
 };
 export default RequestsScreen;
+
+const RequestCard = ({ request }: { request: IRequest }) => {
+  const { title, description, createdAt, budget, id, status } = request;
+  const navigation = useNavigation();
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        // @ts-ignore
+        navigation.navigate("Request-Detail", { requestId: id });
+      }}
+    >
+      <View className="py-3 border-b-[1px] border-gray-300">
+        <View className="mx-3">
+          <Text
+            className={`font-bold mb-2 px-2 py-1 rounded-lg max-w-[120px] text-center text-white ${
+              status === REQUEST_STATUS.ACCEPTED
+                ? "bg-green-700"
+                : "bg-orange-500"
+            }`}
+          >
+            {status}
+          </Text>
+          <Text className="font-bold text-md">{title}</Text>
+          <Text className="font-bold text-sm text-primary">Rs. {budget}</Text>
+          <Text className=" text-gray-600">
+            {description.replace(/\s+/g, " ").slice(0, 98)} ...
+          </Text>
+          <View className="flex-row justify-between items-center mt-3">
+            <Text className=" text-gray-400 text-left">
+              {timeAgo(createdAt)}
+            </Text>
+            <Text className=" mt-1 text-left font-bold text-primaryLight">
+              {description.length > 100 ? "View more" : ""}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
