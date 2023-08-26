@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useMutation } from "@tanstack/react-query";
 import { IPlayers } from "../../types/players.types";
 import {

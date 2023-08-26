@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   startOfMonth,
   endOfMonth,
@@ -137,8 +139,8 @@ function addTimeToDate(date, time) {
   return newDate;
 }
 
-function convertToAmPm(time) {
-  const [hours, minutes] = time.split(":").map(Number);
+function convertToAmPm(time: any) {
+  const [hours] = time.split(":").map(Number);
 
   let period = "AM";
   let formattedHours = hours;

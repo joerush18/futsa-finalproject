@@ -17,4 +17,4 @@ interface INotification extends IEntryMeta {
   bookingId?: string;
 }
 
-export { INotification };
+export type { INotification };

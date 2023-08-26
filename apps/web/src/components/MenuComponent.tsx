@@ -1,7 +1,6 @@
 import * as React from "react";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import useMenu from "@/hooks/useMenu";
 import Color from "@/utils/color";
 
 export interface IMenuItems {
