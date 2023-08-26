@@ -1,13 +1,10 @@
 import { ScrollView, Text, View, RefreshControl } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import color from "../assets/colors";
+import color from "../../assets/colors";
 
-import { Entypo } from "@expo/vector-icons";
-import Divider from "../components/ui/Divider";
-import IconButton from "../components/ui/IconButton";
-import Sectionlayout from "../components/layout/Sectionlayout";
-import BookNowButton from "../components/ui/BookNowButton";
+import Divider from "../../components/ui/Divider";
+import BookNowButton from "../../components/ui/BookNowButton";
 import {
   BOOKING_STATUS,
   IBookings,
@@ -17,21 +14,23 @@ import {
 } from "core";
 import {
   Days,
-  MonthInfo,
   addTimeToDate,
   generateDaysForMonth,
   generateMonths,
   generateTimeSlots,
   getDateByDayAndMonth,
 } from "core";
-import { RootStackParamList } from "../StackNavigator";
+import { RootStackParamList } from "../../StackNavigator";
 import { useFutsalsStore } from "core";
-import useCurrentUser from "../hooks/useCurrentUser";
-import Loading from "../components/ui/Loading";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import Loading from "../../components/ui/Loading";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import useBookings from "../hooks/useBookings";
-import useRefetch from "../hooks/useRefetch";
-import ModalComponent from "../components/ui/ModalComponent";
+import useBookings from "../../hooks/useBookings";
+import useRefetch from "../../hooks/useRefetch";
+import ModalComponent from "../../components/ui/ModalComponent";
+import { MonthSelector } from "./MonthSelector";
+import { WeekSlider } from "./WeekSlider";
+import { TimeSlots } from "./TimeSlots";
 type BookScreenRouteProps = RouteProp<RootStackParamList, "Booking">;
 
 interface BookScreenProps {
@@ -222,199 +221,3 @@ const BookScreen = ({ route }: BookScreenProps) => {
 };
 
 export default BookScreen;
-
-interface MonthSelectorProps {
-  selectedMonth: MonthInfo;
-  increaseMonthIndex: () => void;
-  decreaseMonthIndex: () => void;
-}
-const MonthSelector = ({
-  selectedMonth,
-  increaseMonthIndex,
-  decreaseMonthIndex,
-}: MonthSelectorProps) => {
-  return (
-    <View className="flex-row justify-between mx-4 py-4 items-center">
-      <Entypo
-        name="chevron-left"
-        size={24}
-        color={color.grayText}
-        onPress={() => decreaseMonthIndex()}
-      />
-      <Text className="text-primary font-bold">{selectedMonth.name}</Text>
-      <Entypo
-        name="chevron-right"
-        size={24}
-        color={color.grayText}
-        onPress={() => increaseMonthIndex()}
-      />
-    </View>
-  );
-};
-
-interface WeekSliderProps {
-  days: Days[];
-  selectedDay: Days;
-  setSelectedDay: React.Dispatch<React.SetStateAction<Days>>;
-}
-const WeekSlider = ({ days, selectedDay, setSelectedDay }: WeekSliderProps) => {
-  return (
-    <ScrollView
-      className="mx-4 py-2"
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    >
-      {days?.map((day, index) => {
-        const { date, week } = day;
-        const isSelected =
-          selectedDay.date === date && selectedDay.week === week;
-        return (
-          <WeekComponent
-            key={`weekDay_${index}`}
-            index={index}
-            isSelected={isSelected}
-            setSelected={setSelectedDay}
-            day={day}
-          />
-        );
-      })}
-    </ScrollView>
-  );
-};
-
-interface WeekComponentProps {
-  index: number;
-  isSelected: boolean;
-  setSelected: React.Dispatch<React.SetStateAction<Days>>;
-  day: Days;
-}
-
-const WeekComponent = ({
-  index,
-  isSelected,
-  setSelected,
-  day,
-}: WeekComponentProps) => {
-  const { date, week } = day;
-  return (
-    <IconButton
-      onPress={() => setSelected(day)}
-      className={`mx-1 p- min-w-[60px] ${
-        isSelected ? "bg-primary text-white" : ""
-      }`}
-    >
-      <Text
-        className={`text-center font-bold text-lg ${
-          isSelected ? "text-white" : ""
-        }`}
-      >
-        {date}
-      </Text>
-      <Text
-        className={`text-center font-bold text-gray-600  ${
-          isSelected ? "text-white opcaity-100" : ""
-        }`}
-      >
-        {week.slice(0, 3)}
-      </Text>
-    </IconButton>
-  );
-};
-interface TimeSlotProps {
-  timeSlots: string[];
-  setCurrentTimeSlot: React.Dispatch<React.SetStateAction<string | null>>;
-  dateStatusMap: Map<string, string>;
-  currentDate: Date;
-}
-
-const TimeSlots = ({
-  timeSlots,
-  setCurrentTimeSlot,
-  dateStatusMap,
-  currentDate,
-}: TimeSlotProps) => {
-  const [selected, setSelected] = useState<number>(NaN);
-  return (
-    <Sectionlayout title="Select Available Time Slot">
-      <View className="flex-row w-full flex-wrap items-center justify-between flex-2">
-        {timeSlots.length ? (
-          timeSlots.map((timeSlot, index) => {
-            const isSelected = index === selected;
-            const date = addTimeToDate(currentDate, timeSlot);
-            const formattedDate = date.toString().split(" ").join("_");
-            const status = dateStatusMap.get(formattedDate);
-            return (
-              <TimeSlotComponent
-                key={`timeslot_${index}`}
-                index={index}
-                isSelected={isSelected}
-                setSelected={setSelected}
-                timeslot={timeSlot}
-                setCurrentTimeSlot={setCurrentTimeSlot}
-                status={status}
-              />
-            );
-          })
-        ) : (
-          <Text>No timeslots available.</Text>
-        )}
-      </View>
-    </Sectionlayout>
-  );
-};
-
-interface TimeSlotComponentProps {
-  index: number;
-  isSelected: boolean;
-  setSelected: React.Dispatch<React.SetStateAction<number>>;
-  timeslot: string;
-  setCurrentTimeSlot: React.Dispatch<React.SetStateAction<string | null>>;
-  status?: string;
-}
-const TimeSlotComponent = ({
-  index,
-  isSelected,
-  setSelected,
-  timeslot,
-  setCurrentTimeSlot,
-  status,
-}: TimeSlotComponentProps) => {
-  const isBooked = status === BOOKING_STATUS.BOOKED;
-  const isPending = status === BOOKING_STATUS.PENDING;
-  return (
-    <IconButton
-      className={`px-5 py-4 rounded-2xl my-2 min-w-[170px] ${
-        isPending
-          ? "bg-yellow disabled"
-          : isBooked
-          ? "bg-green-600 disabled"
-          : isSelected
-          ? "bg-primary"
-          : ""
-      }`}
-      onPress={() => {
-        setCurrentTimeSlot((prev) => {
-          if (prev === timeslot) {
-            setSelected(NaN);
-            return null;
-          }
-          return timeslot;
-        });
-        setSelected(index);
-      }}
-      disabled={isBooked || isPending}
-    >
-      <Text
-        className={`text-md font-bold text-center ${
-          isPending || isBooked || isSelected
-            ? "text-white disabled"
-            : isSelected
-            ? "bg-primary"
-            : ""
-        } `}
-      >
-        {timeslot}
-      </Text>
-    </IconButton>
-  );
-};

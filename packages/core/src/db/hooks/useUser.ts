@@ -9,17 +9,8 @@ import { getCurrentFutsal } from "../methods/users/futsal";
 import { logout } from "../methods/auth/auth";
 
 const useCreateUser = (id: string) => {
-  return useMutation(
-    ["create-user"],
-    (data: IPlayers) => createPlayerCollection(id, data),
-    {
-      onSuccess: (data) => {
-        console.log("User created successfully");
-      },
-      onError: (data) => {
-        console.log("User creation failed");
-      },
-    }
+  return useMutation(["create-user"], (data: IPlayers) =>
+    createPlayerCollection(id, data)
   );
 };
 
@@ -37,12 +28,11 @@ const useGetUser = () => {
       return response.data;
     },
     {
-      onSuccess: (data) => {
-        return data;
-        // Do something with the data if needed
-      },
-      onError: (error) => {
-        console.log("User retrieval failed");
+      // onSuccess: (data) => {
+      //   return data;
+      //   // Do something with the data if needed
+      // },
+      onError: () => {
         logout();
         // Handle the error if needed
       },

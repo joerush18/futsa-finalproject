@@ -1,10 +1,10 @@
 import { View, Text, ScrollView, Pressable } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import color from "../assets/colors";
+import color from "../../assets/colors";
 
 import { useForm } from "react-hook-form";
-import InputComponent from "../components/ui/InputComponent";
+import InputComponent from "../../components/ui/InputComponent";
 import {
   IEntryMeta,
   IRequest,
@@ -12,14 +12,14 @@ import {
   RequestSchema,
   useCreateRequest,
 } from "core";
-import Button from "../components/ui/Button";
+import Button from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import useCurrentUser from "../hooks/useCurrentUser";
-import { createRequestDefault } from "../utils/defaults";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import { createRequestDefault } from "../../utils/defaults";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const CreateRequestScreen = () => {

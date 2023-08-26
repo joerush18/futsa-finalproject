@@ -1,10 +1,9 @@
 import * as React from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../StackNavigator";
+import { RootStackParamList } from "../../StackNavigator";
 import { View, Text, ScrollView, RefreshControl } from "react-native";
-import Modal from "react-native-modal";
 import { useEffect, useLayoutEffect } from "react";
-import color from "../assets/colors";
+import color from "../../assets/colors";
 import {
   IBids,
   REQUEST_STATUS,
@@ -14,15 +13,14 @@ import {
   useUpdateBids,
   useUpdateRequest,
 } from "core";
-import TextLabel from "../components/ui/TextLabel";
-import IconButton from "../components/ui/IconButton";
+import TextLabel from "../../components/ui/TextLabel";
+import IconButton from "../../components/ui/IconButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import useBids from "../hooks/useBids";
-import Loading from "../components/ui/Loading";
-import Avatar from "../components/ui/Avatar";
-import Button from "../components/ui/Button";
-import Card from "../components/ui/Card";
+import useBids from "../../hooks/useBids";
+import Loading from "../../components/ui/Loading";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { BidCard } from "./BidCard";
+import { ConfirmModal } from "./ConfirmModal";
 
 type RequestDetailsScreenRouteProps = RouteProp<
   RootStackParamList,
@@ -63,6 +61,7 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
     useUpdateRequest();
 
   const { updateBids: updateBidLocal } = useBidsStore();
+
   const { updateRequest: updateRequestLocal } = useRequestStore();
 
   const handleAcceptBid = (bid: IBids) => {
@@ -162,14 +161,15 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
       <View className="mx-4 mt-4 pb-6">
         <Text className="font-bold text-lg mb-2">Bids</Text>
         {bids.length ? (
-          bids.map((bid) => (
+          bids.map((bid, index) => (
             <BidCard
-              key={bid.id}
+              key={`${index}_bid`}
               bid={bid}
               handleClick={(bid) => {
                 setIsVisible(true);
                 setSelectedBid(bid);
               }}
+              status={request.status}
             />
           ))
         ) : (
@@ -189,131 +189,3 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
 };
 
 export default RequestDetailsScreen;
-
-const BidCard = ({
-  bid,
-  handleClick,
-}: {
-  bid: IBids;
-  handleClick?: (bid: IBids) => void;
-}) => {
-  const {
-    createdBy,
-    createdAt,
-    message,
-    budget,
-    venue,
-    freebies,
-    updatedAt,
-    isSelected,
-  } = bid;
-
-  return (
-    <View className="bg-primaryLight/30 rounded-md p-4 border-[1px] border-gray-300 relative mt-3">
-      {/* Status */}
-      {isSelected ? (
-        <MaterialCommunityIcons
-          name="check-circle"
-          size={24}
-          color="green"
-          style={{
-            position: "absolute",
-            top: 10,
-            right: 10,
-          }}
-        />
-      ) : null}
-      <View className="flex-row space-x-3 items-center">
-        <Avatar label={createdBy?.name.slice(0, 2)} size={48} />
-        <View>
-          <Text className="text-gray-700 text-md font-bold">
-            {createdBy?.name}
-          </Text>
-          <Text className="text-gray-500 text-md">{createdBy?.email}</Text>
-        </View>
-      </View>
-      <Text className="text-gray-700">{message}</Text>
-      {/* icons */}
-      <View className="flex-row items-center justify-between mt-2">
-        <Text className="font-bold text-lg">RS. {budget}</Text>
-        <View className="flex-row items-center space-x-1">
-          <MaterialCommunityIcons name="map-marker" size={16} />
-          <Text className="text-md font-bold text-gray-700">
-            {/* @ts-ignore */}
-            {venue?.value?.description.split(",")[0]}
-          </Text>
-        </View>
-      </View>
-      {/* Freebies */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {freebies?.length
-          ? freebies.map((free) => {
-              return (
-                <Text className="bg-primary px-3 py-1 rounded-md mt-2 mr-3 font-bold text-white">
-                  {free}
-                </Text>
-              );
-            })
-          : null}
-      </ScrollView>
-      <Text className="text-xs mt-3 text-gray-600">
-        {updatedAt
-          ? `Edited : ${timeAgo(updatedAt)}`
-          : `Posted on : ${timeAgo(createdAt)}`}
-      </Text>
-      <Button
-        className="py-3 mt-2 bg-transparent border-[1px] border-primary"
-        onPress={() => {
-          handleClick?.(bid);
-        }}
-      >
-        <Text className="text-center text-primary">Accept Bid</Text>
-      </Button>
-    </View>
-  );
-};
-
-const ConfirmModal = ({
-  isVisible,
-  setIsVisible,
-  handleAcceptBid,
-}: {
-  isVisible: boolean;
-  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  handleAcceptBid: () => void;
-}) => {
-  return (
-    <View>
-      <Modal
-        isVisible={isVisible}
-        onBackdropPress={() => {
-          setIsVisible(false);
-        }}
-      >
-        <Card>
-          <Text className="font-bold text-xl">Confirm the bidding.</Text>
-          <Text className="text-sm text-left">
-            Are you sure you want to accept this bid. You can't undo this
-            action.
-          </Text>
-          <View className="flex-row space-x-4 items-center">
-            <Button
-              className="bg-primary mt-2 basis-40"
-              onPress={handleAcceptBid}
-            >
-              <Text className="text-center text-white">Accept</Text>
-            </Button>
-            <Button
-              className="bg-rose-400 mt-2 basis-40"
-              onPress={() => {
-                setIsVisible(false);
-              }}
-            >
-              <Text className="text-center text-white">Cancel</Text>
-            </Button>
-          </View>
-        </Card>
-      </Modal>
-    </View>
-  );
-};

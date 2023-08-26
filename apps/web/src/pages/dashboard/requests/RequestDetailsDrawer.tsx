@@ -42,7 +42,7 @@ export const RequestDetailsDrawer = ({
     id,
   } = request;
 
-  const { bids: biddings, isFetchingBids, myBidIndex } = useBids(id);
+  const { bids: biddings, isFetchingBids, myBidId } = useBids(id);
 
   const borderColor = `1px solid ${Color.grey[300]}`;
 
@@ -178,7 +178,7 @@ export const RequestDetailsDrawer = ({
                 ? false
                 : status === REQUEST_STATUS.ACCEPTED
                 ? true
-                : myBidIndex
+                : myBidId
                 ? true
                 : false
             }
@@ -200,8 +200,9 @@ export const RequestDetailsDrawer = ({
           </Typography>
           {biddings && biddings?.length > 0 ? (
             <BiddingCardLists
+              requestStatus={status}
               bids={biddings}
-              myBidIndex={myBidIndex}
+              myBidId={myBidId}
               handleClick={(bid) => {
                 setMyDefaultBid(bid);
                 setView("form");

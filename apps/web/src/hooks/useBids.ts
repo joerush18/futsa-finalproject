@@ -18,10 +18,12 @@ const useBids = (requestId?: string) => {
     bids.unshift(myBid);
   }
 
+  const myBidId = bids[myBidIndex]?.id ?? "";
+
   return {
     bids,
     isFetchingBids,
-    myBidIndex: myBidIndex !== -1 ? true : false,
+    myBidId,
   };
 };
 

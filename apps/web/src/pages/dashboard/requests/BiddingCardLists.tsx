@@ -1,6 +1,6 @@
 import Color from "@/utils/color";
 import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
-import { IBids, timeAgo } from "core";
+import { IBids, REQUEST_STATUS, timeAgo } from "core";
 import { LogoText } from "./LogoText";
 import { CurrencyRupeeRounded, Edit } from "@mui/icons-material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -8,13 +8,15 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 interface BiddingCardListsProps {
   bids: IBids[];
-  myBidIndex?: boolean;
+  myBidId?: string;
   handleClick?: (bid: IBids) => void;
+  requestStatus?: REQUEST_STATUS;
 }
 export const BiddingCardLists = ({
   bids,
-  myBidIndex,
+  myBidId,
   handleClick,
+  requestStatus,
 }: BiddingCardListsProps) => {
   return (
     <Box>
@@ -45,7 +47,7 @@ export const BiddingCardLists = ({
             }}
           >
             <Stack direction="row" spacing={2} alignItems="center">
-              {myBidIndex && !isSelected ? (
+              {myBidId === id && requestStatus === REQUEST_STATUS.ACTIVE ? (
                 <IconButton
                   onClick={() => {
                     handleClick?.(bid);

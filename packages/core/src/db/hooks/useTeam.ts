@@ -4,12 +4,7 @@ import { ITeam } from "../../types";
 import useTeamsStore from "../../store/useTeamStore";
 
 const useCreateTeam = () => {
-  return useMutation(["create-Team"], (data: ITeam) => createTeam(data), {
-    onSuccess: (data) => {},
-    onError: (data) => {
-      console.log("Error creating Team.");
-    },
-  });
+  return useMutation(["create-Team"], (data: ITeam) => createTeam(data));
 };
 
 const useGetTeamsByUser = (userId: string) => {
@@ -18,26 +13,13 @@ const useGetTeamsByUser = (userId: string) => {
     onSuccess: (data) => {
       setTeams(data);
     },
-    onError: (data) => {
-      console.log({ data });
-    },
   });
 };
 
 const useUpdateTeam = () => {
   return useMutation(
     ["update-booking"],
-    async (data: Partial<ITeam> & Pick<ITeam, "id">) => updateTeam(data),
-    {
-      onSuccess: (data) => {
-        console.log("Teams updated successfully");
-        // Do something with the data if needed
-      },
-      onError: (error) => {
-        console.log("Team update failed");
-        // Handle the error if needed
-      },
-    }
+    async (data: Partial<ITeam> & Pick<ITeam, "id">) => updateTeam(data)
   );
 };
 

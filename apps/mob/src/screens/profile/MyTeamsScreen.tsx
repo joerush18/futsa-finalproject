@@ -1,14 +1,14 @@
 import { Text, View, ScrollView, TextInput } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import color from "../assets/colors";
-import IconButton from "../components/ui/IconButton";
-import useTeam from "../hooks/useTeam";
-import Loading from "../components/ui/Loading";
+import color from "../../assets/colors";
+import IconButton from "../../components/ui/IconButton";
+import useTeam from "../../hooks/useTeam";
+import Loading from "../../components/ui/Loading";
 import { ITeam, createUniqueId } from "core";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import CreateTeamForm from "./CreateTeamForm";
-import Empty from "../components/ui/Empty";
+import Empty from "../../components/ui/Empty";
 
 const MyTeamsScreen = () => {
   const navigation = useNavigation();
@@ -36,6 +36,7 @@ const MyTeamsScreen = () => {
   const [teamName, setTeamName] = React.useState("");
 
   if (isFetchingTeams) return <Loading />;
+
   return (
     <View>
       {teams?.length ? (

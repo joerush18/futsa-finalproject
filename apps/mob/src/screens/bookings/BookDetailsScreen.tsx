@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import React from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import color from "../assets/colors";
-import { RootStackParamList } from "../StackNavigator";
+import color from "../../assets/colors";
+import { RootStackParamList } from "../../StackNavigator";
 
 import { Ionicons } from "@expo/vector-icons";
 import {

@@ -15,6 +15,7 @@ const MapViewScreen = () => {
 
   useEffect(() => {
     (async () => {
+      console.log("run");
       // Request permission to access location
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -31,7 +32,7 @@ const MapViewScreen = () => {
         longitudeDelta: 0.01,
       });
     })();
-  }, []);
+  }, [initialRegion]);
 
   // const [searchText, setSearchText] = React.useState("");
 
@@ -72,10 +73,11 @@ const PinLocations = () => {
   return (
     <>
       {futsals.length > 0 &&
-        futsals.map((futsal) => {
+        futsals.map((futsal, index) => {
           if (futsal.geoLocation?.lat && futsal.geoLocation?.lng) {
             return (
               <Marker
+                key={`futsal_${index}`}
                 coordinate={{
                   latitude: +futsal?.geoLocation?.lat,
                   longitude: +futsal?.geoLocation?.lng,
