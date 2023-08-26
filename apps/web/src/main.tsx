@@ -7,12 +7,12 @@ import TanstackProvider from "./providers/TanstackProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <TanstackProvider>
-      <BrowserRouter>
-        <TProvider>
+    <BrowserRouter>
+      <TProvider>
+        <TanstackProvider>
           <App />
-        </TProvider>
-      </BrowserRouter>
-    </TanstackProvider>
+        </TanstackProvider>
+      </TProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
