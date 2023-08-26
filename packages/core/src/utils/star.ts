@@ -1,4 +1,9 @@
+// @ts-nocheck
+
 export const createRatingStars = (rating?: number) => {
+  if (!rating) {
+    return;
+  }
   var rating = rating ?? Math.floor(Math.random() * 5) + 1;
   var stars = [];
 

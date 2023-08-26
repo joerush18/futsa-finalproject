@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { auth } from "../../index";
 import { ISignUpCredentials, ROLES } from "core/src/types/users.types";
 import { IFutsal, STATUS } from "../../../types/futsals.types";

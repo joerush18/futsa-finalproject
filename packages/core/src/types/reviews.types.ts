@@ -8,4 +8,4 @@ interface IReviews extends IEntryMeta {
   review: string;
 }
 
-export { IReviews };
+export type { IReviews };

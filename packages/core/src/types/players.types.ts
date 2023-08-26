@@ -19,4 +19,4 @@ interface IPlayers extends IEntryMeta {
   role: ROLES.PLAYER;
 }
 
-export { IPlayers };
+export type { IPlayers };

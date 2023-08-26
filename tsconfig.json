@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "skipLibCheck": true
+    "baseUrl": "."
   },
   "extends": "expo/tsconfig.base",
   "path": {
