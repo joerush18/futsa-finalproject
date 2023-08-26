@@ -9,6 +9,7 @@ import useRequests from "../../hooks/useRequests";
 import Loading from "../../components/ui/Loading";
 import Empty from "../../components/ui/Empty";
 import { RequestCard } from "./RequestCard";
+import { ref } from "firebase/storage";
 
 const Active = () => {
   const { activeRequests: requests, isfetchingRequests } = useRequests();
@@ -29,7 +30,15 @@ const Active = () => {
 };
 
 const Completed = () => {
-  const { completedRequests: requests, isfetchingRequests } = useRequests();
+  const {
+    completedRequests: requests,
+    isfetchingRequests,
+    refetch,
+  } = useRequests();
+
+  React.useEffect(() => {
+    refetch();
+  }, []);
 
   return isfetchingRequests ? (
     <Loading />

@@ -5,7 +5,7 @@ import {
   Pressable,
   RefreshControl,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import color from "../../assets/colors";
 import Card from "../../components/ui/Card";
@@ -15,7 +15,8 @@ import useYourBookings from "../../hooks/useYourBookings";
 
 const MyBookingsScreen = () => {
   const navigation = useNavigation();
-  const { fetchingData, bookings, refreshing, onRefresh } = useYourBookings();
+  const { fetchingData, bookings, refreshing, onRefresh, refetch } =
+    useYourBookings();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -25,6 +26,10 @@ const MyBookingsScreen = () => {
         backgroundColor: color.primary,
       },
     });
+  }, []);
+
+  useEffect(() => {
+    refetch();
   }, []);
 
   if (fetchingData) {
@@ -45,7 +50,6 @@ const MyBookingsScreen = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <Text className="text-l font-bold mt-4 text-gray-700 ml-2">Today</Text>
       {bookings.length > 0
         ? bookings.map((booking, index) => {
             return (
@@ -60,11 +64,12 @@ const MyBookingsScreen = () => {
                 id={booking.id?.toString() ?? ""}
                 fname={booking?.bookedToFutsal?.name ?? ""}
                 date={formatBookingDate(booking?.bookedFor)}
-                moment={timeAgo(booking?.updatedAt ?? booking.createdAt)}
+                moment={timeAgo(booking.createdAt)}
                 status={booking?.status}
                 payment={`${booking?.hasPaid ? "Paid" : "Not Paid"} (${
-                  booking?.paymentMethod
+                  booking.hasPaid ? booking?.paymentMethod : "-"
                 })`}
+                hasPaid={booking?.hasPaid}
               />
             );
           })
@@ -83,6 +88,7 @@ interface BookingInfoProps {
   status: string;
   payment: string;
   onPress: () => void;
+  hasPaid: boolean;
 }
 
 const BookingInfo = ({
@@ -93,17 +99,18 @@ const BookingInfo = ({
   status,
   payment,
   onPress,
+  hasPaid,
 }: BookingInfoProps) => {
   return (
     <Pressable onPress={onPress}>
       <Card>
-        <View className="flex-row items-center gap-5">
+        <View className="flex-row justify-between">
           <View>
-            <Text>#{id}</Text>
-            <Text className=" font-bold text-gray-700">{fname}</Text>
+            <Text className="text-gray-700">#{id}</Text>
+            <Text className=" font-bold text-gray-600">{fname}</Text>
             <Text className="text-xs font-bold text-gray-400">{date}</Text>
           </View>
-          <View>
+          <View className="flex-col items-end">
             <Text
               className={`${
                 status === BOOKING_STATUS.PENDING
@@ -115,7 +122,13 @@ const BookingInfo = ({
             >
               {status}
             </Text>
-            <Text className="text-primary text-xs">{payment}</Text>
+            <Text
+              className={`text-xs capitalize ${
+                hasPaid ? "text-violet-800" : "text-rose-800"
+              }`}
+            >
+              {payment}
+            </Text>
             <Text className="text-gray-400 text-xs">{moment}</Text>
           </View>
         </View>

@@ -5,7 +5,6 @@ export enum NOTIFICATION_TYPE {
   BOOKING_CANCELLED = "cancelled booking",
   BOOKING_CONFIRMED = "confirmed booking",
   BOOKING_REJECTED = "rejected booking",
-  NEW_TEAM_REGISTERED = "new team registered",
 }
 
 interface INotification extends IEntryMeta {
@@ -18,4 +17,4 @@ interface INotification extends IEntryMeta {
   bookingId?: string;
 }
 
-export { INotification };
+export type { INotification };

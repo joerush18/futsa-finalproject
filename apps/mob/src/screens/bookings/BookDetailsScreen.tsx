@@ -14,11 +14,15 @@ import { RootStackParamList } from "../../StackNavigator";
 import { Ionicons } from "@expo/vector-icons";
 import {
   BOOKING_STATUS,
+  IBookings,
   formatBookingDate,
   useBookingStore,
   useUpdateBooking,
 } from "core";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import usePayment from "../../hooks/usePayment";
+import { paymentData } from "../../utils/paymentData";
+import Loading from "../../components/ui/Loading";
 
 type BookDetailScreenRouteProps = RouteProp<
   RootStackParamList,
@@ -56,6 +60,7 @@ const BookDetailsScreen = ({ route }: BookDetailsScreenProps) => {
       }
     );
   };
+  const _data = paymentData(booking ?? ({} as IBookings));
 
   return (
     <View style={styles.container}>
@@ -140,13 +145,18 @@ const BookDetailsScreen = ({ route }: BookDetailsScreenProps) => {
         </Text>
       ) : null}
 
-      <View className="flex my-4 items-center justify-center gap-2 ">
+      <View className="flex-row my-4 items-center justify-center space-x-3 ">
         {booking?.status !== BOOKING_STATUS.REJECTED &&
         booking?.status !== BOOKING_STATUS.CANCELLED &&
         !booking?.hasPaid ? (
           <TouchableOpacity
-            onPress={() => {}}
-            className=" p-4 bg-violet-600 rounded-md"
+            onPress={async () => {
+              // @ts-ignore
+              navigation.navigate("Payment", {
+                paymentData: _data,
+              });
+            }}
+            className=" p-4 bg-violet-800 rounded-md"
           >
             <Text className="text-center text-white font-bold">Pay now</Text>
           </TouchableOpacity>
@@ -165,11 +175,11 @@ const BookDetailsScreen = ({ route }: BookDetailsScreenProps) => {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Main" as never);
+            navigation.goBack();
           }}
           className="p-4 bg-white rounded-md"
         >
-          <Text className="text-center text-primary">Back to Home Page</Text>
+          <Text className="text-center text-primary">Go back</Text>
         </TouchableOpacity>
       </View>
     </View>

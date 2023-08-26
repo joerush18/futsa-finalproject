@@ -1,5 +1,5 @@
 import { ScrollView, Text, View, RefreshControl } from "react-native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import color from "../../assets/colors";
 
@@ -10,6 +10,7 @@ import {
   IBookings,
   PAYMENT_METHOD,
   createRatingStars,
+  createUniqueId,
   useCreateBooking,
 } from "core";
 import {
@@ -67,6 +68,7 @@ const BookScreen = ({ route }: BookScreenProps) => {
   const { refreshing, onRefresh } = useRefetch(refetch);
 
   const [isModalVisible, setModalVisible] = useState(false);
+  const bookingId = useRef<string | null>(null);
 
   const _bookingDefaultValue: IBookings = {
     bookedByUser: {
@@ -81,7 +83,7 @@ const BookScreen = ({ route }: BookScreenProps) => {
     bookedFor: "",
     hasExpired: false,
     hasPaid: false,
-    paymentMethod: PAYMENT_METHOD.ESEWA,
+    paymentMethod: PAYMENT_METHOD.KHALTI,
     price: futsal.price,
     status: BOOKING_STATUS.PENDING,
     createdAt: Date.now(),
@@ -146,6 +148,7 @@ const BookScreen = ({ route }: BookScreenProps) => {
       <ModalComponent
         isVisible={isModalVisible}
         setIsVisible={setModalVisible}
+        bookingId={bookingId.current ?? ""}
       />
       <ScrollView
         refreshControl={
@@ -184,6 +187,8 @@ const BookScreen = ({ route }: BookScreenProps) => {
           <BookNowButton
             onPress={() => {
               const date = addTimeToDate(currentDate, currentTimeSlot);
+              const id = createUniqueId();
+              bookingId.current = id;
               bookingData &&
                 bookingData.push({
                   ..._bookingDefaultValue,
@@ -192,6 +197,7 @@ const BookScreen = ({ route }: BookScreenProps) => {
               createBooking(
                 {
                   ..._bookingDefaultValue,
+                  id,
                   bookedFor: date.toString(),
                 },
                 {

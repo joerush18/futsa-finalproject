@@ -13,7 +13,7 @@ interface RequestsByStatus {
 
 const useRequests = () => {
   const { user } = useCurrentUser();
-  const { isLoading } = useGetRequestByUserId(user?.id ?? "");
+  const { isLoading, refetch } = useGetRequestByUserId(user?.id ?? "");
   const { requests } = useRequestStore();
 
   const req = requests.reduce<RequestsByStatus>(
@@ -32,6 +32,7 @@ const useRequests = () => {
     completedRequests: req.completed,
     activeRequests: req.active,
     isfetchingRequests: isLoading,
+    refetch,
   };
 };
 

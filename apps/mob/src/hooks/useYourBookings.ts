@@ -11,7 +11,7 @@ const useYourBookings = () => {
   } = useGetBookingByUserId(user.id ?? "");
   const { onRefresh, refreshing } = useRefetch(refetch);
 
-  return { onRefresh, refreshing, fetchingData, bookings };
+  return { onRefresh, refreshing, fetchingData, bookings, refetch };
 };
 
 export default useYourBookings;

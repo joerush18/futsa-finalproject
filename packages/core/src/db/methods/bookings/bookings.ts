@@ -12,12 +12,10 @@ import {
 import { createUniqueId } from "../../../utils";
 
 const createBooking = async (data: IBookings) => {
-  const id = createUniqueId();
   try {
-    const bookingRef = db.collection("bookings").doc(id);
+    const bookingRef = db.collection("bookings").doc(data.id);
     await bookingRef.set({
       ...data,
-      id,
     });
     return true;
   } catch (error) {

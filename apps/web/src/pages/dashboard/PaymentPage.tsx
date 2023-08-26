@@ -1,6 +1,7 @@
 import { toast } from "react-hot-toast";
 import { Button } from "@mui/material";
 import {
+  Collections,
   IInitiatePaymentResponse,
   IInitiatiatePayment,
   useCreatePayment,
@@ -11,13 +12,17 @@ const PaymentPage = () => {
   const handlePayment = async () => {
     const data: IInitiatiatePayment = {
       amount: "1000",
-      customerEmail: "test@joey.com",
-      customerPhone: "9800000000",
+      customerEmail: "joras.aryal23@gmail.com",
+      customerPhone: "9846168323",
       customerName: "Test Customer",
-      orderId: "1234567890",
+      // orderId : payedForEventName - payedForEventId
+      orderId: `${
+        Collections.Bookings
+      }_${`aac62d97-1d54-1ac3-816c-b8f9ee6862aa`}`,
       futsalId: "615f9b9b9b9b9b9b9b9b9b9b",
       futsalName: "Test Futsal",
-      bookedFor: "2021-10-10",
+      // bookedFor : futsalName - futsalId - customerName - customerId
+      bookedFor: `${`ABC Futsal Pvt. Ltd`}_${`CC4W7r9PNMfEpJ7XItCz1XH4uNE3`}_${`Saroj Aryal`}_${`mnA4oFMxCnTLC7KfgGflak8XUdu2`}`,
     };
 
     createPayment(data, {
