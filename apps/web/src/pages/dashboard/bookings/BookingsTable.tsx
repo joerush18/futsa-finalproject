@@ -58,6 +58,7 @@ export default function BookingsTable({
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
+    event?.preventDefault();
     setPage(newPage);
   };
 
@@ -216,25 +217,27 @@ export default function BookingsTable({
               </TableRow>
             )}
           </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[4, 8, 12, { label: "All", value: -1 }]}
-                colSpan={3}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    "aria-label": "rows per page",
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
+          {!emptyRows ? (
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[4, 8, 12, { label: "All", value: -1 }]}
+                  colSpan={3}
+                  count={rows.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      "aria-label": "rows per page",
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          ) : null}
         </Table>
       </TableContainer>
     </>

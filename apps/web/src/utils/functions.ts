@@ -25,4 +25,4 @@ function boxShadow(
   )} ${rgba(color, opacity)}`;
 }
 
-export { pxToRem, rgba, hexToRgb };
+export { pxToRem, rgba, hexToRgb, boxShadow };
