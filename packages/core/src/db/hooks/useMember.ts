@@ -9,14 +9,7 @@ import { IMember } from "../../types";
 import useMemberStore from "../../store/useMemberStore";
 
 const useCreateMember = () => {
-  return useMutation(["create-Member"], (data: IMember) => createMember(data), {
-    onSuccess: (data) => {
-      console.log("Member Created Successfully.");
-    },
-    onError: (data) => {
-      console.log("Error creating Member.");
-    },
-  });
+  return useMutation(["create-Member"], (data: IMember) => createMember(data));
 };
 
 const useGetMembersByTeam = (teamId: string) => {
@@ -25,39 +18,18 @@ const useGetMembersByTeam = (teamId: string) => {
     onSuccess: (data) => {
       setMembers(data);
     },
-    onError: (data) => {
-      console.log({ data });
-    },
   });
 };
 const useUpdateMember = () => {
   return useMutation(
     ["update-booking"],
-    async (data: Partial<IMember> & Pick<IMember, "id">) => updateMember(data),
-    {
-      onSuccess: (data) => {
-        console.log("Members updated successfully");
-        // Do something with the data if needed
-      },
-      onError: (error) => {
-        console.log("Member update failed");
-        // Handle the error if needed
-      },
-    }
+    async (data: Partial<IMember> & Pick<IMember, "id">) => updateMember(data)
   );
 };
 
 const useDeleteMember = () => {
-  return useMutation(
-    ["update-member"],
-    async (memberId: string) => deleteMember(memberId),
-    {
-      onError: (error) => {
-        console.log("Member delete failed");
-        // Handle the error if needed
-      },
-      onSuccess: (data) => console.log("Member deleted successfully"),
-    }
+  return useMutation(["update-member"], async (memberId: string) =>
+    deleteMember(memberId)
   );
 };
 

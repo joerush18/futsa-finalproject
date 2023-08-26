@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 
-const Loading = () => {
+const Loading = ({ label }: { label?: string }) => {
   return (
     <Box
       sx={{
@@ -12,7 +12,7 @@ const Loading = () => {
     >
       <Stack alignItems="center" gap={2}>
         <CircularProgress disableShrink />
-        <Typography variant="h3">FUTSA</Typography>
+        <Typography variant="h3">{label ?? "FUTSA"}</Typography>
       </Stack>
     </Box>
   );

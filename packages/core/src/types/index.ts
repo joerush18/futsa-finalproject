@@ -8,3 +8,4 @@ export * from "./meta.types";
 export * from "./reviews.types";
 export * from "./notification.types";
 export * from "./payment.types";
+export * from "./requests.types";

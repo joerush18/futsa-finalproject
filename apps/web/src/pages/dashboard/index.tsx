@@ -28,7 +28,7 @@ const Dashboard: React.FC = () => {
         <Box width="100%">
           <Navbar />
           <Box px={2} height="calc(100vh - 100px)" overflow="scroll">
-            {<Outlet />}
+            <Outlet />
           </Box>
         </Box>
       </Stack>

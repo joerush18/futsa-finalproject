@@ -5,11 +5,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Divider from "../components/ui/Divider";
 import Sectionlayout from "../components/layout/Sectionlayout";
-import { AntDesign } from "@expo/vector-icons";
 import BookNowButton from "../components/ui/BookNowButton";
 import MapView, { Marker } from "react-native-maps";
 import Review from "../components/Review";
-import IconText from "../components/ui/IconText";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { useFutsalsStore } from "core";
 import { RootStackParamList } from "../StackNavigator";
@@ -71,22 +69,17 @@ const FutsalDetailScreen = ({ route }: FutsalDetailScreenProps) => {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            className="gap-2 m-1"
+            className="gap-2"
           >
             {Amenities.length ? (
               Amenities.map((amenity, index) => {
                 return (
-                  <IconText
-                    key={index}
-                    label={amenity}
-                    icon={
-                      <AntDesign
-                        // @ts-ignore
-                        name={amenity.toLowerCase().trim() ?? "Trophy"}
-                        size={24}
-                      />
-                    }
-                  />
+                  <Text
+                    key={`amenity_${index}`}
+                    className="px-3 py-2 bg-gray-300 rounded-md text-md text-grayText"
+                  >
+                    {amenity}
+                  </Text>
                 );
               })
             ) : (

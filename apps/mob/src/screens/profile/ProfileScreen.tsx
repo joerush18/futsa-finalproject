@@ -1,14 +1,15 @@
 import { ScrollView, View, Text } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import color from "../assets/colors";
+import color from "../../assets/colors";
 import { AntDesign } from "@expo/vector-icons";
-import OptionsCard from "../components/OptionCard";
+import OptionsCard from "../../components/OptionCard";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Avatar from "../components/ui/Avatar";
+import Avatar from "../../components/ui/Avatar";
 import { useLogout } from "core/src/db/hooks/useAuth";
-import useCurrentUser from "../hooks/useCurrentUser";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -20,8 +21,17 @@ const ProfileScreen = () => {
       title: "My Profile",
       headerTitleStyle: {
         fontSize: 20,
-        fontWeight: "bold",
         color: "white",
+      },
+      headerLeft: () => {
+        return (
+          <MaterialCommunityIcons
+            name="account-circle"
+            size={24}
+            color="white"
+            style={{ marginLeft: 12 }}
+          />
+        );
       },
       headerStyle: {
         backgroundColor: color.primary,
@@ -67,6 +77,15 @@ const ProfileScreen = () => {
           }
         >
           <Ionicons name="person-sharp" size={36} color={color.primary} />
+        </OptionsCard>
+        <OptionsCard
+          label="My Events"
+          onPress={() =>
+            // @ts-ignore
+            navigation.navigate("My-Teams")
+          }
+        >
+          <MaterialIcons name="event" size={36} color={color.yellow} />
         </OptionsCard>
         <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />

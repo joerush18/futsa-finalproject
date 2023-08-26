@@ -80,6 +80,28 @@ const TeamSchema = z.object({
   verified: z.boolean(),
 });
 
+const BidSchema = z.object({
+  budget: z.string().min(1, { message: "Required" }),
+  message: z.string().min(1, { message: "Required" }),
+  venue: z.object({
+    lat: z.string(),
+    lng: z.string(),
+    value: z.any(),
+  }),
+  freebies: z.array(z.string()),
+});
+
+const RequestSchema = z.object({
+  title: z.string().min(1, { message: "Required" }),
+  description: z.string().min(1, { message: "Required" }),
+  startDate: z.string().min(1, { message: "Required" }),
+  endDate: z.string().min(1, { message: "Required" }),
+  location: z.string().min(1, { message: "Required" }),
+  budget: z.string().min(1, { message: "Required" }),
+  deadline: z.string().min(1, { message: "Required" }),
+  status: z.string().min(1, { message: "Required" }),
+});
+
 export {
   SignUpSchema,
   OTPSchema,
@@ -88,4 +110,6 @@ export {
   EventSchema,
   MemberSchema,
   TeamSchema,
+  BidSchema,
+  RequestSchema,
 };

@@ -8,16 +8,19 @@ import HomeBottomTabs from "./tabs/HomeBottomTabs";
 import FutsalDetailScreen from "./screens/FutsalDetailScreen";
 import NotificationScreen from "./screens/NotificationScreen";
 import FilterScreen from "./screens/FilterScreen";
-import BookScreen from "./screens/BookScreen";
+import BookScreen from "./screens/bookings/BookScreen";
 import SignupScreen from "./screens/auth/SignupScreen";
 import OtpScreen from "./screens/auth/OtpScreen";
 import SetPasswordScreen from "./screens/auth/SetPasswordScreen";
 import useCurrentUser from "./hooks/useCurrentUser";
 import Toast from "react-native-toast-message";
-import BookDetailsScreen from "./screens/BookDetailsScreen";
-import MyBookingsScreen from "./screens/MyBookingsScreen";
-import EventDetailsScreen from "./screens/EventDetailsScreen";
-import MyTeamsScreen from "./screens/MyTeamsScreen";
+import BookDetailsScreen from "./screens/bookings/BookDetailsScreen";
+import MyBookingsScreen from "./screens/profile/MyBookingsScreen";
+import EventDetailsScreen from "./screens/events/EventDetailsScreen";
+import MyTeamsScreen from "./screens/profile/MyTeamsScreen";
+import RequestsScreen from "./screens/request/RequestsScreen";
+import CreateRequestScreen from "./screens/request/CreateRequestScreen";
+import RequestDetailsScreen from "./screens/request/RequestDetailsScreen";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -32,6 +35,9 @@ export type RootStackParamList = {
   "My-Bookings": {};
   "Event-Detail": { eventId: string };
   "My-Teams": {};
+  Requests: {};
+  "Create-Request": {};
+  "Request-Detail": { requestId: string };
 };
 
 const AfterAuthNavigationContainers = () => {
@@ -87,8 +93,29 @@ const AfterAuthNavigationContainers = () => {
           }}
         />
         <Stack.Screen
+          name="Request-Detail"
+          component={RequestDetailsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
           name="My-Teams"
           component={MyTeamsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Requests"
+          component={RequestsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Create-Request"
+          component={CreateRequestScreen}
           options={{
             headerShown: true,
           }}

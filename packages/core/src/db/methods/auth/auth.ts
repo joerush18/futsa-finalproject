@@ -8,7 +8,7 @@ import { createPlayerCollection } from "../users/player";
 const emailSignUp = async (data: ISignUpCredentials) => {
   const { email, password, phoneNumber, fullName, role } = data;
   try {
-    // await auth.setPersistence("local");
+    await auth.setPersistence("local");
     const res = await auth.createUserWithEmailAndPassword(email, password);
     console.log(res.user);
     if (role === ROLES.PLAYER && res) {

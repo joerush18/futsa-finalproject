@@ -1,7 +1,6 @@
 "use client";
 
 import { Grid } from "@mui/material";
-import React from "react";
 import FsCard from "../card/FsCard";
 import Color from "@/utils/color";
 import LaptopChromebookIcon from "@mui/icons-material/LaptopChromebook";

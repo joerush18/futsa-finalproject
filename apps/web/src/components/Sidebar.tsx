@@ -12,12 +12,12 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import PaymentIcon from "@mui/icons-material/Payment";
 import InboxIcon from "@mui/icons-material/Inbox";
 import EventIcon from "@mui/icons-material/Event";
-import NewspaperIcon from "@mui/icons-material/Newspaper";
 import PersonIcon from "@mui/icons-material/Person";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import Color from "@/utils/color";
 import Box from "@mui/material/Box/Box";
 import { NavLink, useLocation } from "react-router-dom";
+import { RequestPage, RequestQuote } from "@mui/icons-material";
 
 const drawerWidth = 270;
 
@@ -56,11 +56,11 @@ const sideMenus = [
     title: "Payments",
     icon: <PaymentIcon />,
   },
-  // {
-  //   path: "news",
-  //   title: "News",
-  //   icon: <NewspaperIcon />,
-  // },
+  {
+    path: "requests",
+    title: "Requests",
+    icon: <RequestQuote />,
+  },
   {
     path: "create-event",
     title: "Create Event",

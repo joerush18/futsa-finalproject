@@ -5,12 +5,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileScreen from "../screens/profile/ProfileScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabLabel from "../components/ui/TabLabel";
 import color from "../assets/colors";
 import MapViewScreen from "../screens/MapViewScreen";
-import EventScreen from "../screens/EventScreen";
+import EventScreen from "../screens/events/EventScreen";
+import RequestsScreen from "../screens/request/RequestsScreen";
 
 const HomeBottomTabs = () => {
   const Tab = createBottomTabNavigator();
@@ -61,6 +62,23 @@ const HomeBottomTabs = () => {
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name="event"
+              size={24}
+              color={focused ? color.primary : color.grayLight}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="My requests"
+        component={RequestsScreen}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <TabLabel label="My requests" focused={focused} />
+          ),
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="request-quote"
               size={24}
               color={focused ? color.primary : color.grayLight}
             />

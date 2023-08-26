@@ -9,29 +9,12 @@ import {
 import useEventStore from "../../store/useEventStore";
 
 const useCreateEvent = () => {
-  return useMutation(["create-event"], (data: IEvents) => createEvent(data), {
-    onSuccess: (data) => {
-      console.log("Event Created Successfully.");
-    },
-    onError: (data) => {
-      console.log("Error creating event.");
-    },
-  });
+  return useMutation(["create-event"], (data: IEvents) => createEvent(data));
 };
 
 const useGetEventsByFutsal = (futsalId: string) => {
-  // const { setBookings } = useBookingStore();
-  return useQuery(
-    ["get-events-by-futsalId"],
-    () => getEventsByFutsal(futsalId),
-    {
-      onSuccess: (data) => {
-        // setBookings(data);
-      },
-      onError: (data) => {
-        console.log({ data });
-      },
-    }
+  return useQuery(["get-events-by-futsalId"], () =>
+    getEventsByFutsal(futsalId)
   );
 };
 
@@ -41,26 +24,13 @@ const useGetAllEvents = () => {
     onSuccess: (data) => {
       setEvents(data);
     },
-    onError: (data) => {
-      console.log({ data });
-    },
   });
 };
 
 const useUpdateEvent = () => {
   return useMutation(
     ["update-booking"],
-    async (data: Partial<IEvents> & Pick<IEvents, "id">) => updateEvent(data),
-    {
-      onSuccess: (data) => {
-        console.log("Booking updated successfully");
-        // Do something with the data if needed
-      },
-      onError: (error) => {
-        console.log("Booking update failed");
-        // Handle the error if needed
-      },
-    }
+    async (data: Partial<IEvents> & Pick<IEvents, "id">) => updateEvent(data)
   );
 };
 

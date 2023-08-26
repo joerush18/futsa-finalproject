@@ -5,9 +5,9 @@ import {
   ScrollView,
   RefreshControl,
 } from "react-native";
-import React, { useState } from "react";
-import color from "../assets/colors";
-import InputComponent from "../components/ui/InputComponent";
+import React, { useEffect, useState } from "react";
+import color from "../../assets/colors";
+import InputComponent from "../../components/ui/InputComponent";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -21,14 +21,14 @@ import {
   useUpdateMember,
 } from "core";
 import Modal from "react-native-modal";
-import Card from "../components/ui/Card";
-import IconButton from "../components/ui/IconButton";
+import Card from "../../components/ui/Card";
+import IconButton from "../../components/ui/IconButton";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import useMemberStore from "core/src/store/useMemberStore";
-import useRefetch from "../hooks/useRefetch";
+import useRefetch from "../../hooks/useRefetch";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import Loading from "../components/ui/Loading";
+import Loading from "../../components/ui/Loading";
 
 const CreateTeamForm = ({ team }: { team: ITeam }) => {
   const { isLoading, refetch } = useGetMembersByTeam(team.id);
@@ -126,6 +126,10 @@ const CreateTeamForm = ({ team }: { team: ITeam }) => {
     setIsVisible(false);
     setEditMode(false);
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   if (isLoading || isCreatingMember || isUpdatingMember || isDeletingMember) {
     return <Loading />;

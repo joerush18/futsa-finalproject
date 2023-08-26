@@ -7,11 +7,11 @@ import {
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import color from "../assets/colors";
-import Card from "../components/ui/Card";
+import color from "../../assets/colors";
+import Card from "../../components/ui/Card";
 import { BOOKING_STATUS, formatBookingDate, timeAgo } from "core";
-import Loading from "../components/ui/Loading";
-import useYourBookings from "../hooks/useYourBookings";
+import Loading from "../../components/ui/Loading";
+import useYourBookings from "../../hooks/useYourBookings";
 
 const MyBookingsScreen = () => {
   const navigation = useNavigation();
@@ -47,9 +47,10 @@ const MyBookingsScreen = () => {
     >
       <Text className="text-l font-bold mt-4 text-gray-700 ml-2">Today</Text>
       {bookings.length > 0
-        ? bookings.map((booking) => {
+        ? bookings.map((booking, index) => {
             return (
               <BookingInfo
+                key={`booking_${index}`}
                 onPress={() => {
                   // @ts-ignore
                   navigation.navigate("Booking-Detail", {

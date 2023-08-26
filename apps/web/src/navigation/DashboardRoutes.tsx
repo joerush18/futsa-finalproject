@@ -10,6 +10,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import { STATUS } from "core/src/types/futsals.types";
 import { Typography } from "@mui/material";
 import CreateEventPage from "@/pages/dashboard/events/CreateEventPage";
+import RequestPage from "@/pages/dashboard/requests/RequestPage";
 
 const DashboardRoutes = () => {
   const { futsal } = useCurrentUser();
@@ -31,7 +32,7 @@ const DashboardRoutes = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="bookings" element={<BookingPage />} />
           <Route path="profile" element={<ProfilePage />} />
-          {/* <Route path="news" element={<NewsPage />} /> */}
+          <Route path="requests" element={<RequestPage />} />
           <Route path="events" element={<EventsPage />} />
           <Route path="payments" element={<PaymentPage />} />
           <Route path="create-event" element={<CreateEventPage />} />

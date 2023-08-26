@@ -5,3 +5,5 @@ export * from "./bookings";
 export * from "./notification";
 export * from "./payment";
 export * from "./events";
+export * from "./requests";
+export * from "./bids";

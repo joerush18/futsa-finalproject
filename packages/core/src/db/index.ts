@@ -26,6 +26,8 @@ const Collections = {
   Player: "player",
   Teams: "teams",
   Members: "members",
+  Requests: "requests",
+  Bids: "bids",
 };
 
 const auth = firebase.auth();

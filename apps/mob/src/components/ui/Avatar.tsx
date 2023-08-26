@@ -1,7 +1,6 @@
 import { Image, View, Text } from "react-native";
 import React from "react";
 import color from "../../assets/colors";
-import { he } from "date-fns/locale";
 
 const Avatar = ({ size = 65, label }: { size?: number; label?: string }) => {
   return (
@@ -12,7 +11,7 @@ const Avatar = ({ size = 65, label }: { size?: number; label?: string }) => {
             width: size,
             height: size,
           }}
-          className={`rounded-full mt-4 flex-row items-center justify-center bg-primaryLight`}
+          className={`rounded-full flex-row items-center justify-center bg-primaryLight border-2 border-white`}
         >
           <Text className="uppercase font-bold ">{label.slice(0, 2)}</Text>
         </View>
