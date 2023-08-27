@@ -8,9 +8,9 @@ import InputComponent from "../../components/ui/InputComponent";
 import {
   IEntryMeta,
   IRequest,
-  REQUEST_STATUS,
   RequestSchema,
   useCreateRequest,
+  useRequestStore,
 } from "core";
 import Button from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,6 +53,8 @@ const CreateRequestScreen = () => {
   const { mutate: createRequest, isLoading: isCreatingRequest } =
     useCreateRequest();
 
+  const { setRequests, requests } = useRequestStore();
+
   const handleCreateRequest = (data: IRequest) => {
     const meta: IEntryMeta = {
       createdAt: +new Date(),
@@ -70,6 +72,7 @@ const CreateRequestScreen = () => {
 
     createRequest(_request, {
       onSuccess: () => {
+        setRequests([...requests, _request]);
         Toast.show({
           type: "success",
           text1: "Request created successfully",

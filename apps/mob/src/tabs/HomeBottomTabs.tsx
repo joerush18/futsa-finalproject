@@ -52,6 +52,23 @@ const HomeBottomTabs = () => {
         }}
       />
       <Tab.Screen
+        name="My requests"
+        component={RequestsScreen}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <TabLabel label="Requests" focused={focused} />
+          ),
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons
+              name="post-outline"
+              size={24}
+              color={focused ? color.primary : color.grayLight}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Event"
         component={EventScreen}
         options={{
@@ -68,23 +85,7 @@ const HomeBottomTabs = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="My requests"
-        component={RequestsScreen}
-        options={{
-          tabBarLabel: ({ focused }) => (
-            <TabLabel label="My requests" focused={focused} />
-          ),
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <MaterialIcons
-              name="request-quote"
-              size={24}
-              color={focused ? color.primary : color.grayLight}
-            />
-          ),
-        }}
-      />
+
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
