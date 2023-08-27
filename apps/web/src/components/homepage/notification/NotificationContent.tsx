@@ -1,33 +1,39 @@
 import Color from "@/utils/color";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import GppGoodRoundedIcon from "@mui/icons-material/GppGoodRounded";
 import GppBadRoundedIcon from "@mui/icons-material/GppBadRounded";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import { NOTIFICATION_TYPE } from "core";
 
 interface INotificationContentProps {
   type: NOTIFICATION_TYPE;
   username: string;
   date: string;
-  impDate: string;
+  description: string;
   viewed: boolean;
   onClick: () => void;
+  collectionId: string;
 }
 
 const NotificationContent = ({
   type,
   username,
   date,
-  impDate,
+  description,
   viewed,
   onClick,
+  collectionId,
 }: INotificationContentProps) => {
   const booked = type === NOTIFICATION_TYPE.BOOKING;
+  const payment = type === NOTIFICATION_TYPE.PAYMENT;
 
   return (
     <Stack
       onClick={onClick}
       flexDirection="row"
-      gap={1}
+      alignItems="center"
+      gap={2}
       sx={{
         "&:hover": {
           backgroundColor: Color.grey[200],
@@ -39,10 +45,17 @@ const NotificationContent = ({
       }}
     >
       {booked ? (
-        <GppGoodRoundedIcon
+        <PendingActionsIcon
           color="warning"
           sx={{
-            fontSize: 30,
+            fontSize: 32,
+          }}
+        />
+      ) : payment ? (
+        <ReceiptIcon
+          color="primary"
+          sx={{
+            fontSize: 32,
           }}
         />
       ) : (
@@ -50,14 +63,13 @@ const NotificationContent = ({
       )}
 
       <Box>
-        <Typography variant="body2" fontWeight="bold" lineHeight={0.5}>
-          {username}
-        </Typography>
-        <Typography variant="caption" lineHeight={0.8}>
-          has {type} for{" "}
-          <Typography fontWeight="bold" variant="caption" lineHeight={1}>
-            {impDate}
-          </Typography>
+        <Typography variant="caption">{description} </Typography>
+        <Typography
+          lineHeight={2}
+          fontSize="10px"
+          color={viewed ? Color.grey[700] : Color.secondary.focus}
+        >
+          #{collectionId}
         </Typography>
         <Typography
           lineHeight={1}

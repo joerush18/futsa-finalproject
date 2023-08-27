@@ -20,9 +20,7 @@ import {
   useUpdateBooking,
 } from "core";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import usePayment from "../../hooks/usePayment";
 import { paymentData } from "../../utils/paymentData";
-import Loading from "../../components/ui/Loading";
 
 type BookDetailScreenRouteProps = RouteProp<
   RootStackParamList,
@@ -108,13 +106,10 @@ const BookDetailsScreen = ({ route }: BookDetailsScreenProps) => {
           </Text>
         </View>
         <View className="flex-row  items-center justify-between w-full px-10">
-          <TextLabel
-            label="Booking Id"
-            value={`${bookingId.slice(0, 14)} ***** - *****`}
-          />
+          <TextLabel label="Booking Id" value={`${bookingId.slice(0, 14)}`} />
           <TextLabel
             label="Payment"
-            value={booking?.paymentMethod.toString() ?? ""}
+            value={booking?.paymentMethod?.toString() ?? ""}
           />
         </View>
         <View className="flex-row  items-center justify-between w-full px-10">

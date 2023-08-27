@@ -9,6 +9,8 @@ export const Collection = {
   Bookings: "bookings",
   Notification: "notifications",
   Transactions: "transactions",
+  Requests: "requests",
+  Events: "events",
 };
 
 export const Database = admin.firestore();

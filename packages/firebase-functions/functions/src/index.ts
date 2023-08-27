@@ -4,11 +4,13 @@ import onCreateBooking from "./triggers/onCreateBooking";
 import { initiatePayment } from "./methods/payment";
 import { futsaPaymentReturn } from "./methods/futsaPaymentReturn";
 import onTransactionSuccess from "./triggers/onTransactionSuccess";
+import onUpdateBooking from "./triggers/onUpdateBooking";
 
 const functions: {
   [key: string]: CloudFunction<QueryDocumentSnapshot> | HttpsFunction;
 } = {
   onCreateBooking,
+  onUpdateBooking,
   initiatePayment,
   futsaPaymentReturn,
   onTransactionSuccess,

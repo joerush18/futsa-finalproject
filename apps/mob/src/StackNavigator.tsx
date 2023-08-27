@@ -22,8 +22,7 @@ import RequestsScreen from "./screens/request/RequestsScreen";
 import CreateRequestScreen from "./screens/request/CreateRequestScreen";
 import RequestDetailsScreen from "./screens/request/RequestDetailsScreen";
 import PaymentScreen from "./screens/PaymentScreen";
-import { IBookings, IInitiatiatePayment } from "core";
-import useNotifications from "./hooks/useNotification";
+import { IInitiatiatePayment } from "core";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };

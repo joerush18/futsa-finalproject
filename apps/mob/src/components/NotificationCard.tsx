@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
 import Card from "./ui/Card";
-import { AntDesign } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { NOTIFICATION_TYPE } from "core";
 import { useNavigation } from "@react-navigation/native";
@@ -10,38 +8,38 @@ import { useNavigation } from "@react-navigation/native";
 interface NotificationCardProps {
   type: NOTIFICATION_TYPE;
   message?: string;
-  bookedForTime: string;
+  collectionId: string;
   createdAtTime: string;
   createdByName: string;
-  bookingId?: string;
 }
 
 const NotificationCard: React.FC<NotificationCardProps> = ({
   type,
   message,
-  bookedForTime,
+  collectionId,
   createdAtTime,
   createdByName,
-  bookingId,
 }) => {
   const navigation = useNavigation();
   return (
     <Pressable
       onPress={() => {
-        // @ts-ignore
-        navigation.navigate("Booking-Detail", {
-          bookingId: bookingId,
-        });
+        if (type === NOTIFICATION_TYPE.BOOKING && collectionId) {
+          // @ts-ignore
+          navigation.navigate("My-Bookings");
+        }
+        if (type === NOTIFICATION_TYPE.BOOKING && collectionId) {
+          // @ts-ignore
+          // navigation.navigate("My-Payments");
+        }
       }}
     >
       <Card>
         <View style={styles.flex}>
-          {type === NOTIFICATION_TYPE.BOOKING_CONFIRMED && (
+          {/* {type === NOTIFICATION_TYPE.BOOKING && (
             <AntDesign name="checkcircle" size={36} color={color.primary} />
-          )}
-          {type === NOTIFICATION_TYPE.BOOKING_REJECTED && (
-            <Entypo name="circle-with-cross" size={36} color={color.red} />
-          )}
+          )} */}
+
           <View style={styles.VFlex}>
             <Text
               style={{
@@ -51,7 +49,6 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               {createdByName}
             </Text>
             <Text className="font-normal">{message}</Text>
-            <Text className="font-bold opacity-60">{bookedForTime}</Text>
             <Text
               style={{
                 color: color.grayLight,
