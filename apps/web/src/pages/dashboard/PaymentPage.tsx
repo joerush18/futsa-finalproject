@@ -1,52 +1,26 @@
-import { toast } from "react-hot-toast";
-import { Button } from "@mui/material";
-import {
-  Collections,
-  IInitiatePaymentResponse,
-  IInitiatiatePayment,
-  useCreatePayment,
-} from "core";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { Box } from "@mui/material";
+import { useGetTransactionByFutsal } from "core";
 
 const PaymentPage = () => {
-  const { mutate: createPayment, isLoading } = useCreatePayment();
-  const handlePayment = async () => {
-    const data: IInitiatiatePayment = {
-      amount: "1000",
-      customerEmail: "joras.aryal23@gmail.com",
-      customerPhone: "9846168323",
-      customerName: "Test Customer",
-      // orderId : payedForEventName - payedForEventId
-      orderId: `${
-        Collections.Bookings
-      }_${`aac62d97-1d54-1ac3-816c-b8f9ee6862aa`}`,
-      futsalId: "615f9b9b9b9b9b9b9b9b9b9b",
-      futsalName: "Test Futsal",
-      // bookedFor : futsalName - futsalId - customerName - customerId
-      bookedFor: `${`ABC Futsal Pvt. Ltd`}_${`CC4W7r9PNMfEpJ7XItCz1XH4uNE3`}_${`Saroj Aryal`}_${`mnA4oFMxCnTLC7KfgGflak8XUdu2`}`,
-    };
+  const { futsal } = useCurrentUser();
+  const { data: transactions, isLoading: isFetchingPayments } =
+    useGetTransactionByFutsal(futsal.id);
 
-    createPayment(data, {
-      onSuccess: (data: IInitiatePaymentResponse) => {
-        console.log(data);
-        data.received && window.open(data.data.payment_url);
-      },
-      onError: () => {
-        toast.error("Something went wrong");
-      },
-    });
-  };
+  if (isFetchingPayments && !transactions) {
+    return <Box>Loading...</Box>;
+  }
+
   return (
-    <div>
-      <Button
-        variant="contained"
-        onClick={() => handlePayment()}
-        sx={{
-          backgroundColor: "purple",
-        }}
-      >
-        {isLoading ? "Loading..." : "Pay with Khalti"}
-      </Button>
-    </div>
+    <Box>
+      {transactions?.length ? (
+        transactions.map((d) => {
+          return <Box>{d.amount}</Box>;
+        })
+      ) : (
+        <Box>No transactions found.</Box>
+      )}
+    </Box>
   );
 };
 export default PaymentPage;

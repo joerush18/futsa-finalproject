@@ -18,7 +18,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "@/store/useUserStore";
 import MenuComponent, { IMenuItems } from "./MenuComponent";
 import useModal from "@/hooks/useModal";
-import { INotification, formatBookingDate, timeAgo, useLogout } from "core";
+import { INotification, NOTIFICATION_TYPE, timeAgo, useLogout } from "core";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationContent from "./homepage/notification/NotificationContent";
 import Color from "@/utils/color";
@@ -137,18 +137,25 @@ const Navbar = () => {
                           key={notification.id}
                           type={notification.type}
                           date={timeAgo(notification.createdAt)}
-                          impDate={formatBookingDate(
-                            notification.bookedForTime?.toString() ?? ""
-                          )}
                           username={notification?.createdBy?.name ?? ""}
+                          description={notification.description}
+                          collectionId={notification.collectionId}
                           viewed={notification.viewed}
                           onClick={() => {
                             updateNotification({
                               id: notification.id ?? "",
                               viewed: true,
                             });
-                            modalOnOpen();
-                            setBookingId(notification.bookingId ?? "");
+                            setBookingId(
+                              notification.type === NOTIFICATION_TYPE.BOOKING
+                                ? notification.collectionId
+                                : ""
+                            );
+                            notification.type === NOTIFICATION_TYPE.BOOKING &&
+                              modalOnOpen();
+
+                            notification.type === NOTIFICATION_TYPE.PAYMENT &&
+                              navigate("payments");
                           }}
                         />
                       );

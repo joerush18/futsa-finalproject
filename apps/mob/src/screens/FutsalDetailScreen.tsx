@@ -241,8 +241,8 @@ const Location = ({ lat, lng }: { lat?: number; lng?: number }) => {
 const Reviews = () => {
   return (
     <View className="p-3">
-      {Array.from({ length: 2 }, () => {
-        return <Review />;
+      {Array.from({ length: 2 }, (_, index) => {
+        return <Review key={`review_${index}`} />;
       })}
     </View>
   );

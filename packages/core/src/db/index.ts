@@ -28,6 +28,7 @@ const Collections = {
   Members: "members",
   Requests: "requests",
   Bids: "bids",
+  Transactions: "transactions",
 };
 
 const auth = firebase.auth();

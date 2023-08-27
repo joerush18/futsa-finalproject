@@ -1,10 +1,10 @@
 import { IEntryMeta } from "./meta.types";
 
 export enum NOTIFICATION_TYPE {
-  BOOKING = "made booking",
-  BOOKING_CANCELLED = "cancelled booking",
-  BOOKING_CONFIRMED = "confirmed booking",
-  BOOKING_REJECTED = "rejected booking",
+  BOOKING = "bookings",
+  PAYMENT = "transactions",
+  EVENT = "events",
+  REQUESTS = "requests",
 }
 
 interface INotification extends IEntryMeta {
@@ -13,8 +13,7 @@ interface INotification extends IEntryMeta {
   viewed: boolean;
   type: NOTIFICATION_TYPE;
   createdFor: string;
-  bookedForTime?: string;
-  bookingId?: string;
+  collectionId: string;
 }
 
 export type { INotification };

@@ -10,14 +10,13 @@ const listener = async (snapshot: QueryDocumentSnapshot) => {
   const notificationRef = Database.collection(Collection.Notification).doc(id);
   const _notification: INotification = {
     id,
-    description: `You have a new booking from ${booking.createdBy?.name}`,
+    description: `You have a new booking from ${booking.createdBy?.name}.`,
     viewed: false,
     type: NOTIFICATION_TYPE.BOOKING,
     createdAt: +new Date(),
     createdBy: booking.createdBy,
     createdFor: booking.bookedToFutsal.id,
-    bookedForTime: booking.bookedFor,
-    bookingId: booking.id,
+    collectionId: booking.id ?? "",
   };
   try {
     await notificationRef.set(_notification);

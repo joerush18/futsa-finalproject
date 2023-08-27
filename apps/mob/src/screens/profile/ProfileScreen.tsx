@@ -54,14 +54,16 @@ const ProfileScreen = () => {
   return (
     <ScrollView>
       <View className="w-full bg-primary flex-col items-center justify-center py-3">
-        <Avatar />
-        <Text className="text-white font-bold text-xl">{user?.fullname}</Text>
+        <Avatar label={user.fullname.slice(0, 2)} />
+        <Text className="text-white font-bold text-xl mt-2">
+          {user?.fullname}
+        </Text>
         <Text className="text-white  text-sm">{user?.phonenumber}</Text>
         <Text className="text-white text-sm">{user?.email}</Text>
       </View>
       <View className="p-4">
         <OptionsCard
-          label="Your Bookings"
+          label="My Bookings"
           onPress={() =>
             // @ts-ignore
             navigation.navigate("My-Bookings")
@@ -78,14 +80,11 @@ const ProfileScreen = () => {
         >
           <Ionicons name="person-sharp" size={36} color={color.primary} />
         </OptionsCard>
-        <OptionsCard
-          label="My Events"
-          onPress={() =>
-            // @ts-ignore
-            navigation.navigate("My-Teams")
-          }
-        >
-          <MaterialIcons name="event" size={36} color={color.yellow} />
+        <OptionsCard label="My Events" onPress={() => {}}>
+          <MaterialIcons name="event" size={36} color={color.primary} />
+        </OptionsCard>
+        <OptionsCard label="My Payments" onPress={() => {}}>
+          <MaterialIcons name="receipt" size={36} color={color.primary} />
         </OptionsCard>
         <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />
