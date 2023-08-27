@@ -132,6 +132,13 @@ const BookingInfo = ({
             <Text className="text-gray-400 text-xs">{moment}</Text>
           </View>
         </View>
+        {!hasPaid ? (
+          <View className="flex-row justify-end">
+            <Text className="text-violet-800 font-bold text-center mt-2 border-[1px] rounded-md w-[100px] border-violet-800 px-2">
+              Pay now
+            </Text>
+          </View>
+        ) : null}
       </Card>
     </Pressable>
   );
