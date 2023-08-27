@@ -21,6 +21,9 @@ import MyTeamsScreen from "./screens/profile/MyTeamsScreen";
 import RequestsScreen from "./screens/request/RequestsScreen";
 import CreateRequestScreen from "./screens/request/CreateRequestScreen";
 import RequestDetailsScreen from "./screens/request/RequestDetailsScreen";
+import PaymentScreen from "./screens/PaymentScreen";
+import { IBookings, IInitiatiatePayment } from "core";
+import useNotifications from "./hooks/useNotification";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -38,6 +41,9 @@ export type RootStackParamList = {
   Requests: {};
   "Create-Request": {};
   "Request-Detail": { requestId: string };
+  Payment: {
+    paymentData: IInitiatiatePayment;
+  };
 };
 
 const AfterAuthNavigationContainers = () => {
@@ -116,6 +122,13 @@ const AfterAuthNavigationContainers = () => {
         <Stack.Screen
           name="Create-Request"
           component={CreateRequestScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Payment"
+          component={PaymentScreen}
           options={{
             headerShown: true,
           }}

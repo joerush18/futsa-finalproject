@@ -2,9 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import StackNavigator from "./StackNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from "expo-notifications";
-import { loadAsync } from "expo-font";
-import * as Font from "expo-font";
-import { useEffect } from "react";
 
 export default function App() {
   const queryClient = new QueryClient({

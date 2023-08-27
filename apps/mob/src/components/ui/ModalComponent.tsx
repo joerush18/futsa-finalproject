@@ -3,14 +3,20 @@ import React from "react";
 import Modal from "react-native-modal";
 import Card from "./Card";
 import { AntDesign } from "@expo/vector-icons";
-import { createUniqueId } from "core";
+import { useNavigation } from "@react-navigation/native";
 
 interface ModalComponentProps {
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  bookingId: string;
 }
 
-const ModalComponent = ({ isVisible, setIsVisible }: ModalComponentProps) => {
+const ModalComponent = ({
+  isVisible,
+  setIsVisible,
+  bookingId,
+}: ModalComponentProps) => {
+  const navigation = useNavigation();
   return (
     <View>
       <Modal isVisible={isVisible}>
@@ -18,9 +24,7 @@ const ModalComponent = ({ isVisible, setIsVisible }: ModalComponentProps) => {
           <Card>
             <View className="flex items-center justify-center p-4">
               <AntDesign name="checkcircle" size={42} color="green" />
-              <Text className="font-bold text-center mt-2">
-                #{createUniqueId()}
-              </Text>
+              <Text className="font-bold text-center mt-2">{bookingId}</Text>
               <Text className="font-bold text-center">
                 Your booking has been sent successfully.
               </Text>
@@ -29,7 +33,13 @@ const ModalComponent = ({ isVisible, setIsVisible }: ModalComponentProps) => {
                 contact you soon.
               </Text>
               <View className="flex-row gap-4 mt-1">
-                <TouchableOpacity className="px-4  py-2 bg-violet-500 rounded-md">
+                <TouchableOpacity
+                  className="px-4  py-2 bg-violet-500 rounded-md"
+                  onPress={() => {
+                    setIsVisible(false);
+                    navigation.navigate("My-Bookings" as never);
+                  }}
+                >
                   <Text className="font-bold text-white">
                     Proceed to Payment
                   </Text>

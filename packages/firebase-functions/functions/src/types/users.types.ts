@@ -1,4 +1,4 @@
-enum ROLES {
+export enum ROLES {
   FUTSAL = "futsal",
   PLAYER = "player",
 }
@@ -11,4 +11,4 @@ interface ISignUpCredentials {
   confirmPassword: string;
   role: ROLES;
 }
-export { ROLES, ISignUpCredentials };
+export type { ISignUpCredentials };
