@@ -62,7 +62,7 @@ const ProfileScreen = () => {
       <ScrollView className="px-4 h-[77%]">
         <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />
-        </OptionsCard>
+
         <OptionsCard
           label="My team"
           onPress={() =>
