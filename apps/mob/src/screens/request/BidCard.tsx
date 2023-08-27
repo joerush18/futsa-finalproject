@@ -9,10 +9,12 @@ export const BidCard = ({
   bid,
   handleClick,
   status,
+  hasPermission,
 }: {
   bid: IBids;
   handleClick?: (bid: IBids) => void;
   status: REQUEST_STATUS;
+  hasPermission: boolean;
 }) => {
   const {
     createdBy,
@@ -78,10 +80,10 @@ export const BidCard = ({
       </ScrollView>
       <Text className="text-xs mt-3 text-gray-600">
         {updatedAt
-          ? `Edited : ${timeAgo(updatedAt)}`
-          : `Posted on : ${timeAgo(createdAt)}`}
+          ? `Updated : ${timeAgo(updatedAt)}`
+          : `Posted : ${timeAgo(createdAt)}`}
       </Text>
-      {status !== REQUEST_STATUS.ACCEPTED ? (
+      {status !== REQUEST_STATUS.ACCEPTED && hasPermission ? (
         <Button
           className="py-3 mt-2 bg-transparent border-[1px] border-primary"
           onPress={() => {

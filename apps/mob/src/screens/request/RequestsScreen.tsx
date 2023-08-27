@@ -1,6 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import { useWindowDimensions, ScrollView } from "react-native";
+import {
+  useWindowDimensions,
+  ScrollView,
+  View,
+  RefreshControl,
+} from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import color from "../../assets/colors";
 import IconButton from "../../components/ui/IconButton";
@@ -9,21 +14,32 @@ import useRequests from "../../hooks/useRequests";
 import Loading from "../../components/ui/Loading";
 import Empty from "../../components/ui/Empty";
 import { RequestCard } from "./RequestCard";
-import { ref } from "firebase/storage";
 
 const Active = () => {
-  const { activeRequests: requests, isfetchingRequests } = useRequests();
+  const {
+    active: requests,
+    isfetchingRequests,
+    onRefresh,
+    refreshing,
+  } = useRequests();
 
   return isfetchingRequests ? (
     <Loading />
   ) : (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView
+      style={{ flex: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {requests.length ? (
         requests.map((request, index) => {
           return <RequestCard request={request} key={`request_${index}`} />;
         })
       ) : (
-        <Empty />
+        <View className="flex-1 h-full">
+          <Empty />
+        </View>
       )}
     </ScrollView>
   );
@@ -31,25 +47,29 @@ const Active = () => {
 
 const Completed = () => {
   const {
-    completedRequests: requests,
+    completed: requests,
     isfetchingRequests,
-    refetch,
+    onRefresh,
+    refreshing,
   } = useRequests();
-
-  React.useEffect(() => {
-    refetch();
-  }, []);
 
   return isfetchingRequests ? (
     <Loading />
   ) : (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView
+      style={{ flex: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {requests.length ? (
         requests.map((request, index) => {
           return <RequestCard request={request} key={`request_${index}`} />;
         })
       ) : (
-        <Empty />
+        <View className="flex-1 h-full">
+          <Empty />
+        </View>
       )}
     </ScrollView>
   );
@@ -71,7 +91,7 @@ const RequestsScreen = () => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      title: "My Requests",
+      title: "Requests",
       headerTintColor: color.white,
       headerStyle: {
         backgroundColor: color.primary,

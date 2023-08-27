@@ -38,21 +38,19 @@ const ProfileScreen = () => {
       },
       headerRight: () => {
         return (
-          <AntDesign
-            name="poweroff"
+          <MaterialCommunityIcons
+            name="pencil"
             size={18}
             color="white"
             style={{ marginRight: 20 }}
-            onPress={() => {
-              logout();
-            }}
+            onPress={() => {}}
           />
         );
       },
     });
   }, []);
   return (
-    <ScrollView>
+    <View className="h-[100%]">
       <View className="w-full bg-primary flex-col items-center justify-center py-3">
         <Avatar label={user.fullname.slice(0, 2)} />
         <Text className="text-white font-bold text-xl mt-2">
@@ -61,16 +59,10 @@ const ProfileScreen = () => {
         <Text className="text-white  text-sm">{user?.phonenumber}</Text>
         <Text className="text-white text-sm">{user?.email}</Text>
       </View>
-      <View className="p-4">
-        <OptionsCard
-          label="My Bookings"
-          onPress={() =>
-            // @ts-ignore
-            navigation.navigate("My-Bookings")
-          }
-        >
-          <Ionicons name="book" size={36} color={color.primary} />
-        </OptionsCard>
+      <ScrollView className="px-4 h-[77%]">
+        <OptionsCard label="Saved">
+          <Ionicons name="heart-circle" size={36} color={color.primary} />
+
         <OptionsCard
           label="My team"
           onPress={() =>
@@ -80,27 +72,40 @@ const ProfileScreen = () => {
         >
           <Ionicons name="person-sharp" size={36} color={color.primary} />
         </OptionsCard>
+        <OptionsCard
+          label="My Bookings"
+          onPress={() =>
+            // @ts-ignore
+            navigation.navigate("My-Bookings")
+          }
+        >
+          <Ionicons name="book" size={36} color={color.primary} />
+        </OptionsCard>
+
+        <OptionsCard label="My Requests" onPress={() => {}}>
+          <MaterialCommunityIcons
+            name="post-outline"
+            size={36}
+            color={color.primary}
+          />
+        </OptionsCard>
         <OptionsCard label="My Events" onPress={() => {}}>
           <MaterialIcons name="event" size={36} color={color.primary} />
         </OptionsCard>
         <OptionsCard label="My Payments" onPress={() => {}}>
           <MaterialIcons name="receipt" size={36} color={color.primary} />
         </OptionsCard>
-        <OptionsCard label="Saved">
-          <Ionicons name="heart-circle" size={36} color={color.primary} />
+
+        <OptionsCard
+          label="Logout"
+          onPress={() => {
+            logout();
+          }}
+        >
+          <MaterialIcons name="logout" size={36} color={color.primary} />
         </OptionsCard>
-        <OptionsCard label="Edit">
-          <MaterialCommunityIcons
-            name="square-edit-outline"
-            size={36}
-            color={color.yellow}
-          />
-        </OptionsCard>
-        <OptionsCard label="Settings">
-          <Ionicons name="settings" size={34} color={color.primary} />
-        </OptionsCard>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

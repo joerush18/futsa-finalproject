@@ -21,6 +21,7 @@ import Loading from "../../components/ui/Loading";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { BidCard } from "./BidCard";
 import { ConfirmModal } from "./ConfirmModal";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 type RequestDetailsScreenRouteProps = RouteProp<
   RootStackParamList,
@@ -63,6 +64,8 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
   const { updateBids: updateBidLocal } = useBidsStore();
 
   const { updateRequest: updateRequestLocal } = useRequestStore();
+  const { user } = useCurrentUser();
+  const hasPermission = user.id === request?.createdBy?.id;
 
   const handleAcceptBid = (bid: IBids) => {
     const updatedBid = {
@@ -131,7 +134,7 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
           >
             {request.status}
           </Text>
-          {request.status === REQUEST_STATUS.ACTIVE ? (
+          {request.status === REQUEST_STATUS.ACTIVE && hasPermission ? (
             <IconButton>
               <MaterialCommunityIcons
                 name="pencil"
@@ -142,7 +145,7 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
           ) : null}
         </View>
         <Text className="text-gray-500 text-md">
-          {timeAgo(request.createdAt)}
+          {timeAgo(request.createdAt)} - {request?.createdBy?.name}
         </Text>
         <Text className="font-bold text-lg">{request.title}</Text>
         <Text>{request.description}</Text>
@@ -170,6 +173,7 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
                 setSelectedBid(bid);
               }}
               status={request.status}
+              hasPermission={hasPermission}
             />
           ))
         ) : (
