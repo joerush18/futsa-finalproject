@@ -1,5 +1,5 @@
-"use client";
 
+import Image from "@/components/image/Image";
 import { Box, Typography } from "@mui/material";
 
 interface AuthClientWrapperProps {
@@ -23,12 +23,16 @@ const AuthClientWrapper = ({
       }}
     >
       <Box
-        bgcolor="black"
+        bgcolor="white"
         sx={{
           height: "100%",
           width: "100%",
+          paddingTop : "10%",
+          paddingLeft : "50px"
         }}
-      ></Box>
+      >
+        <Image height="500px" width="full" src="/images/home_futsa.png" alt="img-home"/>
+      </Box>
       <Box
         sx={{
           height: "100%",
@@ -43,8 +47,9 @@ const AuthClientWrapper = ({
             width: "350px",
           }}
         >
-          <Typography variant="h3">{title}</Typography>
-          <Typography marginBottom={4}>{subtitle}</Typography>
+          <Image height="100px" width="100px" src="/images/logo.png" alt="img-home"/>
+          <Typography variant="h3" >{title}</Typography>
+          <Typography marginBottom={2}>{subtitle}</Typography>
           {children}
         </Box>
       </Box>
