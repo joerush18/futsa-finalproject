@@ -56,6 +56,7 @@ const LoginScreen = () => {
   return (
     <SafeAreaView className="p-5">
       <MaterialCommunityIcons name="soccer" size={36} color={color.primary} />
+      {/* Image placeholder */}
       <Text className="text-primary font-bold text-md mb-2">FUTSA</Text>
       <Card>
         <Text className="text-2xl font-bold opacity-60">Login</Text>

@@ -6,22 +6,23 @@ import color from "../../assets/colors";
 import Button from "../../components/ui/Button";
 import { useNavigation } from "@react-navigation/native";
 
-const Image1 = require("../../assets/images/firstpage.png");
+const Logo = require("../../assets/images/logo.png");
 
 const OnboardingScreen = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView>
-      <View className="flex-col items-center justify-center gap-4 mt-10">
-        <MaterialCommunityIcons
+      <View className="flex-col items-center justify-center gap-4 mt-36">
+        {/* <MaterialCommunityIcons
           name="soccer"
           size={48}
           color={color.primary}
           style={{ marginLeft: 12 }}
-        />
-        <Text className="text-primary font-bold text-xl mb-6">FUTSA</Text>
+        /> */}
+        
+        {/* <Text className="text-primary font-bold text-xl mb-6">FUTSA</Text> */}
         {/* Image */}
-        <Image source={Image1} className="h-48 w-60 " />
+        <Image source={Logo} className="h-48 w-60 " />
         <Text className="text-xl text-grayText font-bold opacity-50">
           Find Futsal !
         </Text>
