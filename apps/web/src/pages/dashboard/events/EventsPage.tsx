@@ -1,44 +1,49 @@
 import Loading from "@/components/Loading";
 import useEvent from "@/hooks/useEvents";
-import Color from "@/utils/color";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, ToggleButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { EventCardGroup } from "./EventCardGroup";
+import { useNavigate } from "react-router-dom";
+import Color from "@/utils/color";
 
 const EventsPage = () => {
+  const navigate = useNavigate();
+
   const { selfEvent, othersEvent, isLoading } = useEvent();
 
   type eventstype = "My Events" | "Others";
 
-  const [alignment, setAlignment] = useState<eventstype>("My Events");
+  // const [alignment] = useState<eventstype>("My Events");
+  const alignment = "My Events";
 
-  const handleAlignMent = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: eventstype
-  ) => {
-    event.preventDefault();
-    setAlignment(newAlignment);
-  };
+  // const handleAlignMent = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: eventstype
+  // ) => {
+  //   event.preventDefault();
+  //   setAlignment(newAlignment);
+  // };
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
-  const buttons = ["My Events", "Others"].map((e, index) => (
-    <ToggleButton
-      key={index}
-      value={e}
-      sx={{
-        textTransform: "capitalize",
-      }}
-    >
-      {e}
-    </ToggleButton>
-  ));
+  // const buttons = ["My Events", "Others"].map((e, index) => (
+  //   <ToggleButton
+  //     key={index}
+  //     value={e}
+  //     sx={{
+  //       textTransform: "capitalize",
+  //     }}
+  //   >
+  //     {e}
+  //   </ToggleButton>
+  // ));
+  if (isLoading) return <Loading />;
 
   return (
     <>
-      <ToggleButtonGroup
+      {/* <ToggleButtonGroup
         color="primary"
         size="small"
         value={alignment}
@@ -62,7 +67,27 @@ const EventsPage = () => {
         }}
       >
         {buttons}
-      </ToggleButtonGroup>
+      </ToggleButtonGroup> */}
+      <Button
+        variant="outlined"
+        color="primary"
+        sx={{
+          textTransform: "capitalize",
+          position: "fixed",
+          zIndex: 2,
+          right: "40px",
+          top: "80px",
+          borderRadius: 2,
+        }}
+        onClick={() => {
+          navigate("/events/create");
+        }}
+      >
+        Create event
+      </Button>
+      <Typography variant="h6" color={Color.text.main} mb={2}>
+        {alignment}
+      </Typography>
       <EventCardGroup
         events={alignment === "My Events" ? selfEvent : othersEvent}
       />

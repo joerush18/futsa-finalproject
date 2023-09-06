@@ -6,7 +6,7 @@ const emptyImage = require("../../assets/images/empty.png");
 const Empty = ({ label }: { label?: string }) => {
   return (
     <>
-      <View className="flex-col items-center h-80 mt-12 w-80">
+      <View className="flex-col items-center h-40 mt-12 w-40">
         <Image
           source={emptyImage}
           style={{
@@ -15,8 +15,8 @@ const Empty = ({ label }: { label?: string }) => {
             width: "100%",
           }}
         />
+        {label ? <Text className="text-center ">{label}</Text> : null}
       </View>
-      {label ? <Text className="text-center ">{label}</Text> : null}
     </>
   );
 };

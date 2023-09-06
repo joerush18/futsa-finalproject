@@ -8,6 +8,8 @@ import Color from "@/utils/color";
 import AuthClientWrapper from "../components/AuthClientWrapper";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginEmail } from "core/src/db/hooks/useAuth";
+import { toast } from "react-hot-toast";
+import { setItem } from "@/utils/token";
 
 type FormInputs = Pick<ISignUpCredentials, "email" | "password">;
 
@@ -26,8 +28,15 @@ const SigninClient = () => {
   const navigate = useNavigate();
 
   const onSignInHandler = async (values: FormInputs) => {
-    loginEmailPassword(values);
-    navigate("/");
+    loginEmailPassword(values, {
+      onSuccess: () => {
+        navigate("/");
+      },
+      onError: (error: unknown) => {
+        const e = error as Error;
+        toast.error(e?.message?.split(".")[0]);
+      },
+    });
   };
 
   return (

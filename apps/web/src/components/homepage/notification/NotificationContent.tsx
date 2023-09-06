@@ -1,10 +1,10 @@
 import Color from "@/utils/color";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import GppBadRoundedIcon from "@mui/icons-material/GppBadRounded";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import { NOTIFICATION_TYPE } from "core";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 
 interface INotificationContentProps {
   type: NOTIFICATION_TYPE;
@@ -18,7 +18,6 @@ interface INotificationContentProps {
 
 const NotificationContent = ({
   type,
-  username,
   date,
   description,
   viewed,
@@ -45,7 +44,7 @@ const NotificationContent = ({
       }}
     >
       {booked ? (
-        <PendingActionsIcon
+        <SportsSoccerIcon
           color="warning"
           sx={{
             fontSize: 32,

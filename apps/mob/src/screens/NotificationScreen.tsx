@@ -36,6 +36,7 @@ const NotificationScreen = () => {
                 createdAtTime={timeAgo(notification.createdAt)}
                 createdByName={notification.createdBy?.name ?? ""}
                 collectionId={notification.collectionId}
+                notificationId={notification.id}
               />
             );
           })

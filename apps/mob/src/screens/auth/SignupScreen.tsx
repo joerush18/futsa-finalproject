@@ -54,8 +54,8 @@ const SignupScreen = () => {
 
   return (
     <SafeAreaView className="p-5">
-      <MaterialCommunityIcons name="soccer" size={36} color={color.primary} />
-      <Text className="text-primary font-bold text-md mb-2">FUTSA</Text>
+      <MaterialCommunityIcons name="soccer" size={48} color={color.primary} />
+      <Text className="text-primary font-bold text-lg mb-2">FUTSA</Text>
       <Card>
         <Text className="text-2xl font-bold opacity-60">Sign up</Text>
         <InputComponent
@@ -101,11 +101,11 @@ const SignupScreen = () => {
           )}
         </Button>
       </Card>
-      <Text className="text-sm opacity-60 text-center mt-8">
+      <Text className="text-sm opacity-60 text-center mt-4">
         By clicking the Signup button, I agree to the terms and conditions of
         futsa.
       </Text>
-      <View className="flex-row items-center mt-8 mx-auto">
+      <View className="flex-row items-center mt-2 mx-auto">
         <Text className="text-sm opacity-60 text-center ">
           Already have an account ?{" "}
         </Text>

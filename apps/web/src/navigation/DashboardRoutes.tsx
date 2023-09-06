@@ -4,13 +4,15 @@ import HomePage from "@/pages/dashboard/HomePage";
 import BookingPage from "@/pages/dashboard/bookings/BookingPage";
 import ProfilePage from "@/pages/dashboard/profile/ProfilePage";
 import EventsPage from "@/pages/dashboard/events/EventsPage";
-import PaymentPage from "@/pages/dashboard/PaymentPage";
+import PaymentPage from "@/pages/payment/PaymentPage";
 import OnBoardingClient from "@/pages/auth/onboarding/OnBoardingClient";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { STATUS } from "core/src/types/futsals.types";
 import { Typography } from "@mui/material";
 import CreateEventPage from "@/pages/dashboard/events/CreateEventPage";
 import RequestPage from "@/pages/dashboard/requests/RequestPage";
+import EventDetailsPage from "@/pages/dashboard/events/EventDetailsPage";
+import EventsPageLayout from "@/pages/dashboard/events/EventsPageLayout";
 
 const DashboardRoutes = () => {
   const { futsal } = useCurrentUser();
@@ -33,9 +35,12 @@ const DashboardRoutes = () => {
           <Route path="bookings" element={<BookingPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="requests" element={<RequestPage />} />
-          <Route path="events" element={<EventsPage />} />
+          <Route path="events" element={<EventsPageLayout />}>
+            <Route index element={<EventsPage />} />
+            <Route path="create" element={<CreateEventPage />} />
+            <Route path=":id" element={<EventDetailsPage />} />
+          </Route>
           <Route path="payments" element={<PaymentPage />} />
-          <Route path="create-event" element={<CreateEventPage />} />
         </Route>
       </Routes>
     </>

@@ -55,17 +55,16 @@ export const RequestCard = ({
       </Stack>
 
       <Typography variant="caption">{description}</Typography>
-      <Stack flexDirection="row" mb={2}>
+      <Stack flexDirection="row" mb={2} alignItems="center" gap={1}>
         <ToolTipChip
           title="Start Date"
-          label={formatBookingDate(startDate.toString()).split(",")[0]}
-          color="#7EAA92"
+          label={`${formatBookingDate(startDate.toString()).split(",")[0]}`}
           isDesc={true}
         />
+
         <ToolTipChip
           title="End Date"
           label={formatBookingDate(endDate.toString()).split(",")[0]}
-          color="#7EAA92"
           isDesc={true}
         />
       </Stack>

@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Pressable } from "react-native";
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import color from "../../assets/colors";
 
 import { useForm } from "react-hook-form";
@@ -9,8 +9,10 @@ import {
   IEntryMeta,
   IRequest,
   RequestSchema,
+  updateRequest,
   useCreateRequest,
   useRequestStore,
+  useUpdateRequest,
 } from "core";
 import Button from "../../components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,9 +23,28 @@ import {
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { createRequestDefault } from "../../utils/defaults";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { RootStackParamList } from "../../StackNavigator";
 
-const CreateRequestScreen = () => {
+type CreateRequestScreenRouteProps = RouteProp<
+  RootStackParamList,
+  "Create-Request"
+>;
+
+interface CreateRequestScreenProps {
+  route: CreateRequestScreenRouteProps;
+}
+
+const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
   const navigation = useNavigation();
+  const {
+    setRequests,
+    requests,
+    updateRequest: updateRequestLocal,
+  } = useRequestStore();
+  const { requestId } = route.params;
+  const requestDefault = requestId
+    ? requests.find((r) => r.id === requestId)
+    : ({} as IRequest);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -37,7 +58,7 @@ const CreateRequestScreen = () => {
     });
   }, []);
 
-  const defaultValues = createRequestDefault();
+  const defaultValues = createRequestDefault(requestDefault);
   const {
     control,
     handleSubmit,
@@ -52,8 +73,8 @@ const CreateRequestScreen = () => {
 
   const { mutate: createRequest, isLoading: isCreatingRequest } =
     useCreateRequest();
-
-  const { setRequests, requests } = useRequestStore();
+  const { mutate: updateRequest, isLoading: isUpdatingRequest } =
+    useUpdateRequest();
 
   const handleCreateRequest = (data: IRequest) => {
     const meta: IEntryMeta = {
@@ -89,6 +110,29 @@ const CreateRequestScreen = () => {
     });
   };
 
+  const handleUpdateRequest = (data: IRequest) => {
+    updateRequest(
+      { ...data, id: requestId ?? "", updatedAt: +new Date() },
+      {
+        onSuccess: () => {
+          updateRequestLocal({ ...data, id: requestId ?? "" });
+          Toast.show({
+            type: "success",
+            text1: "Request updated successfully",
+          });
+          navigation.goBack();
+        },
+        onError: () => {
+          Toast.show({
+            type: "error",
+            text1: "Error updating request",
+            visibilityTime: 4000,
+          });
+        },
+      }
+    );
+  };
+
   return (
     <ScrollView className="p-4 pb-8">
       <Text className=" font-bold text-xl">Create Request</Text>
@@ -114,6 +158,7 @@ const CreateRequestScreen = () => {
           control={setValue}
           name="startDate"
           error={errors.startDate?.message}
+          defaultValue={requestDefault?.startDate ?? ""}
         />
         <Text className="text-xl font-bold ">-</Text>
         <DatePickerComponent
@@ -121,6 +166,7 @@ const CreateRequestScreen = () => {
           control={setValue}
           name="endDate"
           error={errors.endDate?.message}
+          defaultValue={requestDefault?.endDate ?? ""}
         />
       </View>
       <InputComponent
@@ -142,14 +188,17 @@ const CreateRequestScreen = () => {
         control={setValue}
         name="deadline"
         error={errors.deadline?.message}
+        defaultValue={requestDefault?.deadline ?? ""}
       />
       <Button
         className="mt-3 py-4"
-        onPress={handleSubmit(handleCreateRequest)}
+        onPress={handleSubmit(
+          requestDefault ? handleUpdateRequest : handleCreateRequest
+        )}
         disabled={!isDirty}
       >
         <Text className="text-md font-bold text-center text-white tracking-wider">
-          Submit
+          {requestId ? "Update" : "Create"}
         </Text>
       </Button>
     </ScrollView>
@@ -163,6 +212,7 @@ interface DatePickerComponentProps {
   control?: any;
   name?: string;
   error?: string;
+  defaultValue?: string;
 }
 
 const DatePickerComponent = ({
@@ -170,8 +220,9 @@ const DatePickerComponent = ({
   control,
   name,
   error,
+  defaultValue,
 }: DatePickerComponentProps) => {
-  const [date, setDate] = useState<Date | null>();
+  const [date, setDate] = useState<Date | null>(new Date(defaultValue ?? ""));
 
   const onChange = (event: DateTimePickerEvent, selectedDate: any) => {
     const currentDate = selectedDate ?? date;

@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { IRequest, REQUEST_STATUS, formatBookingDate, timeAgo } from "core";
+import TextLabel from "../../components/ui/TextLabel";
 
 export const RequestCard = ({ request }: { request: IRequest }) => {
   const {
@@ -32,21 +33,20 @@ export const RequestCard = ({ request }: { request: IRequest }) => {
       >
         <View className="mx-5">
           <Text className="font-bold text-md">{title}</Text>
-          <View className="flex-row items-center mt-1">
-            <Text className="text-gray-500 font-bold">{location} , </Text>
-            <Text className="font-bold text-sm text-gray-500">
-              {" "}
-              Budget : Rs. {budget}
-            </Text>
+
+          <View className="flex-row items-center mt-2 mx-0">
+            <TextLabel label="Budget" value={`Rs. ${budget}`} />
+            <TextLabel label="Location" value={location} />
+            <TextLabel
+              label="Deadline"
+              value={formatBookingDate(deadline).split(",")[0]}
+            />
           </View>
-          <Text className="font-bold text-sm text-gray-500 mb-1">
-            Deadline : {formatBookingDate(deadline).split(",")[0]}
-          </Text>
           <Text className=" text-gray-800">
             {description.replace(/\s+/g, " ").slice(0, 98)} ...
           </Text>
 
-          <View className="flex-row justify-between items-center mt-2">
+          <View className="flex-row justify-between items-center mt-1">
             <Text className=" text-gray-400 text-left">
               {createdBy?.name} : {timeAgo(createdAt)}
             </Text>

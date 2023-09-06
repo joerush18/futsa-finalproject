@@ -10,7 +10,7 @@ import useRefetch from "./useRefetch";
 interface RequestsByStatus {
   active: IRequest[];
   completed: IRequest[];
-  myRequests: IRequest[];
+  allRequests: IRequest[];
 }
 
 const useRequests = () => {
@@ -20,20 +20,20 @@ const useRequests = () => {
 
   const req = requests.reduce<RequestsByStatus>(
     (acc, request) => {
-      if (request.status === REQUEST_STATUS.ACTIVE) {
-        acc.active.push(request);
-        if (request?.createdBy?.id === user?.id) {
-          acc.myRequests.push(request);
+      if (request.createdBy?.id === user?.id) {
+        if (request.status === REQUEST_STATUS.ACCEPTED) {
+          acc.completed.push(request);
+        } else {
+          acc.active.push(request);
         }
-      } else if (request.status === REQUEST_STATUS.ACCEPTED) {
-        acc.completed.push(request);
-        if (request?.createdBy?.id === user?.id) {
-          acc.myRequests.push(request);
+      } else {
+        if (request.status === REQUEST_STATUS.ACTIVE) {
+          acc.allRequests.push(request);
         }
       }
       return acc;
     },
-    { active: [], completed: [], myRequests: [] }
+    { active: [], completed: [], allRequests: [] }
   );
 
   const { onRefresh, refreshing } = useRefetch(refetch);
@@ -41,7 +41,7 @@ const useRequests = () => {
   return {
     active: req.active,
     completed: req.completed,
-    myReqeusts: req.myRequests,
+    allRequests: req.allRequests,
     isfetchingRequests: isLoading,
     refetch,
     onRefresh,

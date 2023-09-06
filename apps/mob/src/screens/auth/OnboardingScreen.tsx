@@ -19,10 +19,10 @@ const OnboardingScreen = () => {
           color={color.primary}
           style={{ marginLeft: 12 }}
         /> */}
-        
+
         {/* <Text className="text-primary font-bold text-xl mb-6">FUTSA</Text> */}
         {/* Image */}
-        <Image source={Logo} className="h-48 w-60 " />
+        <Image source={Logo} className="h-36 w-36 " />
         <Text className="text-xl text-grayText font-bold opacity-50">
           Find Futsal !
         </Text>

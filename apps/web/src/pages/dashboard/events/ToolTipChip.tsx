@@ -1,3 +1,4 @@
+import Color from "@/utils/color";
 import { Chip, Tooltip } from "@mui/material";
 
 export const ToolTipChip = ({
@@ -8,7 +9,7 @@ export const ToolTipChip = ({
 }: {
   title: string;
   label: string;
-  color: string;
+  color?: string;
   isDesc: boolean;
 }) => (
   <Tooltip title={title} arrow disableHoverListener={!isDesc}>
@@ -17,8 +18,11 @@ export const ToolTipChip = ({
       sx={{
         marginTop: 1,
         borderRadius: 1,
-        bgcolor: color,
+        bgcolor: color ?? Color.grey[300],
         marginRight: 1,
+        fontWeight: "bold",
+        color: Color.primary.main,
+        border: `1px solid ${Color.grey[400]}`,
       }}
     />
   </Tooltip>

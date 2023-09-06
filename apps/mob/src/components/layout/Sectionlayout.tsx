@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import color from "../../assets/colors";
+import { useNavigation } from "@react-navigation/native";
 
 interface SectionlayoutProps {
   children?: React.ReactNode;
@@ -13,6 +14,7 @@ const Sectionlayout: React.FC<SectionlayoutProps> = ({
   title,
   buttonText,
 }) => {
+  const navigate = useNavigation();
   return (
     <View style={{ padding: 16 }}>
       <View
@@ -30,7 +32,11 @@ const Sectionlayout: React.FC<SectionlayoutProps> = ({
         >
           {title}
         </Text>
-        <Pressable>
+        <Pressable
+          onPress={() => {
+            navigate.navigate("Search" as never);
+          }}
+        >
           <Text
             style={{
               color: color.primary,

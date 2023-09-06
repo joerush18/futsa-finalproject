@@ -5,23 +5,26 @@ import { ISignUpCredentials } from "../../types/users.types";
 const useSignupEmail = () => {
   return useMutation(
     ["signup-email"],
-    (data: ISignUpCredentials) => emailSignUp(data)
-    // {
-    //   onSuccess: () => {
-    //     // saveToken(data.uid);
-    //   },
-    // }
+    (data: ISignUpCredentials) => emailSignUp(data),
+    {
+      onSuccess: (data) => {
+        // saveToken(data.uid);
+        return data;
+      },
+    }
   );
 };
 
 const useLoginEmail = () => {
   return useMutation(
     ["login-email"],
-    (data: Pick<ISignUpCredentials, "email" | "password">) => emailLogin(data)
-    // {
-    //   onSuccess: (data) => {
-    //     saveToken(data.uid);
-    //   },
+    (data: Pick<ISignUpCredentials, "email" | "password">) => emailLogin(data),
+    {
+      onSuccess: (data) => {
+        // saveToken(data.uid);
+        return data;
+      },
+    }
     //   onError: (data) => {
     //     console.log({ data });
     //   },

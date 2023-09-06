@@ -82,14 +82,26 @@ const ProfileScreen = () => {
           <Ionicons name="book" size={36} color={color.primary} />
         </OptionsCard>
 
-        <OptionsCard label="My Requests" onPress={() => {}}>
+        <OptionsCard
+          label="My Requests"
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate("My-requests");
+          }}
+        >
           <MaterialCommunityIcons
             name="post-outline"
             size={36}
             color={color.primary}
           />
         </OptionsCard>
-        <OptionsCard label="My Events" onPress={() => {}}>
+        <OptionsCard
+          label="My Events"
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate("My-events");
+          }}
+        >
           <MaterialIcons name="event" size={36} color={color.primary} />
         </OptionsCard>
         <OptionsCard label="My Payments" onPress={() => {}}>
