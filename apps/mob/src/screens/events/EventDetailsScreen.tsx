@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  RefreshControl,
+} from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../StackNavigator";
@@ -14,6 +21,8 @@ import useCurrentUser from "../../hooks/useCurrentUser";
 import { AntDesign } from "@expo/vector-icons";
 import { LeaveEventModal } from "./LeaveEventModal";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import useEvents from "../../hooks/useEvents";
+import useRefetch from "../../hooks/useRefetch";
 
 type EventsDetailScreenRouteProps = RouteProp<
   RootStackParamList,
@@ -25,9 +34,11 @@ interface EventsDetailsScreenProps {
 }
 
 const EventDetailsScreen = ({ route }: EventsDetailsScreenProps) => {
+  const { refetch } = useEvents();
+  const { refreshing, onRefresh } = useRefetch(refetch);
   const { eventId } = route.params;
   const { events, updateEvent: updateEventLocal } = useEventStore();
-  const event = events.find((event) => event.id === eventId);
+  const event = events && events.find((event) => event.id === eventId);
   const [isRegisterModal, setRegisterModal] = useState(false);
   const { user } = useCurrentUser();
 
@@ -50,10 +61,11 @@ const EventDetailsScreen = ({ route }: EventsDetailsScreenProps) => {
     });
   }, []);
 
-  const alreadyRegistered = event.teams.find((t) => t.ownerId === user.id);
+  const myTeam = event.teams.filter((t) => t.ownerId === user?.id);
+  const alreadyRegistered = myTeam.length;
 
   const leaveEventHandler = (event: IEvents) => {
-    const team = event.teams.find((t) => t.ownerId === user.id);
+    const team = event.teams.find((t) => t.ownerId === user?.id);
     if (!team) return;
     const updatedTeams = event.teams.filter((t) => t.id !== team.id);
     const updatedEvent = { ...event, teams: updatedTeams };
@@ -71,7 +83,13 @@ const EventDetailsScreen = ({ route }: EventsDetailsScreenProps) => {
 
   return (
     <>
-      <ScrollView className="m-3" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="m-3"
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Image
           source={{
             uri: event.eventImage,
@@ -144,7 +162,7 @@ const EventDetailsScreen = ({ route }: EventsDetailsScreenProps) => {
               <AntDesign name="checkcircle" size={24} color="green" />
               <Text>You are registered to the event.</Text>
             </View>
-            {!event.hasExpired ? (
+            {!myTeam[0].verified && !event.hasExpired ? (
               <IconButton
                 className=" text-center mt-2 flex flex-row items-center space-x-3 justify-left w-40"
                 onPress={() => setLeaveModal(true)}

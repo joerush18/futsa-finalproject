@@ -146,13 +146,17 @@ export const EventDetailsCard = ({ event }: { event: IEvents }) => {
               mt: 2,
               textTransform: "capitalize",
             }}
-            disabled={event.teams.length < 5}
+            disabled={event.teams.length < 4}
+            onClick={() => {
+              alert("We are still working on this feature.");
+            }}
           >
             Create Tiesheet
           </Button>
-          {event.teams.length < 5 ? (
+          {event.teams.length < 4 ? (
             <Typography variant="body1" color={Color.warning.main}>
-              You can create tiesheet only when at least 4 teams are registered.
+              You can create tiesheet only when at least 4 teams are registered
+              and verified.
             </Typography>
           ) : null}
         </Box>

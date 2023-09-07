@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, RefreshControl } from "react-native";
+import { ScrollView, Text, RefreshControl, View } from "react-native";
 import { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import color from "../../assets/colors";
@@ -8,6 +8,7 @@ import { IEvents } from "core";
 import useRefetch from "../../hooks/useRefetch";
 import Loading from "../../components/ui/Loading";
 import { EventCard } from "./EventCard";
+import Empty from "../../components/ui/Empty";
 const MyEventsScreen = () => {
   const navigation = useNavigation();
   const { myEvents: events, refetch, isLoading } = useEvents();
@@ -47,17 +48,20 @@ const EventCards = ({
   }
   return (
     <ScrollView
-      className="bg-gray-300"
       showsHorizontalScrollIndicator={false}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {events?.length
-        ? events?.map((event, index) => {
-            return <EventCard event={event} key={`${index}_event`} />;
-          })
-        : null}
+      {events?.length ? (
+        events?.map((event, index) => {
+          return <EventCard event={event} key={`${index}_event`} />;
+        })
+      ) : (
+        <View className="mx-auto">
+          <Empty />
+        </View>
+      )}
     </ScrollView>
   );
 };

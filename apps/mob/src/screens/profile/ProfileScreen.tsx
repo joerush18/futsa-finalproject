@@ -2,7 +2,6 @@ import { ScrollView, View, Text } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import color from "../../assets/colors";
-import { AntDesign } from "@expo/vector-icons";
 import OptionsCard from "../../components/OptionCard";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -35,17 +34,6 @@ const ProfileScreen = () => {
       },
       headerStyle: {
         backgroundColor: color.primary,
-      },
-      headerRight: () => {
-        return (
-          <MaterialCommunityIcons
-            name="pencil"
-            size={18}
-            color="white"
-            style={{ marginRight: 20 }}
-            onPress={() => {}}
-          />
-        );
       },
     });
   }, []);
@@ -104,13 +92,20 @@ const ProfileScreen = () => {
         >
           <MaterialIcons name="event" size={36} color={color.primary} />
         </OptionsCard>
-        <OptionsCard label="My Payments" onPress={() => {}}>
+        <OptionsCard
+          label="My Payments"
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate("My-payments");
+          }}
+        >
           <MaterialIcons name="receipt" size={36} color={color.primary} />
         </OptionsCard>
 
         <OptionsCard
           label="Logout"
           onPress={() => {
+            console.log("here");
             logout();
           }}
         >

@@ -2,13 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Modal from "react-native-modal";
-import {
-  IEvents,
-  ITeam,
-  useEventStore,
-  useMemberStore,
-  useUpdateEvent,
-} from "core";
+import { IEvents, ITeam, useEventStore, useUpdateEvent } from "core";
 import IconButton from "../../components/ui/IconButton";
 import Card from "../../components/ui/Card";
 import useTeam from "../../hooks/useTeam";
@@ -29,7 +23,7 @@ export const RegisterTeamModal = ({
 }) => {
   const { teams, isFetchingTeams } = useTeam();
   const { myEvents } = useEvents();
-  const { members } = useMembers(teams ? teams[0].id : "");
+  const { members } = useMembers(teams ? teams[0]?.id : "");
 
   const navigation = useNavigation();
 

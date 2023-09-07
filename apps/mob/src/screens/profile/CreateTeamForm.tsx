@@ -50,7 +50,7 @@ const CreateTeamForm = ({ team }: { team: ITeam }) => {
 
   const { myEvents } = useEvents();
   const isInEvents = myEvents?.some(
-    (event) => event.teams[0].id === team.id && !event.hasExpired
+    (event) => event.teams?.some((t) => t.id === team?.id) === true
   );
 
   const {

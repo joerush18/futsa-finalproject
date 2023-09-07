@@ -73,7 +73,7 @@ const RequestsScreen = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {allRequests.length ? (
+        {allRequests?.length ? (
           allRequests.map((request, index) => {
             return <RequestCard request={request} key={`request_${index}`} />;
           })
@@ -87,7 +87,9 @@ const RequestsScreen = () => {
         className="absolute right-8 bottom-8 z-10 bg-primary rounded-full h-16 w-16 flex items-center justify-center shadow-md"
         onPress={() => {
           // @ts-ignore
-          navigation.navigate("Create-Request");
+          navigation.navigate("Create-Request", {
+            requestId: "",
+          });
         }}
       >
         <MaterialCommunityIcons name="plus" size={24} color={color.white} />

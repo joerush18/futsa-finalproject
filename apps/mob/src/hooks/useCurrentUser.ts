@@ -3,7 +3,7 @@ import { ROLES } from "core";
 import { useEffect, useRef, useState } from "react";
 import { auth } from "core";
 import { useUserStore } from "core";
-
+import * as sstorage from "expo-secure-store";
 const useCurrentUser = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,10 +17,11 @@ const useCurrentUser = () => {
     }
     const fetchCurrentUser = async () => {
       setIsLoading(true);
+
       unsubscribe.current = auth.onAuthStateChanged(async (user) => {
-        setIsAuth(!!user);
         try {
           if (user) {
+            setIsAuth(!!user);
             const res = await getCurrentPlayer(user?.uid, ROLES.PLAYER);
             if (res) {
               // @ts-ignore

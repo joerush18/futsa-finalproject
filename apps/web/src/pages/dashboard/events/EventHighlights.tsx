@@ -27,11 +27,7 @@ export const EventHighlights = ({
         label={`Rs. ${event?.entryFee}`}
         isDesc={isDesc}
       />
-      <ToolTipChip
-        title="Tournament Type"
-        label={event?.tournamentType}
-        isDesc={isDesc}
-      />
+
       <ToolTipChip
         title="Players"
         label={`${event?.numberOfPlayers} A side`}
@@ -48,6 +44,11 @@ export const EventHighlights = ({
           <ToolTipChip
             title="Progress"
             label={event?.hasExpired ? "Completed" : "Ongoing"}
+            isDesc={isDesc}
+          />
+          <ToolTipChip
+            title="Tournament Type"
+            label={event?.tournamentType}
             isDesc={isDesc}
           />
         </>

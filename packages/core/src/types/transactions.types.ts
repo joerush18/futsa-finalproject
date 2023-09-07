@@ -1,4 +1,6 @@
-interface ITransaction {
+import { IEntryMeta } from "./meta.types";
+
+interface ITransaction extends IEntryMeta {
   payedfor: {
     collection: string;
     id: string;

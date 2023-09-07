@@ -23,7 +23,7 @@ export const TeamDetailsModal = ({
   const { mutate: updateEvent, isLoading: isApproving } = useUpdateEvent();
   const { updateEvent: updateEventLocal } = useEventStore();
 
-  const handleApproveTeam = (teams: ITeam[], id: string) => {
+  const handleAction = (teams: ITeam[], id: string, action: boolean) => {
     updateEvent(
       {
         id: id,
@@ -31,7 +31,7 @@ export const TeamDetailsModal = ({
           if (team.id === selectedTeam?.id) {
             return {
               ...team,
-              verified: true,
+              verified: action,
             };
           }
           return team;
@@ -45,7 +45,7 @@ export const TeamDetailsModal = ({
               if (team.id === selectedTeam?.id) {
                 return {
                   ...team,
-                  verified: true,
+                  verified: action,
                 };
               }
               return team;
@@ -86,23 +86,32 @@ export const TeamDetailsModal = ({
             {selectedTeam?.createdBy?.name}
           </Typography>
           {selectedTeam.verified ? (
-            <Typography
-              variant="caption"
-              my={3}
-              color="white"
-              sx={{
-                bgcolor: "green",
-                px: 2,
-                borderRadius: "4px",
-                fontWeight: 600,
-              }}
-            >
-              Verified
-            </Typography>
+            <Stack flexDirection="row" alignItems="center" gap={2}>
+              <Typography
+                variant="caption"
+                my={3}
+                color="white"
+                sx={{
+                  bgcolor: "green",
+                  px: 3,
+                  py: 1,
+                  borderRadius: "4px",
+                  fontWeight: 600,
+                }}
+              >
+                Verified
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={() => handleAction(teams, id, false)}
+              >
+                {isApproving ? "Removing..." : "Remove"}
+              </Button>
+            </Stack>
           ) : (
             <Button
               variant="contained"
-              onClick={() => handleApproveTeam(teams, id)}
+              onClick={() => handleAction(teams, id, true)}
             >
               {isApproving ? "Approving..." : "Approve"}
             </Button>

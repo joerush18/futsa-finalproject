@@ -58,7 +58,10 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
     });
   }, []);
 
-  const defaultValues = createRequestDefault(requestDefault);
+  const defaultValues =
+    requestId !== null
+      ? createRequestDefault(requestDefault)
+      : createRequestDefault();
   const {
     control,
     handleSubmit,
@@ -158,7 +161,7 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
           control={setValue}
           name="startDate"
           error={errors.startDate?.message}
-          defaultValue={requestDefault?.startDate ?? ""}
+          defaultValue={requestDefault?.startDate ?? undefined}
         />
         <Text className="text-xl font-bold ">-</Text>
         <DatePickerComponent
@@ -166,7 +169,7 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
           control={setValue}
           name="endDate"
           error={errors.endDate?.message}
-          defaultValue={requestDefault?.endDate ?? ""}
+          defaultValue={requestDefault?.endDate ?? undefined}
         />
       </View>
       <InputComponent
@@ -193,7 +196,7 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
       <Button
         className="mt-3 py-4"
         onPress={handleSubmit(
-          requestDefault ? handleUpdateRequest : handleCreateRequest
+          requestId !== null ? handleUpdateRequest : handleCreateRequest
         )}
         disabled={!isDirty}
       >
@@ -222,7 +225,9 @@ const DatePickerComponent = ({
   error,
   defaultValue,
 }: DatePickerComponentProps) => {
-  const [date, setDate] = useState<Date | null>(new Date(defaultValue ?? ""));
+  const [date, setDate] = useState<Date | null>(
+    defaultValue ? new Date(defaultValue) : null
+  );
 
   const onChange = (event: DateTimePickerEvent, selectedDate: any) => {
     const currentDate = selectedDate ?? date;

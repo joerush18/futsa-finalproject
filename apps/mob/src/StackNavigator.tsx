@@ -25,6 +25,7 @@ import PaymentScreen from "./screens/PaymentScreen";
 import { IInitiatiatePayment } from "core";
 import MyRequestsScreen from "./screens/request/MyRequestsScreen";
 import MyEventsScreen from "./screens/events/MyEventsScreen";
+import MyPaymentsScreen from "./screens/MyPaymentsScreen";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -49,6 +50,7 @@ export type RootStackParamList = {
   };
   "My-requests": {};
   "My-events": {};
+  "My-payments": {};
 };
 
 const AfterAuthNavigationContainers = () => {
@@ -148,6 +150,13 @@ const AfterAuthNavigationContainers = () => {
         <Stack.Screen
           name="My-events"
           component={MyEventsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="My-payments"
+          component={MyPaymentsScreen}
           options={{
             headerShown: true,
           }}

@@ -21,7 +21,6 @@ const useLoginEmail = () => {
     (data: Pick<ISignUpCredentials, "email" | "password">) => emailLogin(data),
     {
       onSuccess: (data) => {
-        // saveToken(data.uid);
         return data;
       },
     }

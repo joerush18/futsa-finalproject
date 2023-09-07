@@ -13,7 +13,7 @@ export const EventCard = ({ event }: { event: IEvents }) => {
         display: "flex",
         flexDirection: "column",
         position: "relative",
-        width: "350px",
+        width: "360px",
         paddingBottom: "10px",
         marginBottom: "10px",
         "&:hover": {

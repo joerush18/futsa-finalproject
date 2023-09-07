@@ -23,8 +23,9 @@ const OnboardingScreen = () => {
         {/* <Text className="text-primary font-bold text-xl mb-6">FUTSA</Text> */}
         {/* Image */}
         <Image source={Logo} className="h-36 w-36 " />
-        <Text className="text-xl text-grayText font-bold opacity-50">
-          Find Futsal !
+        <Text className="text-sm text-center px-10 text-gray-500">
+          Step onto the futsal pitch of possibilities with FUTSA Where every
+          kick writes a story.
         </Text>
         <View className="w-full px-10">
           <Button

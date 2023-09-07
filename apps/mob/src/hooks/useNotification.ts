@@ -17,7 +17,7 @@ const useNotifications = () => {
     if (!user) return;
     const notificationRef = db.collection("notifications");
     const query = notificationRef
-      .where("createdFor", "==", user.id)
+      .where("createdFor", "==", user?.id ?? "")
       .orderBy("createdAt", "desc");
     const unsubscribe = onSnapshot(query, (snapshot) => {
       if (snapshot) {
