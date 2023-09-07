@@ -119,7 +119,9 @@ const MyRequestsScreen = () => {
         className="absolute bottom-8 right-8 z-10 bg-primary rounded-full h-16 w-16 flex items-center justify-center shadow-md"
         onPress={() => {
           // @ts-ignore
-          navigation.navigate("Create-Request");
+          navigation.navigate("Create-Request", {
+            requestId: null,
+          });
         }}
       >
         <MaterialCommunityIcons name="plus" size={24} color={color.white} />

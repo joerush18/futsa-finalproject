@@ -22,7 +22,7 @@ const NotificationScreen = () => {
   const { notifications } = useNotifications();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} className="px-4">
       {notifications.length === 0 ? (
         <View className="mx-auto">
           <Empty />

@@ -48,9 +48,9 @@ const ProfileScreen = () => {
         <Text className="text-white text-sm">{user?.email}</Text>
       </View>
       <ScrollView className="px-4 h-[77%]">
-        <OptionsCard label="Saved">
+        {/* <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />
-        </OptionsCard>
+        </OptionsCard> */}
         <OptionsCard
           label="My team"
           onPress={() =>
@@ -105,7 +105,6 @@ const ProfileScreen = () => {
         <OptionsCard
           label="Logout"
           onPress={() => {
-            console.log("here");
             logout();
           }}
         >

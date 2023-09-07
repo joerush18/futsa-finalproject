@@ -88,7 +88,7 @@ const RequestsScreen = () => {
         onPress={() => {
           // @ts-ignore
           navigation.navigate("Create-Request", {
-            requestId: "",
+            requestId: null,
           });
         }}
       >

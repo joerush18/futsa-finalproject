@@ -41,10 +41,9 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
     requests,
     updateRequest: updateRequestLocal,
   } = useRequestStore();
+
   const { requestId } = route.params;
-  const requestDefault = requestId
-    ? requests.find((r) => r.id === requestId)
-    : ({} as IRequest);
+  const requestDefault = requestId && requests.find((r) => r.id === requestId);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,10 +57,9 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
     });
   }, []);
 
-  const defaultValues =
-    requestId !== null
-      ? createRequestDefault(requestDefault)
-      : createRequestDefault();
+  const defaultValues = requestDefault
+    ? createRequestDefault(requestDefault)
+    : createRequestDefault();
   const {
     control,
     handleSubmit,
@@ -161,7 +159,9 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
           control={setValue}
           name="startDate"
           error={errors.startDate?.message}
-          defaultValue={requestDefault?.startDate ?? undefined}
+          defaultValue={
+            (requestDefault && requestDefault?.startDate) ?? undefined
+          }
         />
         <Text className="text-xl font-bold ">-</Text>
         <DatePickerComponent
@@ -169,7 +169,9 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
           control={setValue}
           name="endDate"
           error={errors.endDate?.message}
-          defaultValue={requestDefault?.endDate ?? undefined}
+          defaultValue={
+            (requestDefault && requestDefault?.endDate) ?? undefined
+          }
         />
       </View>
       <InputComponent
@@ -191,7 +193,7 @@ const CreateRequestScreen: React.FC<CreateRequestScreenProps> = ({ route }) => {
         control={setValue}
         name="deadline"
         error={errors.deadline?.message}
-        defaultValue={requestDefault?.deadline ?? ""}
+        defaultValue={(requestDefault && requestDefault?.deadline) ?? ""}
       />
       <Button
         className="mt-3 py-4"

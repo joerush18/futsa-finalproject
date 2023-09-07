@@ -86,7 +86,6 @@ const emailLogin = async (
 const logout = async () => {
   try {
     const res = await auth.signOut();
-
     return res;
   } catch (error) {
     throw error;
