@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -113,28 +113,18 @@ const FutsalImageCard = ({ futsal }: FutsalImageCardProps) => {
           <View
             style={{
               flexDirection: "row",
+              alignItems: "center",
               gap: 2,
               opacity: 0.6,
             }}
           >
-            <MaterialCommunityIcons
-              name="walk"
-              size={12}
-              color={color.grayLight}
-            />
+            <MaterialIcons name="place" size={12} color={color.grayLight} />
             <Text
               style={{
                 color: color.grayLight,
               }}
             >
-              5 mins
-            </Text>
-            <Text
-              style={{
-                color: color.grayLight,
-              }}
-            >
-              |{" " + address.city + " " + address.street}
+              {" " + address.city + " " + address.street}
             </Text>
           </View>
 

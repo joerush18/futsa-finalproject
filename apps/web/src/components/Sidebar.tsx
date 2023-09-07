@@ -61,11 +61,7 @@ const sideMenus = [
     title: "Requests",
     icon: <RequestQuote />,
   },
-  {
-    path: "create-event",
-    title: "Create Event",
-    icon: <AddBoxIcon />,
-  },
+
   {
     path: "events",
     title: "Events",

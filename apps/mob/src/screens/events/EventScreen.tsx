@@ -4,6 +4,7 @@ import {
   ScrollView,
   Text,
   RefreshControl,
+  View,
 } from "react-native";
 import { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -14,9 +15,11 @@ import { IEvents } from "core";
 import useRefetch from "../../hooks/useRefetch";
 import Loading from "../../components/ui/Loading";
 import { EventCard } from "./EventCard";
+import useNotifications from "../../hooks/useNotification";
 const EventScreen = () => {
   const navigation = useNavigation();
-  const { events, refetch, isLoading } = useEvents();
+  const { unReadNotification } = useNotifications();
+  const { otherEvents: events, refetch, isLoading } = useEvents();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -34,8 +37,15 @@ const EventScreen = () => {
               name="whistle-outline"
               size={24}
               color="white"
-              style={{ marginRight: 12 }}
+              style={{ marginRight: 28 }}
             />
+            {unReadNotification > 0 && (
+              <View className="absolute top-0 right-3 bg-red h-5 w-5 flex items-center justify-center  rounded-full">
+                <Text className="text-md color-white">
+                  {unReadNotification}
+                </Text>
+              </View>
+            )}
           </TouchableOpacity>
         );
       },

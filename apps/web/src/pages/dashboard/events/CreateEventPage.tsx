@@ -18,15 +18,39 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { EventSchema, IEntryMeta, IEvents, TOURNAMENT_TYPE } from "core";
+import {
+  EventSchema,
+  IEntryMeta,
+  IEvents,
+  TOURNAMENT_TYPE,
+  useEventStore,
+  useUpdateEvent,
+} from "core";
 import { useForm } from "react-hook-form";
 import { useCreateEvent } from "core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import useEvent from "@/hooks/useEvents";
+import Loading from "@/components/Loading";
 
 const CreateEventPage = () => {
+  const { isLoading: isFetching } = useEvent();
   const { futsal } = useCurrentUser();
-  const defaultValues: IEvents = createEventDefaultValue();
+  const { events, setEvents, updateEvent: updateEventLocal } = useEventStore();
+  const [searchParams] = useSearchParams();
+  const edit = searchParams.get("edit");
+  const eventId = searchParams.get("id");
+
+  if (!eventId && edit) {
+    return <Typography>Event not found</Typography>;
+  }
+
+  const event = events.find((event) => event.id === eventId);
+
+  const defaultValues: IEvents = edit
+    ? createEventDefaultValue(event)
+    : createEventDefaultValue();
   const { mutate: createEvent, isLoading } = useCreateEvent();
+  const { mutate: updateEvent, isLoading: isUpdatingEvent } = useUpdateEvent();
   const {
     handleSubmit,
     control,
@@ -48,10 +72,26 @@ const CreateEventPage = () => {
     createEvent(_eventData, {
       onSuccess: () => {
         toast.success("Event created successfully");
+        setEvents([_eventData, ...events]);
         navigate("/events");
       },
       onError: (error: any) => {
         toast.error(error.message);
+      },
+    });
+  };
+
+  const handleUpdateEvent = (values: IEvents) => {
+    const updatedData: Partial<IEvents> & Pick<IEvents, "id"> = {
+      ...values,
+      id: eventId ?? "",
+      updatedAt: +new Date(),
+    };
+    updateEvent(updatedData, {
+      onSuccess: () => {
+        toast.success("Event updated successfully");
+        updateEventLocal(updatedData);
+        navigate("/events");
       },
     });
   };
@@ -66,9 +106,14 @@ const CreateEventPage = () => {
     };
   });
 
+  if (isFetching) {
+    return <Loading label="Fetching" />;
+  }
   return (
     <Box>
-      <Typography variant="h6">Create Event</Typography>
+      <Typography variant="h6">
+        {edit ? "Edit your event" : "Create new event"}
+      </Typography>
       <Typography variant="subtitle1">Enter details of you event.</Typography>
       <Card>
         <CardContent>
@@ -137,6 +182,7 @@ const CreateEventPage = () => {
                 height="130px"
                 width="100%"
                 error={errors.eventImage?.message}
+                defaultImage={event?.eventImage}
               />
             </Box>
           </Stack>
@@ -186,9 +232,9 @@ const CreateEventPage = () => {
           sx={{
             minWidth: "200px",
           }}
-          onClick={handleSubmit(handleSubmitEvent)}
+          onClick={handleSubmit(edit ? handleUpdateEvent : handleSubmitEvent)}
         >
-          {isLoading ? "Creating..." : "Create"}
+          {edit ? "Update" : isLoading || isUpdatingEvent ? "Wait" : "Create"}
         </Button>
       </Box>
     </Box>

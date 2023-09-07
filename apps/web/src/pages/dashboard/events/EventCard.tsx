@@ -1,15 +1,10 @@
-import Color from "@/utils/color";
 import { Box, Typography } from "@mui/material";
 import { IEvents, timeAgo } from "core";
 import { EventHighlights } from "./EventHighlights";
+import { useNavigate } from "react-router-dom";
 
-export const EventCard = ({
-  event,
-  setEvent,
-}: {
-  event: IEvents;
-  setEvent: React.Dispatch<React.SetStateAction<IEvents>>;
-}) => {
+export const EventCard = ({ event }: { event: IEvents }) => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -17,9 +12,8 @@ export const EventCard = ({
         borderRadius: "4px",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         position: "relative",
-        maxWidth: "450px",
+        width: "360px",
         paddingBottom: "10px",
         marginBottom: "10px",
         "&:hover": {
@@ -29,19 +23,10 @@ export const EventCard = ({
           },
         },
       }}
-      onClick={() => setEvent(event)}
+      onClick={() => {
+        navigate(`/events/${event.id}`);
+      }}
     >
-      {event?.hasExpired ? (
-        <Box
-          sx={{
-            position: "absolute",
-            inset: "0px",
-            backgroundColor: Color.grey[200],
-            opacity: "0.4",
-          }}
-        ></Box>
-      ) : null}
-
       <img
         src={event?.eventImage}
         alt="Event Image"

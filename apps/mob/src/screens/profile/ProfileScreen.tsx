@@ -2,7 +2,6 @@ import { ScrollView, View, Text } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import color from "../../assets/colors";
-import { AntDesign } from "@expo/vector-icons";
 import OptionsCard from "../../components/OptionCard";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -36,17 +35,6 @@ const ProfileScreen = () => {
       headerStyle: {
         backgroundColor: color.primary,
       },
-      headerRight: () => {
-        return (
-          <MaterialCommunityIcons
-            name="pencil"
-            size={18}
-            color="white"
-            style={{ marginRight: 20 }}
-            onPress={() => {}}
-          />
-        );
-      },
     });
   }, []);
   return (
@@ -60,9 +48,9 @@ const ProfileScreen = () => {
         <Text className="text-white text-sm">{user?.email}</Text>
       </View>
       <ScrollView className="px-4 h-[77%]">
-        <OptionsCard label="Saved">
+        {/* <OptionsCard label="Saved">
           <Ionicons name="heart-circle" size={36} color={color.primary} />
-        </OptionsCard>
+        </OptionsCard> */}
         <OptionsCard
           label="My team"
           onPress={() =>
@@ -82,17 +70,35 @@ const ProfileScreen = () => {
           <Ionicons name="book" size={36} color={color.primary} />
         </OptionsCard>
 
-        <OptionsCard label="My Requests" onPress={() => {}}>
+        <OptionsCard
+          label="My Requests"
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate("My-requests");
+          }}
+        >
           <MaterialCommunityIcons
             name="post-outline"
             size={36}
             color={color.primary}
           />
         </OptionsCard>
-        <OptionsCard label="My Events" onPress={() => {}}>
+        <OptionsCard
+          label="My Events"
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate("My-events");
+          }}
+        >
           <MaterialIcons name="event" size={36} color={color.primary} />
         </OptionsCard>
-        <OptionsCard label="My Payments" onPress={() => {}}>
+        <OptionsCard
+          label="My Payments"
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate("My-payments");
+          }}
+        >
           <MaterialIcons name="receipt" size={36} color={color.primary} />
         </OptionsCard>
 

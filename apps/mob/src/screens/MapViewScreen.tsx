@@ -1,43 +1,47 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Callout, Marker } from "react-native-maps";
-import SearchInput from "../components/ui/SearchInput";
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import * as Location from "expo-location";
 import { createRatingStars, useFutsalsStore } from "core";
-import BookNowButton from "../components/ui/BookNowButton";
-import FutsalImageCard from "../components/FutsalImageCard";
+
+import { Feather } from "@expo/vector-icons";
 
 const MapViewScreen = () => {
   const [currentLocation, setCurrentLocation] =
     useState<Location.LocationObjectCoords>();
   const [initialRegion, setInitialRegion] = useState<any>();
 
-  useEffect(() => {
-    (async () => {
-      console.log("run");
-      // Request permission to access location
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-      // Get the current location
-      let location = await Location.getCurrentPositionAsync({});
-      setCurrentLocation(location.coords);
-      setInitialRegion({
-        latitude: location.coords.latitude || 28.208218948316958,
-        longitude: location.coords.longitude || 84.00158931591984,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      });
-    })();
-  }, [initialRegion]);
+  const initialLocationSetup = async () => {
+    // Request permission to access location
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+      return;
+    }
+    // Get the current location
+    let location = await Location.getCurrentPositionAsync({});
+    setCurrentLocation(location.coords);
+    setInitialRegion({
+      latitude: location.coords.latitude || 28.208218948316958,
+      longitude: location.coords.longitude || 84.00158931591984,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01,
+    });
+  };
 
-  // const [searchText, setSearchText] = React.useState("");
+  useEffect(() => {
+    initialLocationSetup();
+  }, [initialRegion]);
 
   return (
     <SafeAreaView>
+      <IconButton
+        className="absolute top-10 right-8 z-10 bg-primary rounded-full h-16 w-16 flex items-center justify-center shadow-md"
+        onPress={initialLocationSetup}
+      >
+        <Feather name="refresh-ccw" size={24} color={color.white} />
+      </IconButton>
       <View className="h-screen w-full relative">
         {/* <View className="absolute top-0 z-10 px-2 mt-4 w-full">
           <SearchInput setSearchText={setSearchText} />
@@ -62,9 +66,10 @@ const MapViewScreen = () => {
 
 export default MapViewScreen;
 
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
+import IconButton from "../components/ui/IconButton";
 
 const PinLocations = () => {
   const { futsals } = useFutsalsStore();

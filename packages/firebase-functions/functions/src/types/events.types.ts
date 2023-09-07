@@ -25,6 +25,8 @@ export interface IEvents extends IEntryMeta {
     value: string;
   };
 
+  registrationEndDate?: string;
+
   prizes?: string[];
 }
 

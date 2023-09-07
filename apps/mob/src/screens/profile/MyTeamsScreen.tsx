@@ -1,5 +1,5 @@
 import { Text, View, ScrollView, TextInput } from "react-native";
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import color from "../../assets/colors";
 import IconButton from "../../components/ui/IconButton";

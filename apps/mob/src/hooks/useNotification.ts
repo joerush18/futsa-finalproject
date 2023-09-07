@@ -4,17 +4,20 @@ import { useEffect, useState } from "react";
 import useCurrentUser from "./useCurrentUser";
 import useYourBookings from "./useYourBookings";
 import usePushNotification from "./usePushNotification";
+import { set } from "date-fns";
 
 const useNotifications = () => {
   const [notifications, setNotification] = useState<INotification[]>([]);
+  const [unReadNotification, setUnReadNotification] = useState<number>(0);
   const { user } = useCurrentUser();
   const { onRefresh } = useYourBookings();
   // const { schedulePushNotification } = usePushNotification();
 
   useEffect(() => {
+    if (!user) return;
     const notificationRef = db.collection("notifications");
     const query = notificationRef
-      .where("createdFor", "==", user.id)
+      .where("createdFor", "==", user?.id ?? "")
       .orderBy("createdAt", "desc");
     const unsubscribe = onSnapshot(query, (snapshot) => {
       if (snapshot) {
@@ -32,6 +35,13 @@ const useNotifications = () => {
         //     value: "Futsa",
         //   },
         // });
+        const unReadNotification = notifications.reduce((acc, curr) => {
+          if (!curr.viewed) {
+            acc++;
+          }
+          return acc;
+        }, 0);
+        setUnReadNotification(unReadNotification);
       } else {
         setNotification([]);
       }
@@ -39,7 +49,7 @@ const useNotifications = () => {
     return () => unsubscribe();
   }, []);
 
-  return { notifications };
+  return { notifications, unReadNotification };
 };
 
 export default useNotifications;

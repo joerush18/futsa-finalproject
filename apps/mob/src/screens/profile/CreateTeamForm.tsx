@@ -29,6 +29,7 @@ import useMemberStore from "core/src/store/useMemberStore";
 import useRefetch from "../../hooks/useRefetch";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import Loading from "../../components/ui/Loading";
+import useEvents from "../../hooks/useEvents";
 
 const CreateTeamForm = ({ team }: { team: ITeam }) => {
   const { isLoading, refetch } = useGetMembersByTeam(team.id);
@@ -46,6 +47,11 @@ const CreateTeamForm = ({ team }: { team: ITeam }) => {
 
   const { mutate: deleteMember, isLoading: isDeletingMember } =
     useDeleteMember();
+
+  const { myEvents } = useEvents();
+  const isInEvents = myEvents?.some(
+    (event) => event.teams?.some((t) => t.id === team?.id) === true
+  );
 
   const {
     members,
@@ -143,16 +149,28 @@ const CreateTeamForm = ({ team }: { team: ITeam }) => {
       }
     >
       <Text className="font-bold text-xl">{team?.name}</Text>
-      <Text>Add the members and create your team.</Text>
-      <View className="mt-4 flex-row items-end justify-between">
-        <Text className="text-xl font-bold">Add member</Text>
-        <TouchableOpacity
-          className="h-10 w-10 bg-gray-500 rounded-md flex-row items-center justify-center"
-          onPress={() => setIsVisible(true)}
-        >
-          <Text className="font-bold text-white text-xl">+</Text>
-        </TouchableOpacity>
-      </View>
+      <Text>
+        {isInEvents
+          ? "This team is in an event. You can't edit it."
+          : "You can add members to your team."}
+      </Text>
+      {!isInEvents ? (
+        <View className="mt-4 flex-row items-end justify-between">
+          <Text className="text-xl font-bold">Add member</Text>
+          <TouchableOpacity
+            className="h-10 w-10 bg-gray-500 rounded-md flex-row items-center justify-center"
+            onPress={() => setIsVisible(true)}
+          >
+            <Text className="font-bold text-white text-xl">+</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
+      {isInEvents ? (
+        <Text className=" font-bold px-2 py-3 bg-gray-200 my-2 rounded-md">
+          Current Event : {myEvents && myEvents[0].name}
+        </Text>
+      ) : null}
+
       <View>
         {members?.length > 0 ? (
           members.map((player, index) => (
@@ -183,40 +201,44 @@ const CreateTeamForm = ({ team }: { team: ITeam }) => {
                   <Text>{player.phoneNumber}</Text>
                 </View>
               </View>
-              <View className="flex-row space-x-2 items-center mt-2">
-                <MaterialCommunityIcons
-                  name="delete-circle"
-                  size={36}
-                  color={color.red}
-                  onPress={() => deletePlayer(selectedPlayer?.id ?? "")}
-                />
-                <MaterialCommunityIcons
-                  name="account-edit"
-                  size={36}
-                  color={color.blueLight}
-                  onPress={() => {
-                    setIsVisible(true);
-                    setEditMode(true);
-                    setSelectedPlayer(player);
-                  }}
-                />
-              </View>
+              {!isInEvents ? (
+                <View className="flex-row space-x-2 items-center mt-2">
+                  <MaterialCommunityIcons
+                    name="delete-circle"
+                    size={36}
+                    color={color.red}
+                    onPress={() => deletePlayer(selectedPlayer?.id ?? "")}
+                  />
+                  <MaterialCommunityIcons
+                    name="account-edit"
+                    size={36}
+                    color={color.blueLight}
+                    onPress={() => {
+                      setIsVisible(true);
+                      setEditMode(true);
+                      setSelectedPlayer(player);
+                    }}
+                  />
+                </View>
+              ) : null}
             </View>
           ))
         ) : (
           <Text>No Members yet</Text>
         )}
       </View>
-      <AddMemberFormModal
-        isVisible={isVisible}
-        setIsVisible={setIsVisible}
-        editMode={editMode}
-        setEditMode={setEditMode}
-        handleCreatePlayer={handleCreatePlayer}
-        handleUpdatePlayer={handleUpdatePlayer}
-        key={`add_member_modal-${editMode}}`}
-        selectedPlayer={selectedPlayer}
-      />
+      {!isInEvents ? (
+        <AddMemberFormModal
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+          editMode={editMode}
+          setEditMode={setEditMode}
+          handleCreatePlayer={handleCreatePlayer}
+          handleUpdatePlayer={handleUpdatePlayer}
+          key={`add_member_modal-${editMode}}`}
+          selectedPlayer={selectedPlayer}
+        />
+      ) : null}
     </ScrollView>
   );
 };

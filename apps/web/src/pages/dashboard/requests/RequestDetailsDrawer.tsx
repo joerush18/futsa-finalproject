@@ -196,7 +196,7 @@ export const RequestDetailsDrawer = ({
       ) : (
         <Box>
           <Typography variant="h6" px={2}>
-            Other Biddings
+            Biddings
           </Typography>
           {biddings && biddings?.length > 0 ? (
             <BiddingCardLists

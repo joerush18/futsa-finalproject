@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -104,24 +104,13 @@ const FutsalCard = ({ futsal }: FutsalCardProps) => {
               opacity: 0.6,
             }}
           >
-            <MaterialCommunityIcons
-              name="walk"
-              size={12}
-              color={color.grayText}
-            />
+            <MaterialIcons name="place" size={12} color={color.grayText} />
             <Text
               style={{
                 color: color.grayText,
               }}
             >
-              5 mins
-            </Text>
-            <Text
-              style={{
-                color: color.grayText,
-              }}
-            >
-              |{" " + address.city + " " + address.street}
+              {" " + address.city + " " + address.street}
             </Text>
           </View>
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./App.ts",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start -clear",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
@@ -12,7 +12,7 @@
     "@expo/vector-icons": "^13.0.0",
     "@hookform/resolvers": "^3.1.1",
     "@miblanchard/react-native-slider": "^2.3.1",
-    "@react-native-async-storage/async-storage": "1.17.11",
+    "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",

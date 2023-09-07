@@ -18,11 +18,14 @@ import BookDetailsScreen from "./screens/bookings/BookDetailsScreen";
 import MyBookingsScreen from "./screens/profile/MyBookingsScreen";
 import EventDetailsScreen from "./screens/events/EventDetailsScreen";
 import MyTeamsScreen from "./screens/profile/MyTeamsScreen";
-import RequestsScreen from "./screens/request/RequestsScreen";
+import RequestsScreen from "./screens/request/MyRequestsScreen";
 import CreateRequestScreen from "./screens/request/CreateRequestScreen";
 import RequestDetailsScreen from "./screens/request/RequestDetailsScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import { IInitiatiatePayment } from "core";
+import MyRequestsScreen from "./screens/request/MyRequestsScreen";
+import MyEventsScreen from "./screens/events/MyEventsScreen";
+import MyPaymentsScreen from "./screens/MyPaymentsScreen";
 
 export type RootStackParamList = {
   "Futsal-Detail": { futsalId: string };
@@ -38,11 +41,16 @@ export type RootStackParamList = {
   "Event-Detail": { eventId: string };
   "My-Teams": {};
   Requests: {};
-  "Create-Request": {};
+  "Create-Request": {
+    requestId?: string;
+  };
   "Request-Detail": { requestId: string };
   Payment: {
     paymentData: IInitiatiatePayment;
   };
+  "My-requests": {};
+  "My-events": {};
+  "My-payments": {};
 };
 
 const AfterAuthNavigationContainers = () => {
@@ -128,6 +136,27 @@ const AfterAuthNavigationContainers = () => {
         <Stack.Screen
           name="Payment"
           component={PaymentScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="My-requests"
+          component={MyRequestsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="My-events"
+          component={MyEventsScreen}
+          options={{
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="My-payments"
+          component={MyPaymentsScreen}
           options={{
             headerShown: true,
           }}

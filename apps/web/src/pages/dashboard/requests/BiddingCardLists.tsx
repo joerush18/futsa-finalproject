@@ -121,7 +121,7 @@ export const BiddingCardLists = ({
               flexDirection="row"
               alignItems="center"
               flexWrap="wrap"
-              mb={1.5}
+              mb={2}
             >
               {freebies?.length ? (
                 freebies.map((facility, index) => (
@@ -134,6 +134,7 @@ export const BiddingCardLists = ({
                       bgcolor: Color.grey[200],
                       mr: 1,
                       borderRadius: 1,
+                      mb: 1,
                     }}
                   >
                     {facility}
@@ -169,7 +170,7 @@ export const BiddingCardLists = ({
             )}
             <Typography variant="caption" color={Color.text.focus}>
               {updatedAt
-                ? `Edited : ${timeAgo(updatedAt)}`
+                ? `Updated : ${timeAgo(updatedAt)}`
                 : timeAgo(createdAt)}
             </Typography>
           </Box>

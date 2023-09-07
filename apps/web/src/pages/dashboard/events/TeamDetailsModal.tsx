@@ -1,20 +1,61 @@
 import Color from "@/utils/color";
 import { Avatar, Box, Button, Modal, Stack, Typography } from "@mui/material";
-import { ITeam } from "core";
+import { ITeam, useEventStore, useUpdateEvent } from "core";
 import Loading from "@/components/Loading";
 import useMembers from "@/hooks/useMembers";
+import { useParams } from "react-router-dom";
 
 export const TeamDetailsModal = ({
   open,
   onClose,
   selectedTeam,
+  teams,
 }: {
   open: boolean;
   onClose: () => void;
   selectedTeam?: ITeam;
+  teams: ITeam[];
 }) => {
   if (!selectedTeam) return null;
   const { members, isLoading } = useMembers(selectedTeam?.id);
+  const { id } = useParams();
+  if (!id) return null;
+  const { mutate: updateEvent, isLoading: isApproving } = useUpdateEvent();
+  const { updateEvent: updateEventLocal } = useEventStore();
+
+  const handleAction = (teams: ITeam[], id: string, action: boolean) => {
+    updateEvent(
+      {
+        id: id,
+        teams: teams.map((team) => {
+          if (team.id === selectedTeam?.id) {
+            return {
+              ...team,
+              verified: action,
+            };
+          }
+          return team;
+        }),
+      },
+      {
+        onSuccess: () => {
+          updateEventLocal({
+            id: id,
+            teams: teams.map((team) => {
+              if (team.id === selectedTeam?.id) {
+                return {
+                  ...team,
+                  verified: action,
+                };
+              }
+              return team;
+            }),
+          });
+          onClose();
+        },
+      }
+    );
+  };
   if (isLoading) {
     return <Loading />;
   }
@@ -24,16 +65,58 @@ export const TeamDetailsModal = ({
         sx={{
           bgcolor: "background.paper",
           borderRadius: "6px",
-          paddingX: "50px",
           paddingBottom: "20px",
-          maxHeight: "90%",
+          maxHeight: "100%",
           maxWidth: "60%",
           overflowY: "scroll",
+          px: 2,
         }}
       >
-        <Typography variant="h5" textAlign="center" my={3}>
-          {selectedTeam?.name}
-        </Typography>
+        <Stack
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          gap={2}
+          mx={3}
+        >
+          <Typography variant="h5" my={3}>
+            {selectedTeam?.name}
+          </Typography>
+          <Typography variant="h5" my={3}>
+            {selectedTeam?.createdBy?.name}
+          </Typography>
+          {selectedTeam.verified ? (
+            <Stack flexDirection="row" alignItems="center" gap={2}>
+              <Typography
+                variant="caption"
+                my={3}
+                color="white"
+                sx={{
+                  bgcolor: "green",
+                  px: 3,
+                  py: 1,
+                  borderRadius: "4px",
+                  fontWeight: 600,
+                }}
+              >
+                Verified
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={() => handleAction(teams, id, false)}
+              >
+                {isApproving ? "Removing..." : "Remove"}
+              </Button>
+            </Stack>
+          ) : (
+            <Button
+              variant="contained"
+              onClick={() => handleAction(teams, id, true)}
+            >
+              {isApproving ? "Approving..." : "Approve"}
+            </Button>
+          )}
+        </Stack>
         <Stack
           flexDirection="row"
           flexWrap="wrap"
@@ -107,17 +190,6 @@ export const TeamDetailsModal = ({
           ) : (
             <Typography>No members</Typography>
           )}
-        </Stack>
-        <Stack flexDirection="row" alignItems="center">
-          <Button
-            variant="contained"
-            sx={{
-              margin: "auto",
-              mt: 8,
-            }}
-          >
-            Approve
-          </Button>
         </Stack>
       </Box>
     </Modal>

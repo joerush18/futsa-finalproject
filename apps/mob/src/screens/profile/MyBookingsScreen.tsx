@@ -12,6 +12,7 @@ import Card from "../../components/ui/Card";
 import { BOOKING_STATUS, formatBookingDate, timeAgo } from "core";
 import Loading from "../../components/ui/Loading";
 import useYourBookings from "../../hooks/useYourBookings";
+import Empty from "../../components/ui/Empty";
 
 const MyBookingsScreen = () => {
   const navigation = useNavigation();
@@ -43,15 +44,31 @@ const MyBookingsScreen = () => {
     );
   }
 
+  const totalBookings = bookings.length
+    ? bookings.filter((e) => e.status === BOOKING_STATUS.BOOKED).length
+    : 0;
+  const maxBookings = 10;
+
   return (
-    <ScrollView
-      className="px-2"
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      {bookings.length > 0
-        ? bookings.map((booking, index) => {
+    <>
+      <View className="mx-2">
+        <Card>
+          <Text className="text-lg font-bold">
+            Total Bookings : {totalBookings} / {maxBookings}
+          </Text>
+          <Text className="text-sm text-gray-500">
+            {maxBookings - totalBookings} remains for the perks.
+          </Text>
+        </Card>
+      </View>
+      <ScrollView
+        className="px-2"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {bookings.length > 0 ? (
+          bookings.map((booking, index) => {
             return (
               <BookingInfo
                 key={`booking_${index}`}
@@ -73,8 +90,13 @@ const MyBookingsScreen = () => {
               />
             );
           })
-        : null}
-    </ScrollView>
+        ) : (
+          <View className="mx-auto">
+            <Empty />
+          </View>
+        )}
+      </ScrollView>
+    </>
   );
 };
 

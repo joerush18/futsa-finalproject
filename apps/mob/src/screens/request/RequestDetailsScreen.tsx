@@ -134,8 +134,17 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
           >
             {request.status}
           </Text>
-          {request.status === REQUEST_STATUS.ACTIVE && hasPermission ? (
-            <IconButton>
+          {request.status === REQUEST_STATUS.ACTIVE &&
+          hasPermission &&
+          bids.length === 0 ? (
+            <IconButton
+              onPress={() => {
+                // @ts-ignore
+                navigation.navigate("Create-Request", {
+                  requestId: request.id ?? "",
+                });
+              }}
+            >
               <MaterialCommunityIcons
                 name="pencil"
                 size={24}
@@ -147,7 +156,7 @@ const RequestDetailsScreen: React.FC<RequestDetailsScreenProps> = ({
         <Text className="text-gray-500 text-md">
           {timeAgo(request.createdAt)} - {request?.createdBy?.name}
         </Text>
-        <Text className="font-bold text-lg">{request.title}</Text>
+        <Text className="font-bold text-lg my-2">{request.title}</Text>
         <Text>{request.description}</Text>
       </View>
 

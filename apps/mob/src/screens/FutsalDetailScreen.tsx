@@ -110,9 +110,9 @@ const FutsalDetailScreen = ({ route }: FutsalDetailScreenProps) => {
           />
         </Sectionlayout>
         <Divider />
-        <Sectionlayout title="Reviews">
+        {/* <Sectionlayout title="Reviews">
           <Reviews />
-        </Sectionlayout>
+        </Sectionlayout> */}
       </ScrollView>
     </SafeAreaView>
   );

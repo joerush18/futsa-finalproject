@@ -18,9 +18,12 @@ import SearchBox from "../components/ui/SearchBox";
 import { useGetAllFutsal } from "core/src/db/hooks/useFutsal";
 import Loading from "../components/ui/Loading";
 import useRefetch from "../hooks/useRefetch";
+import useNotifications from "../hooks/useNotification";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const { unReadNotification } = useNotifications();
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -38,8 +41,15 @@ const HomeScreen = () => {
               name="whistle-outline"
               size={24}
               color="white"
-              style={{ marginRight: 12 }}
+              style={{ marginRight: 28 }}
             />
+            {unReadNotification > 0 && (
+              <View className="absolute top-0 right-3 bg-red h-5 w-5 flex items-center justify-center  rounded-full">
+                <Text className="text-md color-white">
+                  {unReadNotification}
+                </Text>
+              </View>
+            )}
           </TouchableOpacity>
         );
       },

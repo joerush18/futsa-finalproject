@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
 import Card from "./ui/Card";
 import color from "../assets/colors";
-import { NOTIFICATION_TYPE } from "core";
+import { NOTIFICATION_TYPE, useUpdateNotification } from "core";
 import { useNavigation } from "@react-navigation/native";
 
 interface NotificationCardProps {
@@ -11,6 +11,7 @@ interface NotificationCardProps {
   collectionId: string;
   createdAtTime: string;
   createdByName: string;
+  notificationId: string;
 }
 
 const NotificationCard: React.FC<NotificationCardProps> = ({
@@ -19,11 +20,18 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   collectionId,
   createdAtTime,
   createdByName,
+  notificationId,
 }) => {
   const navigation = useNavigation();
+
+  const { mutate: updateNotification } = useUpdateNotification();
   return (
     <Pressable
       onPress={() => {
+        updateNotification({
+          id: notificationId,
+          viewed: true,
+        });
         if (type === NOTIFICATION_TYPE.BOOKING && collectionId) {
           // @ts-ignore
           navigation.navigate("My-Bookings");

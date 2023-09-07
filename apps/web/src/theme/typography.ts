@@ -2,7 +2,7 @@ import { Typography } from "@mui/material/styles/createTypography";
 import Color from "@/utils/color";
 
 export const textStyles: Partial<Typography> = {
-  fontFamily: ["Montserrat", "sans-serif"].join(","),
+  fontFamily: ["Inter", "sans-serif"].join(","),
   h1: {
     fontSize: "48px",
     fontWeight: "bold",
