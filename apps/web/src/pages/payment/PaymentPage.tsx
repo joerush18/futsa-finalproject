@@ -36,11 +36,7 @@ const PaymentPage = () => {
   return (
     <>
       <Stack alignItems="center" gap={8} flexDirection="row">
-        <Box
-          sx={{
-            p: 3,
-          }}
-        >
+        <Box>
           <Typography variant="caption">Total balance</Typography>
           <Typography variant="h3" textAlign="left" color={Color.primary.main}>
             Rs. {totalBalance}
@@ -72,7 +68,7 @@ const PaymentPage = () => {
       {transactions?.length ? (
         <PaymentTable transactions={transactions} modalOnOpen={onOpen} />
       ) : (
-        <Box>No transactions found.</Box>
+        <Typography variant="h6">No transactions found.</Typography>
       )}
     </>
   );

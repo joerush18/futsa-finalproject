@@ -4,7 +4,6 @@ import { Button, ToggleButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { EventCardGroup } from "./EventCardGroup";
 import { useNavigate } from "react-router-dom";
-import Color from "@/utils/color";
 
 const EventsPage = () => {
   const navigate = useNavigate();
@@ -85,7 +84,7 @@ const EventsPage = () => {
       >
         Create event
       </Button>
-      <Typography variant="h6" color={Color.text.main} mb={2}>
+      <Typography variant="h6" mb={2}>
         {alignment}
       </Typography>
       <EventCardGroup

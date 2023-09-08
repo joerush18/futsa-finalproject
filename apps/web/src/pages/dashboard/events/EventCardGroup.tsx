@@ -19,7 +19,7 @@ export const EventCardGroup = ({ events }: { events?: IEvents[] }) => {
             <EventCard event={event} key={`event-${index}`} />
           ))
         ) : (
-          <Typography>No events found.</Typography>
+          <Typography variant="h6">No events found.</Typography>
         )}
       </Box>
       {/* {event.name && events?.length ? <EventDetailsCard event={event} /> : ""} */}

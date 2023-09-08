@@ -46,7 +46,7 @@ const listener = async (snapshot: Change<QueryDocumentSnapshot>) => {
     );
     const reqSnap = await reqRef.get();
     const request = reqSnap.data() as IRequest;
-    const message = `Your bid for ${request.title} has been selected`;
+    const message = `Your bid for request ( ${request.title} ) has been selected`;
     await createNotificationToFutsal(request, message);
   }
 

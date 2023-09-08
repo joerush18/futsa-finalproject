@@ -6,8 +6,15 @@ import { useEffect } from "react";
 import * as Location from "expo-location";
 import { useCurrentLocation } from "core";
 import Toast from "react-native-toast-message";
+import * as Sentry from "sentry-expo";
 
-export default function App() {
+Sentry.init({
+  dsn: "https://7a536e47e49e459a427d324cf04c0018@o4505845943238656.ingest.sentry.io/4505845944811520",
+  enableInExpoDevelopment: true,
+  debug: true, // If true, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to false in production
+});
+
+const App = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -60,4 +67,6 @@ export default function App() {
       </QueryClientProvider>
     </>
   );
-}
+};
+
+export default Sentry.Native.wrap(App);

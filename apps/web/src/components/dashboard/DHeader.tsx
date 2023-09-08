@@ -7,43 +7,45 @@ import LaptopChromebookIcon from "@mui/icons-material/LaptopChromebook";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import StoreIcon from "@mui/icons-material/Store";
-
-const DHeaderItems = [
-  {
-    icon: <LaptopChromebookIcon />,
-    boxColor: Color.gradients.dark.main,
-    label: "Bookings",
-    value: "234",
-    remark: "than last month",
-    remarkValue: "+23%",
-  },
-  {
-    icon: <BarChartIcon />,
-    boxColor: Color.gradients.info.main,
-    label: "Today's Users",
-    value: "100",
-    remark: "than last month",
-    remarkValue: "+3%",
-  },
-  {
-    icon: <StoreIcon />,
-    boxColor: Color.gradients.success.main,
-    label: "Today's Revenue",
-    value: "100$",
-    remark: "than yesterday",
-    remarkValue: "+1%",
-  },
-
-  {
-    icon: <PersonAddIcon />,
-    boxColor: Color.gradients.primary.main,
-    label: "Followers",
-    value: "+100",
-    remark: "Just updated",
-  },
-];
+import useMetrics from "@/hooks/useMetrics";
 
 const DHeader = () => {
+  const { totalApproved, totalBalance, totalBookings, totalPendings } =
+    useMetrics();
+  const DHeaderItems = [
+    {
+      icon: <LaptopChromebookIcon />,
+      boxColor: Color.gradients.dark.main,
+      label: "Total bookings",
+      value: totalBookings ?? 0,
+      remark: "than last month",
+      remarkValue: "+23%",
+    },
+    {
+      icon: <BarChartIcon />,
+      boxColor: Color.gradients.info.main,
+      label: "Total Pendings",
+      value: totalPendings ?? 0,
+      remark: "than last month",
+      remarkValue: "+3%",
+    },
+    {
+      icon: <StoreIcon />,
+      boxColor: Color.gradients.success.main,
+      label: "Total Revenue",
+      value: `Rs. ${totalBalance ?? 0}`,
+      remark: "than last month",
+      remarkValue: "+1%",
+    },
+
+    {
+      icon: <PersonAddIcon />,
+      boxColor: Color.gradients.primary.main,
+      label: "Total Approved",
+      value: totalApproved ?? 0,
+      remark: "Just updated",
+    },
+  ];
   return (
     <Grid container spacing={4}>
       {DHeaderItems.map((item, index) => {
@@ -53,7 +55,7 @@ const DHeader = () => {
               boxColor={item.boxColor}
               icon={item.icon}
               label={item.label}
-              value={item.value}
+              value={item.value.toString()}
               remark={item.remark}
               remarkValue={item.remarkValue}
             />

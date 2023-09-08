@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { IEvents } from "../types";
 
 type geo = {
   lat: number;

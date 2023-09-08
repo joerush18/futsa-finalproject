@@ -1,4 +1,3 @@
-import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Callout, Marker } from "react-native-maps";
 import React, { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
@@ -13,7 +12,7 @@ const MapViewScreen = () => {
   const { geoLocation } = useCurrentLocation();
 
   const handleRefresh = () => {
-    // Toggle the refreshed state to trigger a re-render
+    // Toggle the refreshed state to trigger a re-render.
     setRefreshed(!refreshed);
     initialLocationSetup();
   };
@@ -33,9 +32,13 @@ const MapViewScreen = () => {
   }, [geoLocation]);
 
   return (
-    <SafeAreaView>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <IconButton
-        className="absolute top-10 right-8 z-10 bg-primary rounded-full h-16 w-16 flex items-center justify-center shadow-md"
+        className="absolute top-7 right-8 z-10 bg-primary/50 rounded-full h-16 w-16 flex items-center justify-center shadow-md"
         onPress={handleRefresh}
       >
         <Feather name="refresh-ccw" size={24} color={color.white} />
@@ -48,7 +51,6 @@ const MapViewScreen = () => {
           className="h-screen w-full"
           initialRegion={initialRegion}
           key={refreshed ? "refreshed" : "not-refreshed"}
-          mapType="mutedStandard"
         >
           {geoLocation && (
             <Marker
@@ -63,7 +65,7 @@ const MapViewScreen = () => {
           <PinLocations />
         </MapView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -72,10 +74,11 @@ export default MapViewScreen;
 import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import IconButton from "../components/ui/IconButton";
+import Empty from "../components/ui/Empty";
 
 const PinLocations = () => {
   const { futsals } = useFutsalsStore();
-  if (!futsals) return null;
+  if (!futsals) return <Empty />;
   const navigator = useNavigation();
   return (
     <>

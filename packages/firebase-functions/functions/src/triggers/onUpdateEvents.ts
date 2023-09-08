@@ -81,10 +81,13 @@ const listener = async (snapshot: Change<QueryDocumentSnapshot>) => {
     }
 
     // Send notification to the futsal if the team is added
-    if (after.teams[index].id !== before.teams[index].id) {
+    if (
+      after.teams.some((t) => t.id === team.id) &&
+      before.teams.some((t) => t.id !== team.id)
+    ) {
       createNotificationToFutsal(
         team,
-        `${team.name} has been registered to event ${after.name}`
+        `${team.name} has been registered to event (${after.name})`
       );
     }
   });

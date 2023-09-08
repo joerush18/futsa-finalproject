@@ -23,11 +23,15 @@ const useNotifications = () => {
         const notifications: INotification[] = snapshot.docs.map(
           (doc) => doc.data() as INotification
         );
-        Toast.show({
-          type: "success",
-          text1: "New Notification",
-          text2: `You have new notification from ${notifications[0].createdBy?.name}`,
-        });
+        if (notifications.length > 0) {
+          Toast.show({
+            type: "success",
+            text1: "New Notification",
+            text2: `You have new notification from ${
+              notifications[0]?.createdBy?.name ?? "a futsal."
+            }`,
+          });
+        }
         setNotification(notifications);
         onRefresh();
         // schedulePushNotification({
