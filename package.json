@@ -2,9 +2,9 @@
   "name": "futsa",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
+    "build": "npx turbo run build",
+    "dev": "npx turbo run dev",
+    "lint": "npx turbo run lint",
     "start:mob": "cd apps/mob &&  expo start",
     "start:emu": "cd packages/firebase-functions/functions && yarn serve",
     "deploy:cloudfunctions": "cd packages/firebase-functions/functions && yarn deploy",

@@ -9,7 +9,6 @@ import AuthClientWrapper from "../components/AuthClientWrapper";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginEmail } from "core/src/db/hooks/useAuth";
 import { toast } from "react-hot-toast";
-import { setItem } from "@/utils/token";
 
 type FormInputs = Pick<ISignUpCredentials, "email" | "password">;
 

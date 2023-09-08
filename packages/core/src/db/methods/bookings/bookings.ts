@@ -9,7 +9,6 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { createUniqueId } from "../../../utils";
 
 const createBooking = async (data: IBookings) => {
   try {

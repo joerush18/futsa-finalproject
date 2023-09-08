@@ -7,7 +7,7 @@ import Color from "@/utils/color";
 
 const PaymentPage = () => {
   const { futsal } = useCurrentUser();
-  const { open, onClose, onOpen } = useModal();
+  const { onOpen } = useModal();
   const { data: transactions, isLoading: isFetchingPayments } =
     useGetTransactionByFutsal(futsal.id);
 

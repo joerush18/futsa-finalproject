@@ -1,7 +1,6 @@
 import Loading from "@/components/Loading";
 import useEvent from "@/hooks/useEvents";
-import { Button, ToggleButton, Typography } from "@mui/material";
-import { useState } from "react";
+import { Button, Typography } from "@mui/material";
 import { EventCardGroup } from "./EventCardGroup";
 import { useNavigate } from "react-router-dom";
 
@@ -9,8 +8,6 @@ const EventsPage = () => {
   const navigate = useNavigate();
 
   const { selfEvent, othersEvent, isLoading } = useEvent();
-
-  type eventstype = "My Events" | "Others";
 
   // const [alignment] = useState<eventstype>("My Events");
   const alignment = "My Events";
