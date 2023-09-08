@@ -11,6 +11,7 @@ export const Collection = {
   Transactions: "transactions",
   Requests: "requests",
   Events: "events",
+  Bids: "bids",
 };
 
 export const Database = admin.firestore();

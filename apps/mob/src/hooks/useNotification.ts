@@ -3,8 +3,7 @@ import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import useCurrentUser from "./useCurrentUser";
 import useYourBookings from "./useYourBookings";
-import usePushNotification from "./usePushNotification";
-import { set } from "date-fns";
+import Toast from "react-native-toast-message";
 
 const useNotifications = () => {
   const [notifications, setNotification] = useState<INotification[]>([]);
@@ -24,6 +23,11 @@ const useNotifications = () => {
         const notifications: INotification[] = snapshot.docs.map(
           (doc) => doc.data() as INotification
         );
+        Toast.show({
+          type: "success",
+          text1: "New Notification",
+          text2: `You have new notification from ${notifications[0].createdBy?.name}`,
+        });
         setNotification(notifications);
         onRefresh();
         // schedulePushNotification({

@@ -1,10 +1,11 @@
 import Color from "@/utils/color";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import GppBadRoundedIcon from "@mui/icons-material/GppBadRounded";
-import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import { NOTIFICATION_TYPE } from "core";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import EventIcon from "@mui/icons-material/Event";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 interface INotificationContentProps {
   type: NOTIFICATION_TYPE;
@@ -26,6 +27,8 @@ const NotificationContent = ({
 }: INotificationContentProps) => {
   const booked = type === NOTIFICATION_TYPE.BOOKING;
   const payment = type === NOTIFICATION_TYPE.PAYMENT;
+  const events = type === NOTIFICATION_TYPE.EVENT;
+  const requests = type === NOTIFICATION_TYPE.REQUESTS;
 
   return (
     <Stack
@@ -53,6 +56,20 @@ const NotificationContent = ({
       ) : payment ? (
         <ReceiptIcon
           color="primary"
+          sx={{
+            fontSize: 32,
+          }}
+        />
+      ) : events ? (
+        <EventIcon
+          color="secondary"
+          sx={{
+            fontSize: 32,
+          }}
+        />
+      ) : requests ? (
+        <AssignmentIcon
+          color="warning"
           sx={{
             fontSize: 32,
           }}

@@ -9,9 +9,14 @@ import BookNowButton from "../components/ui/BookNowButton";
 import MapView, { Marker } from "react-native-maps";
 import Review from "../components/Review";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { useFutsalsStore } from "core";
+import { useCurrentLocation, useFutsalsStore } from "core";
 import { RootStackParamList } from "../StackNavigator";
 import { convertToAmPm } from "core";
+const Logo = require("../assets/images/futsal.png");
+
+import * as ExpoLocation from "expo-location";
+import { calculateDistance, calculateTravelTime } from "../utils/location";
+import { convertMinutesToHours } from "../utils/date";
 
 type FutsalDetailScreenRouteProps = RouteProp<
   RootStackParamList,
@@ -40,6 +45,14 @@ const FutsalDetailScreen = ({ route }: FutsalDetailScreenProps) => {
     groundSize,
     geoLocation,
   } = futsal;
+  const { geoLocation: myLocation } = useCurrentLocation();
+
+  const travelTime = calculateDistance(
+    myLocation?.lat ?? 0,
+    myLocation?.lng ?? 0,
+    geoLocation?.lat ? +geoLocation?.lat : 0,
+    geoLocation?.lng ? +geoLocation?.lng : 0
+  );
 
   return (
     <SafeAreaView>
@@ -61,6 +74,7 @@ const FutsalDetailScreen = ({ route }: FutsalDetailScreenProps) => {
             avatar={profilePicture}
             price={price.toString()}
             street={address.street}
+            travelTime={travelTime}
           />
           <Text className="text-grayText mt-4 opacity-70">{description}</Text>
         </View>
@@ -127,6 +141,7 @@ interface ProfileInfoProps {
   price?: string;
   street: string;
   avatar?: string;
+  travelTime?: number;
 }
 
 const ProfileInfo = ({
@@ -136,6 +151,7 @@ const ProfileInfo = ({
   price,
   street,
   avatar,
+  travelTime,
 }: ProfileInfoProps) => {
   return (
     <View className="flex-row gap-3">
@@ -157,7 +173,9 @@ const ProfileInfo = ({
             size={12}
             color={color.grayText}
           />
-          <Text className=" text-grayText">5 mins</Text>
+          <Text className=" text-grayText">
+            {Math.floor(travelTime ?? 0) ?? "-"} KM
+          </Text>
           <Text className=" text-grayText">|{" " + city + " " + street} </Text>
         </View>
 
@@ -232,7 +250,11 @@ const Location = ({ lat, lng }: { lat?: number; lng?: number }) => {
           }}
           title="Your Location"
           description="You are here"
-        />
+        >
+          <View className="w-40 flex-row justify-center">
+            <Image source={Logo} className="h-12 w-12  " />
+          </View>
+        </Marker>
       </MapView>
     </View>
   );

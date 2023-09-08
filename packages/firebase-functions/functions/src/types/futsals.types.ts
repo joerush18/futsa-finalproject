@@ -34,4 +34,7 @@ export interface IFutsal extends IEntryMeta {
   ratings: number;
   role: ROLES.FUTSAL;
   status: STATUS;
+
+  // local
+  isLoved?: boolean;
 }

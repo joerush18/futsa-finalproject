@@ -9,3 +9,4 @@ export * from "./reviews.types";
 export * from "./notification.types";
 export * from "./payment.types";
 export * from "./requests.types";
+export * from "./transactions.types";

@@ -12,7 +12,6 @@ import color from "../../assets/colors";
 import Card from "../../components/ui/Card";
 import InputComponent from "../../components/ui/InputComponent";
 import Button from "../../components/ui/Button";
-import Divider from "../../components/ui/Divider";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,11 +19,12 @@ import { LoginSchema } from "core/src/validations/validations";
 import { useLoginEmail } from "core/src/db/hooks/useAuth";
 import { ISignUpCredentials } from "core/src/types/users.types";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Logo = require("../../assets/images/login.png");
 
 const LoginScreen = () => {
   type ILoginCredentials = Pick<ISignUpCredentials, "email" | "password">;
-  const { mutate: loginWithEmail, isLoading, error } = useLoginEmail();
+  const { mutate: loginWithEmail, isLoading } = useLoginEmail();
 
   const navigation = useNavigation();
   const {
@@ -47,7 +47,6 @@ const LoginScreen = () => {
           text1: "Success",
           text2: "Logged in successfully",
         });
-        navigation.navigate("Main" as never);
       },
       onError: () => {
         Toast.show({
@@ -109,7 +108,6 @@ const LoginScreen = () => {
         </View>
 
         {/* <Text className="text-sm opacity-60 text-center "> Or login using </Text>
-
       <View className="flex-row items-center justify-center gap-4 mt-2">
         <AntDesign name="google" size={32} color={"#dd4b39"} />
         <AntDesign name="facebook-square" size={32} color={"#1877f2"} />

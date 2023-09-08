@@ -6,6 +6,11 @@
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
+    "androidStatusBar": {
+      "backgroundColor": "#2a9d8f",
+      "translucent": false,
+      "barStyle": "light-content"
+    },
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
@@ -16,6 +21,11 @@
       "supportsTablet": true
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBQmglGDVwaRkFzgwRtDd21k0U0lcYF6us"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

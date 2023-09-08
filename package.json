@@ -9,7 +9,8 @@
     "start:emu": "cd packages/firebase-functions/functions && yarn serve",
     "deploy:cloudfunctions": "cd packages/firebase-functions/functions && yarn deploy",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "copy:model": "cp -r packages/core/src/types packages/firebase-functions/functions/src/"
+    "copy:model": "cp -r packages/core/src/types packages/firebase-functions/functions/src/",
+    "build:mob": "cd apps/mob && eas build -p android --profile  preview"
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",

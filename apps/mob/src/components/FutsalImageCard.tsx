@@ -5,7 +5,8 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { IFutsal } from "core";
+import { IFutsal, useCurrentLocation } from "core";
+import { calculateDistance } from "../utils/location";
 
 interface FutsalImageCardProps {
   futsal: IFutsal;
@@ -21,6 +22,14 @@ const FutsalImageCard = ({ futsal }: FutsalImageCardProps) => {
       futsalId: id,
     });
   };
+  const { geoLocation: currentLocation } = useCurrentLocation();
+
+  const timeDistance = calculateDistance(
+    currentLocation?.lat ?? 0,
+    currentLocation?.lng ?? 0,
+    futsal?.geoLocation?.lat ? +futsal.geoLocation?.lat : 0,
+    futsal.geoLocation?.lng ? +futsal.geoLocation?.lng : 0
+  );
 
   return (
     <Pressable onPress={handleNavigation}>
@@ -118,13 +127,24 @@ const FutsalImageCard = ({ futsal }: FutsalImageCardProps) => {
               opacity: 0.6,
             }}
           >
-            <MaterialIcons name="place" size={12} color={color.grayLight} />
+            <MaterialCommunityIcons
+              name="walk"
+              size={12}
+              color={color.grayLight}
+            />
             <Text
               style={{
                 color: color.grayLight,
               }}
             >
-              {" " + address.city + " " + address.street}
+              {Math.floor(timeDistance)} km
+            </Text>
+            <Text
+              style={{
+                color: color.grayLight,
+              }}
+            >
+              |{" " + address.city + " " + address.street}
             </Text>
           </View>
 

@@ -6,3 +6,4 @@ export * from "./useTeamStore";
 export * from "./useMemberStore";
 export * from "./useRequestStore";
 export * from "./useBidsStore";
+export * from "./useCurrentLocation";

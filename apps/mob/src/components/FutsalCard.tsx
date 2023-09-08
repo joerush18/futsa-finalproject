@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 
 import Card from "./ui/Card";
 import BookNowButton from "./ui/BookNowButton";
 import { Pressable, View, Image, Text } from "react-native";
 import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
-import { IFutsal } from "core";
+import { IFutsal, useCurrentLocation } from "core";
+import { calculateDistance, calculateTravelTime } from "../utils/location";
+import { convertMinutesToHours } from "../utils/date";
 
 interface FutsalCardProps {
   futsal: IFutsal;
@@ -18,6 +22,14 @@ const FutsalCard = ({ futsal }: FutsalCardProps) => {
   const { futsalName, ratings, address, price, id, coverPicture } = futsal;
   const [love, setLoved] = useState(false);
   const navigation = useNavigation();
+  const { geoLocation: currentLocation } = useCurrentLocation();
+
+  const timeDistance = calculateDistance(
+    currentLocation?.lat ?? 0,
+    currentLocation?.lng ?? 0,
+    futsal?.geoLocation?.lat ? +futsal.geoLocation?.lat : 0,
+    futsal.geoLocation?.lng ? +futsal.geoLocation?.lng : 0
+  );
 
   const handleNavigation = () => {
     // @ts-ignore
@@ -95,7 +107,6 @@ const FutsalCard = ({ futsal }: FutsalCardProps) => {
               {ratings}
             </Text>
           </View>
-
           <View
             style={{
               flexDirection: "row",
@@ -104,13 +115,24 @@ const FutsalCard = ({ futsal }: FutsalCardProps) => {
               opacity: 0.6,
             }}
           >
-            <MaterialIcons name="place" size={12} color={color.grayText} />
+            <MaterialCommunityIcons
+              name="walk"
+              size={12}
+              color={color.grayLight}
+            />
             <Text
               style={{
                 color: color.grayText,
               }}
             >
-              {" " + address.city + " " + address.street}
+              {Math.floor(timeDistance)} km
+            </Text>
+            <Text
+              style={{
+                color: color.grayText,
+              }}
+            >
+              |{" " + address.city + " " + address.street}
             </Text>
           </View>
 

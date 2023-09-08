@@ -15,4 +15,5 @@ export interface IRequest extends IEntryMeta {
   budget: string;
   deadline: string;
   status: REQUEST_STATUS;
+  hasExpired?: boolean;
 }

@@ -17,6 +17,8 @@ interface IPlayers extends IEntryMeta {
   };
   phonenumber: number;
   role: ROLES.PLAYER;
+
+  savedFutsals?: string[];
 }
 
 export type { IPlayers };

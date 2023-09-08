@@ -19,6 +19,7 @@ import { useGetAllFutsal } from "core/src/db/hooks/useFutsal";
 import Loading from "../components/ui/Loading";
 import useRefetch from "../hooks/useRefetch";
 import useNotifications from "../hooks/useNotification";
+import useFutsal from "../hooks/useFutsals";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -67,11 +68,12 @@ const HomeScreen = () => {
     });
   }, []);
 
-  const { data, isLoading, refetch } = useGetAllFutsal();
+  const { futsals, isLoading, refetch } = useFutsal();
+
   const { onRefresh, refreshing } = useRefetch(refetch);
 
   if (isLoading) return <Loading />;
-  if (!data) return <Text>No data</Text>;
+  if (!futsals) return <Text>No data</Text>;
 
   return (
     <ScrollView
@@ -90,9 +92,9 @@ const HomeScreen = () => {
         <SearchBox />
       </View>
       <Sectionlayout title="Nearby futsals" buttonText="View all">
-        <ScrollView horizontal={true}>
-          {data.length ? (
-            data.map((futsal, index) => {
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {futsals.nearby.length ? (
+            futsals.nearby.map((futsal, index) => {
               return <FutsalImageCard key={`futsa_${index}`} futsal={futsal} />;
             })
           ) : (
@@ -101,9 +103,9 @@ const HomeScreen = () => {
         </ScrollView>
       </Sectionlayout>
       <Sectionlayout title="Popular Futsals" buttonText="View all">
-        <ScrollView>
-          {data.length ? (
-            data.map((futsal, index) => {
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {futsals.all.length ? (
+            futsals.popular.map((futsal, index) => {
               return <FutsalCard key={`futsa_${index}`} futsal={futsal} />;
             })
           ) : (

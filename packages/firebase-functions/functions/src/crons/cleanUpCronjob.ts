@@ -43,7 +43,7 @@ const cleanUpCronjob = functions.pubsub
 
     // Expire all events on completion of deadline.
     const eventRef = await Database.collection(Collection.Requests)
-      .where("deadline", "<", new Date())
+      .where("eventDate", "<", new Date())
       .get();
 
     const events = eventRef.docs.map((doc) => doc.data() as IEvents);

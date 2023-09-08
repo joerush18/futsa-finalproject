@@ -1,44 +1,42 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Callout, Marker } from "react-native-maps";
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import * as Location from "expo-location";
-import { createRatingStars, useFutsalsStore } from "core";
-
+import { View, Text, Image } from "react-native";
+import { createRatingStars, useCurrentLocation, useFutsalsStore } from "core";
 import { Feather } from "@expo/vector-icons";
 
+const Logo = require("../assets/images/futsal.png");
+
 const MapViewScreen = () => {
-  const [currentLocation, setCurrentLocation] =
-    useState<Location.LocationObjectCoords>();
   const [initialRegion, setInitialRegion] = useState<any>();
+  const [refreshed, setRefreshed] = useState(false);
+  const { geoLocation } = useCurrentLocation();
+
+  const handleRefresh = () => {
+    // Toggle the refreshed state to trigger a re-render
+    setRefreshed(!refreshed);
+    initialLocationSetup();
+  };
 
   const initialLocationSetup = async () => {
-    // Request permission to access location
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      console.log("Permission to access location was denied");
-      return;
-    }
     // Get the current location
-    let location = await Location.getCurrentPositionAsync({});
-    setCurrentLocation(location.coords);
     setInitialRegion({
-      latitude: location.coords.latitude || 28.208218948316958,
-      longitude: location.coords.longitude || 84.00158931591984,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
+      latitude: geoLocation.lat ?? 28.208218948316958,
+      longitude: geoLocation.lng ?? 84.00158931591984,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1,
     });
   };
 
   useEffect(() => {
     initialLocationSetup();
-  }, [initialRegion]);
+  }, [geoLocation]);
 
   return (
     <SafeAreaView>
       <IconButton
         className="absolute top-10 right-8 z-10 bg-primary rounded-full h-16 w-16 flex items-center justify-center shadow-md"
-        onPress={initialLocationSetup}
+        onPress={handleRefresh}
       >
         <Feather name="refresh-ccw" size={24} color={color.white} />
       </IconButton>
@@ -46,12 +44,17 @@ const MapViewScreen = () => {
         {/* <View className="absolute top-0 z-10 px-2 mt-4 w-full">
           <SearchInput setSearchText={setSearchText} />
         </View> */}
-        <MapView className="h-screen w-full" initialRegion={initialRegion}>
-          {currentLocation && (
+        <MapView
+          className="h-screen w-full"
+          initialRegion={initialRegion}
+          key={refreshed ? "refreshed" : "not-refreshed"}
+          mapType="mutedStandard"
+        >
+          {geoLocation && (
             <Marker
               coordinate={{
-                latitude: currentLocation.latitude,
-                longitude: currentLocation.longitude,
+                latitude: geoLocation.lat ?? 28.208218948316958,
+                longitude: geoLocation.lng ?? 84.00158931591984,
               }}
               title="Your Location"
               description="You are here"
@@ -66,7 +69,6 @@ const MapViewScreen = () => {
 
 export default MapViewScreen;
 
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import IconButton from "../components/ui/IconButton";
@@ -91,11 +93,7 @@ const PinLocations = () => {
                 description={createRatingStars(futsal.ratings)}
               >
                 <View className="w-40 flex-row justify-center">
-                  <FontAwesome
-                    name="soccer-ball-o"
-                    size={24}
-                    color={color.primary}
-                  />
+                  <Image source={Logo} className="h-12 w-12  " />
                 </View>
                 <Callout
                   onPress={() => {
