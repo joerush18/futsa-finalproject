@@ -8,6 +8,8 @@ export const calculateDistance = (
   lat2: number,
   lon2: number
 ) => {
+  if (lat1 === 0 || lon1 === 0 || lat2 === 0 || lon2 === 0) return 0;
+
   const R = 6371; // Radius of the Earth in kilometers
   const dLat = deg2rad(lat2 - lat1);
   const dLon = deg2rad(lon2 - lon1);

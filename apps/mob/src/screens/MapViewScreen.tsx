@@ -3,11 +3,16 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
 import { createRatingStars, useCurrentLocation, useFutsalsStore } from "core";
 import { Feather } from "@expo/vector-icons";
-
-const Logo = require("../assets/images/futsal.png");
+import * as Location from "expo-location";
 
 const MapViewScreen = () => {
-  const [initialRegion, setInitialRegion] = useState<any>();
+  const { setGeoLocation } = useCurrentLocation();
+  const [initialRegion, setInitialRegion] = useState<any>({
+    latitude: 28.208218948316958,
+    longitude: 84.00158931591984,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  });
   const [refreshed, setRefreshed] = useState(false);
   const { geoLocation } = useCurrentLocation();
 
@@ -28,8 +33,25 @@ const MapViewScreen = () => {
   };
 
   useEffect(() => {
+    Location.requestForegroundPermissionsAsync().then((res) => {
+      if (res.status !== "granted") {
+        Toast.show({
+          type: "error",
+          text1: "Location permission not granted",
+          text2: "Please enable location permission to use the app",
+        });
+      }
+      Location.getCurrentPositionAsync({}).then((location) => {
+        setGeoLocation({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        });
+      });
+    });
     initialLocationSetup();
   }, [geoLocation]);
+
+  if (!geoLocation) return <Loading />;
 
   return (
     <View
@@ -38,7 +60,7 @@ const MapViewScreen = () => {
       }}
     >
       <IconButton
-        className="absolute top-7 right-8 z-10 bg-primary/50 rounded-full h-16 w-16 flex items-center justify-center shadow-md"
+        className="absolute bottom-7 right-[40%] z-10 bg-primary/80 rounded-full h-16 w-16 flex items-center justify-center shadow-md"
         onPress={handleRefresh}
       >
         <Feather name="refresh-ccw" size={24} color={color.white} />
@@ -52,7 +74,7 @@ const MapViewScreen = () => {
           initialRegion={initialRegion}
           key={refreshed ? "refreshed" : "not-refreshed"}
         >
-          {geoLocation && (
+          {geoLocation ? (
             <Marker
               coordinate={{
                 latitude: geoLocation.lat ?? 28.208218948316958,
@@ -61,7 +83,7 @@ const MapViewScreen = () => {
               title="Your Location"
               description="You are here"
             />
-          )}
+          ) : null}
           <PinLocations />
         </MapView>
       </View>
@@ -75,8 +97,11 @@ import color from "../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import IconButton from "../components/ui/IconButton";
 import Empty from "../components/ui/Empty";
+import Loading from "../components/ui/Loading";
+import Toast from "react-native-toast-message";
 
 const PinLocations = () => {
+  const Logo = require("../assets/images/futsal.png");
   const { futsals } = useFutsalsStore();
   if (!futsals) return <Empty />;
   const navigator = useNavigation();
@@ -96,7 +121,9 @@ const PinLocations = () => {
                 description={createRatingStars(futsal.ratings)}
               >
                 <View className="w-40 flex-row justify-center">
-                  <Image source={Logo} className="h-12 w-12  " />
+                  {/* <Entypo name="location" size={24} color="black" /> */}
+                  {/* <Ionicons name="location" size={42} color={color.primary} /> */}
+                  <Image source={Logo} className="h-12 w-12" />
                 </View>
                 <Callout
                   onPress={() => {

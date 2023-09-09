@@ -15,7 +15,6 @@ import FutsalImageCard from "../components/FutsalImageCard";
 import FutsalCard from "../components/FutsalCard";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SearchBox from "../components/ui/SearchBox";
-import { useGetAllFutsal } from "core/src/db/hooks/useFutsal";
 import Loading from "../components/ui/Loading";
 import useRefetch from "../hooks/useRefetch";
 import useNotifications from "../hooks/useNotification";
@@ -105,9 +104,11 @@ const HomeScreen = () => {
       <Sectionlayout title="Popular Futsals" buttonText="View all">
         <ScrollView showsVerticalScrollIndicator={false}>
           {futsals.all.length ? (
-            futsals.popular.map((futsal, index) => {
-              return <FutsalCard key={`futsa_${index}`} futsal={futsal} />;
-            })
+            futsals.popular
+              .sort((a, b) => b.ratings - a.ratings)
+              .map((futsal, index) => {
+                return <FutsalCard key={`futsa_${index}`} futsal={futsal} />;
+              })
           ) : (
             <Text>No futsal registered yet.</Text>
           )}
